@@ -4,6 +4,8 @@ const pg = require("pg");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 
+const router = require('./routes');
+
 //Configs
 dotenv.config();
 
@@ -19,11 +21,12 @@ const pool = new pg.Pool({
 })
 
 app.use(express.json())
+app.use(router);
 
-//Start Server 
-app.listen(port, () => {
-    console.log("Server is running on http://localhost:" + port)
-})
+// //Start Server 
+// app.listen(port, () => {
+//     console.log("Server is running on http://localhost:" + port)
+// })
 
 //Register POST
 app.post("/register", async (req, res) => {
@@ -102,3 +105,5 @@ function verifyToken (req, res, next){
 app.get("/userinfo", verifyToken, (req, res) =>{
     res.json({user: req.user});
 })
+
+module.exports = app;
