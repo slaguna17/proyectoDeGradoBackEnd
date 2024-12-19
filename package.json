@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "migrate": "npx knex migrate:latest --knexfile ./knexfile.js"
+    "migrate": "npx knex migrate:latest --knexfile knexfile.js"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
