@@ -3,7 +3,8 @@ const bcrypt = require("bcrypt");
 const pg = require("pg");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const router = require('./routes');
 
 //Configs
@@ -22,24 +23,29 @@ const pool = new pg.Pool({
 
 app.use(express.json())
 app.use(router);
+app.use(cors());
+app.use(bodyParser.json());
 
-// //Start Server 
-// app.listen(port, () => {
-//     console.log("Server is running on http://localhost:" + port)
-// })
+
+//Get all Users, GET
+app.get('/users', async (req, res) => {
+    const result = await pool.query('SELECT * FROM "user"');
+    res.json(result.rows);
+});
 
 //Register POST
 app.post("/register", async (req, res) => {
     try {
-        const {username, email, password, full_name, date_of_birth, cellphone, status, last_access, avatar } = req.body;
+        const {username, email, password, full_name, date_of_birth, phone, status, last_access, avatar } = req.body;
         const hashedPassword = await bcrypt.hash(password,10);
 
         const result = await pool.query(
-            "INSERT INTO users (username, email, password, full_name, date_of_birth, cellphone, status, last_access, avatar) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING * "
-            ,[username, email, hashedPassword, full_name, date_of_birth, cellphone, status, last_access, avatar] 
+            'INSERT INTO "user" (username, email, password, full_name, date_of_birth, phone, status, last_access, avatar) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING * '
+            ,[username, email, hashedPassword, full_name, date_of_birth, phone, status, last_access, avatar] 
         );
-
+        
         res.status(201).json(result.rows[0]);
+        console.log("Created User")
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Server error")
@@ -50,10 +56,10 @@ app.post("/register", async (req, res) => {
 //Login POST
 app.post("/login", async (req, res) => {
     try {
-        const { email, password} = req.body;
+        const {email, password} = req.body;
  
         const result = await pool.query(
-            "SELECT * FROM users WHERE email = $1"
+            'SELECT * FROM "user" WHERE email = $1'
             ,[email] 
         );
 
