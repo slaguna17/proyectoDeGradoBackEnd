@@ -1,8 +1,15 @@
 const db = require('../config/db')
 
-class UserModel {
-    async createUser(username, password, full_name, email, date_of_birth, phone, status, last_access, avatar){
-        const [id] = await  db('user').insert({
+const UserModel = {
+    getUsers: async () => {
+        return db('user').select('*')
+    },
+    getById: async (id) => {
+        return db('user').where({ id }).first(); // Consulta directa
+    },
+
+    createUser: async (username, password, full_name, email, date_of_birth, phone, status, last_access, avatar) => {
+        const [newUser] = await db('user').insert({
             username: username,
             password: password,
             full_name: full_name,
@@ -12,10 +19,24 @@ class UserModel {
             status: status, 
             last_access: last_access, 
             avatar: avatar
-        }).returning('id');
+        }).returning('*');
 
-        return id
+        return newUser
+    },
+
+    updateUser: async(id,updateBody) => {
+        const updatedUser = await db('user').where({id}).update(updateBody).returning('*')
+        return updatedUser[0]
+    },
+    
+    deleteUser: async(id) => {
+        return await db('user').where({id}).del();
+    },
+
+    //login
+    findByEmail: async (email) => {
+        return await db('user').where({email}).first();
     }
 }
 
-module.exports = new UserModel();
+module.exports = UserModel;
