@@ -5,7 +5,7 @@ const cors = require('cors');
 
 //Importar rutas
 const userRoutes = require('./routes/user-routes');
-
+const storeRoutes = require('./routes/store-routes')
 //Configs
 dotenv.config();
 const app = express();
@@ -15,5 +15,6 @@ app.use(express.json())
 
 //Rutas
 app.use('/api/users',userRoutes);
+app.use('/api/stores',storeRoutes);
 
 module.exports = app;

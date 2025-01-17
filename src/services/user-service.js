@@ -8,11 +8,11 @@ const UserService = {
         return users;
     },
 
-    getById: async (id) => {
+    getUserById: async (id) => {
       if (!id) {
         throw new Error('User ID is required');
       }
-      const user = await UserModel.getById(id);
+      const user = await UserModel.getUserById(id);
       if (!user) {
         throw new Error('User not found');
       }

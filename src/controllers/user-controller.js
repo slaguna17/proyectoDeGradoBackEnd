@@ -1,4 +1,3 @@
-const { getUsers } = require('../models/user-model');
 const UserService = require('../services/user-service');
 
 const UserController = {
@@ -8,12 +7,12 @@ const UserController = {
             res.status(200).json(users);
         } catch (error) {
             console.error(error.message);
-            res.status(500).send("aaa error")
+            res.status(500).send("Server error")
         }
     },
     getUserById: async (req, res) => {
       try {
-        const user = await UserService.getById(req.params.id);
+        const user = await UserService.getUserById(req.params.id);
         res.status(200).json(user); // Devuelve la respuesta
       } catch (error) {
         console.error(error.message);

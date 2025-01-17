@@ -4,7 +4,7 @@ const UserModel = {
     getUsers: async () => {
         return db('user').select('*')
     },
-    getById: async (id) => {
+    getUserById: async (id) => {
         return db('user').where({ id }).first(); // Consulta directa
     },
 
