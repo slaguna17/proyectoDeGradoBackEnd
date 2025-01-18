@@ -52,7 +52,7 @@ exports.up = async function(knex) {
         table.string('logo')
         table.string('history')
         table.string('phone')
-        table.jsonb('socials')
+        // table.jsonb('socials')
         table.timestamps(true, true);
     })
 
