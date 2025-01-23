@@ -39,6 +39,17 @@ const ProductService = {
             throw new Error('Product not found');
         }
         return product;
+    },
+
+    getProductsByCategory: async (category_id) => {
+      if(!category_id){
+        throw new Error("Wrong category ID");
+      }
+      const products = await ProductModel.getProductsByCategory(category_id);
+      if(!products){
+        throw new Error("Products not found")
+      }
+      return products
     }
 
   };

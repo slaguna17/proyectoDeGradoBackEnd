@@ -28,6 +28,16 @@ const ProductModel = {
     
     deleteProduct: async(id) => {
         return await db('product').where({id}).del();
+    },
+
+    getProductsByCategory: async(category_id) => {
+        try {
+            const products = await db('product').where({ category_id: category_id });
+            return products;
+        } catch (error) {
+            console.error("Error fetching products by category:", error);
+            throw error; // Important: re-throw the error
+        }
     }
 
 }

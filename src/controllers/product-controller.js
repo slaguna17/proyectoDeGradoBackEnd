@@ -53,6 +53,17 @@ const ProductController = {
             console.error(error.message);
             res.status(404).send("Couldn't delete, Product not found")
         }
+    },
+
+    getProductsByCategory: async(req, res) => {
+        try {
+            const category_id = req.params.category_id
+            const products = await ProductService.getProductsByCategory(category_id)
+            res.status(200).json(products);
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).send("Server error, couldn't get Products")
+        }
     }
   };
 

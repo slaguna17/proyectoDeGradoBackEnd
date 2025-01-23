@@ -18,8 +18,7 @@ const CategoryService = {
     },
 
     createCategory: async (categoryData) => {
-        const {name, description} = categoryData
-        return CategoryModel.createCategory(name, description)
+      return CategoryModel.createCategory(categoryData);
     },
 
     updateCategory: async (id, updateBody) => {
@@ -32,13 +31,13 @@ const CategoryService = {
 
     deleteCategory: async (id) => {
         if (!id) {
-            throw new Error('Wrong Category ID');
+            throw new Error('Category ID is required');
         }
-        const category = await CategoryModel.deleteCategory(id);
-        if (!category) {
+        const deletedCount = await CategoryModel.deleteCategory(id);
+        if (deletedCount === 0) {
             throw new Error('Category not found');
         }
-        return category;
+        return { message: "Category deleted successfully" };
     }
 
   };

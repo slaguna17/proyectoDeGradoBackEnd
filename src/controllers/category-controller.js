@@ -1,4 +1,3 @@
-const { updateCategory } = require('../models/category-model');
 const CategoryService = require('../services/category-service');
 
 const CategoryController = {
@@ -14,7 +13,7 @@ const CategoryController = {
     getCategoryById: async (req, res) => {
       try {
         const category = await CategoryService.getCategoryById(req.params.id);
-        res.status(200).json(category); // Devuelve la respuesta
+        res.status(200).json(category);
       } catch (error) {
         console.error(error.message);
         res.status(404).send("Category not found")
@@ -33,25 +32,21 @@ const CategoryController = {
 
     updateCategory: async(req,res) => {
         try {
-            const id = req.params.id;
-            const updateBody = req.body;
-
-            const updatedCategory = await CategoryService.updateCategory(id, updateBody)
-            res.status(201).json(updateCategory)
+            const updatedCategory = await CategoryService.updateCategory(req.params.id, req.body);
+            res.status(200).json(updatedCategory); // Return 200 with updated category
         } catch (error) {
             console.error(error.message);
-            res.status(404).send("Couldn't update, Category not found")
+            res.status(404).send({ error: "Couldn't update, Category not found" })
         }
     },
 
     deleteCategory: async(req, res) => {
         try {
-            const id = req.params.id
-            const deleteCategory = await CategoryService.deleteCategory(id)
-            res.status(200).json(deleteCategory)
+            await CategoryService.deleteCategory(req.params.id);
+            res.status(200).json({message: "Category deleted successfully"});
         } catch (error) {
             console.error(error.message);
-            res.status(404).send("Couldn't delete, Category not found")
+            res.status(404).send({ error: "Couldn't delete, Category not found" })
         }
     }
   };
