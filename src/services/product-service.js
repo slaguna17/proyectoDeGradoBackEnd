@@ -18,8 +18,7 @@ const ProductService = {
     },
 
     createProduct: async (productData) => {
-        const {SKU, name, description, image, brand, category_id} = productData
-        return ProductModel.createProduct(SKU, name, description, image, brand, category_id)
+        return ProductModel.createProduct(productData)
     },
 
     updateProduct: async (id, updateBody) => {
@@ -32,13 +31,13 @@ const ProductService = {
 
     deleteProduct: async (id) => {
         if (!id) {
-            throw new Error('Wrong Product ID');
+            throw new Error('Product ID is required');
         }
-        const product = await ProductModel.deleteProduct(id);
-        if (!product) {
+        const deletedCount = await ProductModel.deleteProduct(id);
+        if (deletedCount === 0) {
             throw new Error('Product not found');
         }
-        return product;
+        return { message: "Product deleted successfully" };
     },
 
     getProductsByCategory: async (category_id) => {

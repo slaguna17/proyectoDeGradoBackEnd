@@ -8,26 +8,24 @@ const ProductModel = {
         return db('product').where({ id }).first();
     },
 
-    createProduct: async (SKU, name, description, image, brand, category_id) => {
-        const [newProduct] = await db('product').insert({
-            SKU: SKU,
-            name: name,
-            description: description,
-            image: image,
-            brand: brand,
-            category_id: category_id,
-        }).returning('*');
+    createCategory: async (categoryData) => {
+        const [newCategory] = await db('category').insert(categoryData).returning('*');
+        return newCategory;
+    },
 
-        return newProduct
+    createProduct: async (productData) => {
+        const [newProduct] = await db('product').insert(productData).returning('*');
+        return newProduct;
     },
 
     updateProduct: async(id,updateBody) => {
-        const updatedProduct = await db('product').where({id}).update(updateBody).returning('*')
-        return updatedProduct[0]
+        const [updatedProduct] = await db('product').where({id}).update(updateBody).returning('*')
+        return updatedProduct;
     },
     
     deleteProduct: async(id) => {
-        return await db('product').where({id}).del();
+        const deletedCount = await db('product').where({id}).del()
+        return deletedCount
     },
 
     getProductsByCategory: async(category_id) => {

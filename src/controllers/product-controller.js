@@ -20,7 +20,7 @@ const ProductController = {
         res.status(404).send("Product not found")
       }
     },
-
+    
     createProduct: async(req,res) => {
         try {
             const newProduct = await ProductService.createProduct(req.body);
@@ -33,25 +33,21 @@ const ProductController = {
 
     updateProduct: async(req,res) => {
         try {
-            const id = req.params.id;
-            const updateBody = req.body;
-
-            const updatedProduct = await ProductService.updateProduct(id, updateBody)
-            res.status(201).json(updateProduct)
+            const updatedProduct = await ProductService.updateProduct(req.params.id, req.body);
+            res.status(200).json(updatedProduct)
         } catch (error) {
             console.error(error.message);
-            res.status(404).send("Couldn't update, Product not found")
+            res.status(404).send({ error: "Couldn't update, Product not found" })
         }
     },
 
     deleteProduct: async(req, res) => {
         try {
-            const id = req.params.id
-            const deleteProduct = await ProductService.deleteProduct(id)
-            res.status(200).json(deleteProduct)
+            await ProductService.deleteProduct(req.params.id);
+            res.status(200).json({message: "Category deleted successfully"});
         } catch (error) {
             console.error(error.message);
-            res.status(404).send("Couldn't delete, Product not found")
+            res.status(404).send({ error: "Couldn't delete, Product not found" })
         }
     },
 
