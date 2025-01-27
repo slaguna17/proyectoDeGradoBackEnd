@@ -23,7 +23,7 @@ const StoreController = {
     createStore: async(req,res) => {
         try {
             const newStore = await StoreService.createStore(req.body);
-            res.status(201).json(newStore)
+            res.status(200).json(newStore)
         } catch (error) {
             console.error(error.message);
             res.status(500).send("Server error, couldn't create Store")
@@ -32,11 +32,8 @@ const StoreController = {
 
     updateStore: async(req,res) => {
         try {
-            const id = req.params.id;
-            const updateBody = req.body;
-
-            const updatedStore = await StoreService.updateStore(id, updateBody)
-            res.status(201).json(updatedStore)
+            const updatedStore = await StoreService.updateStore(req.params.id, req.body)
+            res.status(200).json(updatedStore)
         } catch (error) {
             console.error(error.message);
             res.status(404).send("Couldn't update, Store not found")
@@ -45,12 +42,11 @@ const StoreController = {
 
     deleteStore: async(req, res) => {
         try {
-            const id = req.params.id
-            const deleteStore = await StoreService.deleteStore(id)
-            res.status(200).json(deleteStore)
+            await StoreService.deleteStore(req.params.id)
+            res.status(200).json({message: "Store deleted successfully"})
         } catch (error) {
             console.error(error.message);
-            res.status(404).send("Couldn't delete, Store not found")
+            res.status(404).send({ error: "Couldn't delete, Store not found" })
         }
     }
   };

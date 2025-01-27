@@ -14,12 +14,11 @@ const StoreService = {
       if (!store) {
         throw new Error('Store not found');
       }
-      return store; // Devuelve el usuario al controlador
+      return store;
     },
 
     createStore: async (storeData) => {
-        const {name, address, city, logo, history, phone, socials} = storeData
-        return StoreModel.createStore(name, address, city, logo, history, phone, socials)
+        return StoreModel.createStore(storeData)
     },
 
     updateStore: async (id, updateBody) => {
@@ -32,13 +31,13 @@ const StoreService = {
 
     deleteStore: async (id) => {
         if (!id) {
-            throw new Error('Wrong Store ID');
+            throw new Error('Store ID is required');
         }
         const store = await StoreModel.deleteStore(id);
         if (!store) {
             throw new Error('Store not found');
         }
-        return store;
+        return { message: "Store deleted successfully" };
     }
 
   };

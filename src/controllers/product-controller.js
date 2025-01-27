@@ -1,4 +1,3 @@
-const { updateProduct } = require('../models/product-model');
 const ProductService = require('../services/product-service');
 
 const ProductController = {
@@ -20,7 +19,7 @@ const ProductController = {
         res.status(404).send("Product not found")
       }
     },
-    
+
     createProduct: async(req,res) => {
         try {
             const newProduct = await ProductService.createProduct(req.body);
