@@ -33,6 +33,8 @@ exports.up = async function(knex) {
         table.increments('id').primary();
         table.integer('store_id').unsigned().references('id').inTable('store');
         table.integer('product_id').unsigned().references('id').inTable('product');
+        table.integer('stock').notNullable();
+        table.string('experation_date')
         table.timestamps(true, true);
     })
 

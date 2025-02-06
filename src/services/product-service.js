@@ -17,8 +17,15 @@ const ProductService = {
       return product;
     },
 
-    createProduct: async (productData) => {
-        return ProductModel.createProduct(productData)
+    createProduct: async (productData, storeData) => {
+      if ( !productData.name || !productData.category_id) {
+        throw new Error('SKU, nombre y categoría son obligatorios.');
+      }
+
+      if (!storeData.store_id || storeData.stock === undefined) {
+        throw new Error('Tienda y stock son obligatorios.');
+      }
+      return await ProductModel.createProduct(productData, storeData);
     },
 
     updateProduct: async (id, updateBody) => {
@@ -49,7 +56,15 @@ const ProductService = {
         throw new Error("Products not found")
       }
       return products
-    }
+    },
+
+    getProductsByStore: async (storeId) => {
+      const products = await ProductModel.getProductsByStore(storeId);
+      if (!products || products.length === 0) {
+          throw new Error('No hay productos para esta tienda.');
+      }
+      return products;
+  },
 
   };
 

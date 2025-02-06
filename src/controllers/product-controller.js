@@ -22,11 +22,13 @@ const ProductController = {
 
     createProduct: async(req,res) => {
         try {
-            const newProduct = await ProductService.createProduct(req.body);
+            const {product, store} = req.body
+            const newProduct = await ProductService.createProduct(product,store);
             res.status(201).json(newProduct)
         } catch (error) {
             console.error(error.message);
-            res.status(500).send("Server error, couldn't create Product")
+            res.status(400).send("Server error, couldn't create Product")
+            res.status(400).json({ message: error.message });
         }
     },
 
@@ -59,7 +61,18 @@ const ProductController = {
             console.error(error.message);
             res.status(500).send("Server error, couldn't get Products")
         }
-    }
+    },
+
+    getProductsByStore: async (req, res) => {
+        try {
+            const { storeId } = req.params; // Tomamos el ID de la tienda desde los parámetros de la URL
+            const products = await ProductService.getProductsByStore(storeId);
+            res.status(200).json(products);
+        } catch (error) {
+            console.error(error.message);
+            res.status(404).json({ message: error.message });
+        }
+    },
   };
 
 module.exports = ProductController;
