@@ -1,3 +1,4 @@
+const { getProductsByCategoryAndStore } = require('../models/product-model');
 const ProductService = require('../services/product-service');
 
 const ProductController = {
@@ -73,6 +74,16 @@ const ProductController = {
             res.status(404).json({ message: error.message });
         }
     },
+
+    getProductsByCategoryAndStore: async (req, res) => {
+        try {
+            const { categoryId, storeId } = req.params;
+            const products = await ProductService.getProductsByCategoryAndStore(categoryId, storeId);
+            res.json(products);
+        } catch (error) {
+            res.status(500).json({ error: 'Error fetching products' });
+        }
+    }
   };
 
 module.exports = ProductController;

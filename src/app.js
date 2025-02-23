@@ -20,5 +20,6 @@ app.use('/api/users',userRoutes);
 app.use('/api/stores',storeRoutes);
 app.use('/api/categories',categoryRoutes);
 app.use('/api/products',productRoutes);
+app.use('/api/providers',providerRoutes);
 
 module.exports = app;

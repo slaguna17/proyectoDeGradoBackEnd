@@ -64,7 +64,15 @@ const ProductService = {
           throw new Error('No hay productos para esta tienda.');
       }
       return products;
-  },
+    },
+
+    getProductsByCategoryAndStore: async (categoryId, storeId) => {
+      const products = await ProductModel.getProductsByCategoryAndStore(categoryId, storeId);
+      if (!products || products.length === 0) {
+        throw new Error('No hay productos para esta tienda y/o categoria.');
+    }
+      return products;
+    }
 
   };
 

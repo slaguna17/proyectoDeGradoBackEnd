@@ -14,6 +14,7 @@ router.delete('/deleteProduct/:id', ProductController.deleteProduct);
 // Other methods
 router.get('/categories/:category_id', ProductController.getProductsByCategory);
 router.get('/stores/:storeId', ProductController.getProductsByStore)
+router.get('/:categoryId/store/:storeId', ProductController.getProductsByCategoryAndStore)
 
 
 module.exports = router;

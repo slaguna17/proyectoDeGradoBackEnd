@@ -83,6 +83,45 @@ const ProductModel = {
         }
     },
 
+    getProductsByStore: async (storeId) => {
+        try {
+            const products = await db('store_product AS sp')
+                .join('product AS p', 'sp.product_id', 'p.id')
+                .where('sp.store_id', storeId)
+                .select(
+                    'p.id',
+                    'p.SKU',
+                    'p.name',
+                    'p.description',
+                    'p.image',
+                    'p.category_id',
+                    'p.brand',
+                    'sp.stock',
+                    'sp.expiration_date'
+                );
+
+            return products;
+        } catch (error) {
+            console.error('Error fetching products by store: ', error.message);
+            throw error;
+        }
+    },
+
+    getProductsByCategoryAndStore: async (categoryId, storeId) => {
+        try {
+            const products = await db('store_product')
+            .join('product', 'store_product.product_id', 'product.id')
+            .where('store_product.store_id', storeId)
+            .andWhere('product.category_id', categoryId)
+            .select('product.*', 'store_product.stock', 'store_product.expiration_date');
+
+            return products
+        } catch (error) {
+            console.error('Error fetching products by category and store: ', error.message);
+            throw error;
+        }    
+    }
+
 }
 
 module.exports = ProductModel;
