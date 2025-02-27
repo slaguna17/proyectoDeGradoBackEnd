@@ -72,9 +72,17 @@ const UserController = {
             console.error("Token Verification failed:", error.message);
             res.status(401).send("Invalid Token")
         }
-    }
+    },
     
-
+    getRoles: async (req,res) => {
+        try {
+            const roles = await UserService.getRoles()
+            res.status(200).json(roles);
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).send("Server error")
+        }
+    },
   };
 
 module.exports = UserController;

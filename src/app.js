@@ -8,6 +8,7 @@ const userRoutes = require('./routes/user-routes');
 const storeRoutes = require('./routes/store-routes');
 const categoryRoutes = require('./routes/category-routes');
 const productRoutes = require('./routes/product-routes');
+const providerRoutes = require('./routes/provider-routes');
 //Configs
 dotenv.config();
 const app = express();

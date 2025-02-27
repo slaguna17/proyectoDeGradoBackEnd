@@ -18,11 +18,11 @@ const ProviderService = {
     },
 
     createProvider: async (providerData) => {
-      return ProviderModel.createprovider(providerData);
+      return ProviderModel.createProvider(providerData);
     },
 
-    updateprovider: async (id, updateBody) => {
-        const provider = await providerModel.updateprovider(id, updateBody)
+    updateProvider: async (id, updateBody) => {
+        const provider = await ProviderModel.updateProvider(id, updateBody)
         if(!provider){
             throw new Error("Provider not found")
         }

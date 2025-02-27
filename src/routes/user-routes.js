@@ -19,4 +19,7 @@ router.post("/login",UserController.login);
 //PROTECTED ROUTE GET
 router.get("/login/userInfoByToken", AuthMiddleware.verifyToken, UserController.getUserInfo);
 
+//Roles
+router.get("/default/roles", UserController.getRoles);
+
 module.exports = router;

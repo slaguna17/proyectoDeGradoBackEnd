@@ -24,6 +24,13 @@ const UserModel = {
         return newUser
     },
 
+    createUserRole: async (userId, roleId) => {
+        return db('user_role').insert({
+            user_id: userId,
+            role_id: roleId,
+        });
+    },
+
     updateUser: async(id,updateBody) => {
         const updatedUser = await db('user').where({id}).update(updateBody).returning('*')
         return updatedUser[0]
@@ -36,7 +43,11 @@ const UserModel = {
     //login
     findByEmail: async (email) => {
         return await db('user').where({email}).first();
-    }
+    },
+
+    getRoles: async () => {
+        return db('role').select('*')
+    },
 }
 
 module.exports = UserModel;

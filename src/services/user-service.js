@@ -16,14 +16,21 @@ const UserService = {
       if (!user) {
         throw new Error('User not found');
       }
-      return user; // Devuelve el usuario al controlador
+      return user;
     },
 
     createUser: async (userData) => {
-        const {username, password, full_name, email, date_of_birth, phone, status, last_access, avatar} = userData
-        const hashedPassword = await bcrypt.hash(password,10);
-        return UserModel.createUser(username, hashedPassword, full_name, email, date_of_birth, phone, status, last_access, avatar)
+        const { username, password, full_name, email, date_of_birth, phone, status, last_access, avatar, roleId } = userData;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = await UserModel.createUser(username, hashedPassword, full_name, email, date_of_birth, phone, status, last_access, avatar);
+    
+        if (roleId) {
+            await UserModel.createUserRole(newUser.id, roleId);
+        }
+    
+        return newUser;
     },
+
 
     updateUser: async (id, updateBody) => {
         const {password} = updateBody
@@ -68,6 +75,11 @@ const UserService = {
 
         return token;
     },  
+
+    getRoles: async () => {
+        const roles = await UserModel.getRoles();
+        return roles;
+    }
   };
 
 module.exports = UserService;
