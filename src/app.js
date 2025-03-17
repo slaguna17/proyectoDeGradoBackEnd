@@ -9,6 +9,7 @@ const storeRoutes = require('./routes/store-routes');
 const categoryRoutes = require('./routes/category-routes');
 const productRoutes = require('./routes/product-routes');
 const providerRoutes = require('./routes/provider-routes');
+const shiftRoutes = require('./routes/shift-routes');
 //Configs
 dotenv.config();
 const app = express();
@@ -22,5 +23,6 @@ app.use('/api/stores',storeRoutes);
 app.use('/api/categories',categoryRoutes);
 app.use('/api/products',productRoutes);
 app.use('/api/providers',providerRoutes);
+app.use('/api/shifts',shiftRoutes);
 
 module.exports = app;

@@ -1,4 +1,4 @@
-//Intermediary entities (8 TABLES)
+//Intermediary entities (7 TABLES)
 //role_permit, user_role, user_shift_store, store_product, sales_product, purchase_product, provider_store, provider_product
 exports.up = async function(knex) {
     //8 intermidiary tables
@@ -11,15 +11,7 @@ exports.up = async function(knex) {
         table.timestamps(true, true);
     })
     
-    //2. User-role table
-    await knex.schema.createTable("user_role", table => {
-        table.increments('id').primary();
-        table.integer('user_id').unsigned().references('id').inTable('user');
-        table.integer('role_id').unsigned().references('id').inTable('role');
-        table.timestamps(true, true);
-    })
-
-    //3. User-Shift-Store table
+    //2. User-Shift-Store table
     await knex.schema.createTable("user_shift_store", table => {
         table.increments('id').primary();
         table.integer('user_id').unsigned().references('id').inTable('user');
@@ -28,7 +20,7 @@ exports.up = async function(knex) {
         table.timestamps(true, true);
     })
 
-    //4. Store-Product table
+    //3. Store-Product table
     await knex.schema.createTable("store_product", table => {
         table.increments('id').primary();
         table.integer('store_id').unsigned().references('id').inTable('store');
@@ -38,7 +30,7 @@ exports.up = async function(knex) {
         table.timestamps(true, true);
     })
 
-    //5. Sales - Product table
+    //4. Sales - Product table
     await knex.schema.createTable("sales_product", table => {
         table.increments('id').primary();
         table.integer('sales_id').unsigned().references('id').inTable('sales');
@@ -46,7 +38,7 @@ exports.up = async function(knex) {
         table.integer('quantity_per_product').notNullable()
         table.timestamps(true, true);
     })
-    //6. Purchases - Product table
+    //5. Purchases - Product table
     await knex.schema.createTable("purchase_product", table => {
         table.increments('id').primary();
         table.integer('purchase_id').unsigned().references('id').inTable('purchase');
@@ -54,14 +46,14 @@ exports.up = async function(knex) {
         table.integer('quantity_per_product').notNullable()
         table.timestamps(true, true);
     })     
-    //7. Provider - Store table
+    //6. Provider - Store table
     await knex.schema.createTable("provider_store", table => {
         table.increments('id').primary();
         table.integer('provider_id').unsigned().references('id').inTable('provider');
         table.integer('store_id').unsigned().references('id').inTable('store');
         table.timestamps(true, true);
     })
-    //8. Provider - Product table
+    //7. Provider - Product table
     await knex.schema.createTable("provider_product", table => {
         table.increments('id').primary();
         table.integer('provider_id').unsigned().references('id').inTable('provider');

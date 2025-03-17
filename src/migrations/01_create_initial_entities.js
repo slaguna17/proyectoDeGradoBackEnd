@@ -37,9 +37,9 @@ exports.up = async function(knex) {
     await knex.schema.createTable("shift", table => {
         table.increments('id').primary();
         table.string('name');
-        table.integer('lenght');
-        table.time('start_time');
-        table.time('end_time')
+        table.integer('length');
+        table.string('start_time');
+        table.string('end_time')
         table.timestamps(true, true);
     })
 

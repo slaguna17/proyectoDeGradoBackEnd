@@ -13,7 +13,7 @@ const StoreController = {
     getStoreById: async (req, res) => {
       try {
         const store = await StoreService.getStoreById(req.params.id);
-        res.status(200).json(store); // Devuelve la respuesta
+        res.status(200).json(store); 
       } catch (error) {
         console.error(error.message);
         res.status(404).send("Store not found")
