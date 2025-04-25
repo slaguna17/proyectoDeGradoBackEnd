@@ -19,7 +19,7 @@ const ProductService = {
 
     createProduct: async (productData, storeData) => {
       if ( !productData.name || !productData.category_id) {
-        throw new Error('SKU, nombre y categoría son obligatorios.');
+        throw new Error('Nombre y categoría son obligatorios.');
       }
 
       if (!storeData.store_id || storeData.stock === undefined) {
