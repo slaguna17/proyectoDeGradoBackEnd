@@ -20,6 +20,15 @@ exports.up = async function(knex) {
         table.timestamps(true, true);
     })
 
+    await knex.schema.createTable("user_role", table => {
+    table.increments('id').primary();
+    table.integer('user_id').unsigned().references('id').inTable('user').onDelete('CASCADE');
+    table.integer('role_id').unsigned().references('id').inTable('role').onDelete('CASCADE');
+    table.timestamps(true, true);
+    // Para asegurar que un usuario no tenga el mismo rol múltiples veces
+    table.unique(['user_id', 'role_id']);
+  });
+
     //3. Store-Product table
     await knex.schema.createTable("store_product", table => {
         table.increments('id').primary();
@@ -76,4 +85,5 @@ exports.down = async function(knex) {
     await knex.schema.dropTableIfExists('purchase_product');
     await knex.schema.dropTableIfExists('provider_store');
     await knex.schema.dropTableIfExists('provider_product');
+    await knex.schema.dropTableIfExists('user_role');
 }

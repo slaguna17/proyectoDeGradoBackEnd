@@ -25,12 +25,11 @@ const UserService = {
         const newUser = await UserModel.createUser(username, hashedPassword, full_name, email, date_of_birth, phone, status, last_access, avatar);
     
         if (roleId) {
-            await UserModel.createUserRole(newUser.id, roleId);
+            await UserModel.createUser(newUser.id, roleId);
         }
     
         return newUser;
     },
-
 
     updateUser: async (id, updateBody) => {
         const {password} = updateBody

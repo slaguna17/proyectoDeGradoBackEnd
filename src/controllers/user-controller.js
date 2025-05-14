@@ -20,15 +20,34 @@ const UserController = {
       }
     },
 
-    createUser: async(req,res) => {
-        try {
-            const newUser = await UserService.createUser(req.body);
-            res.status(201).json(newUser)
-        } catch (error) {
-            console.error(error.message);
-            res.status(500).send("Server error")
-        }
-    },
+    createUser: async (req, res) => {
+    try {
+      const {
+        username,
+        password,
+        full_name,
+        email,
+        date_of_birth,
+        phone,
+        status,
+        avatar
+      } = req.body;
+      const user = await UserService.createUser({
+        username,
+        password,
+        full_name,
+        email,
+        date_of_birth,
+        phone,
+        status,
+        avatar
+      });
+      res.status(201).json(user);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Error creating user' });
+    }
+  },
 
     updateUser: async(req,res) => {
         try {
