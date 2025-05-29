@@ -8,7 +8,7 @@ exports.up = async function(knex) {
         table.string('password').notNullable();
         table.string('full_name').notNullable();
         table.string('email').notNullable().unique();
-        table.string('date_of_birth').notNullable();
+        table.string('date_of_birth');
         table.string('phone').notNullable();
         table.string('status').notNullable();
         table.string('last_access').notNullable();

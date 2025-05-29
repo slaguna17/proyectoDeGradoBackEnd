@@ -22,4 +22,11 @@ router.get("/login/userInfoByToken", AuthMiddleware.verifyToken, UserController.
 //Roles
 router.get("/default/roles", UserController.getRoles);
 
+//Employees
+router.post('/employees', UserController.createEmployee);
+router.get('/search/employees', UserController.searchEmployees);
+router.put('/:id/assign-schedule', UserController.assignSchedule);
+
+
+
 module.exports = router;

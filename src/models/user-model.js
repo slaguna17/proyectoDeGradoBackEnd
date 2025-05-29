@@ -61,6 +61,27 @@ const UserModel = {
     getRoles: async () => {
         return db('role').select('*')
     },
+
+   getUsersByRoleAndQuery: async (query) => {
+        return db('user')
+            .join('user_role', 'user.id', 'user_role.user_id')
+            .join('role', 'user_role.role_id', 'role.id')
+            .where('role.isAdmin', false)
+            .andWhere('user.username', 'ilike', `%${query}%`)
+            .distinct('user.id', 'user.username', 'user.full_name', 'user.email', 'user.avatar', 'user.created_at');
+    },
+
+    assignShiftStore: async (userId, shiftId, storeId) => {
+        return db('user_shift_store').insert({
+            user_id: userId,
+            shift_id: shiftId,
+            store_id: storeId,
+            created_at: db.fn.now(),
+            updated_at: db.fn.now()
+        });
+    }
+
+
 }
 
 module.exports = UserModel;

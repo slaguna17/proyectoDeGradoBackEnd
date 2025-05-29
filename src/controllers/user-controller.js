@@ -21,33 +21,40 @@ const UserController = {
     },
 
     createUser: async (req, res) => {
-    try {
-      const {
-        username,
-        password,
-        full_name,
-        email,
-        date_of_birth,
-        phone,
-        status,
-        avatar
-      } = req.body;
-      const user = await UserService.createUser({
-        username,
-        password,
-        full_name,
-        email,
-        date_of_birth,
-        phone,
-        status,
-        avatar
-      });
-      res.status(201).json(user);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Error creating user' });
-    }
-  },
+        try {
+            const {
+                username,
+                password,
+                full_name,
+                email,
+                date_of_birth,
+                phone,
+                status,
+                avatar,
+                roleId
+            } = req.body;
+
+            const user = await UserService.createUser({
+                username,
+                password,
+                full_name,
+                email,
+                date_of_birth,
+                phone,
+                status,
+                avatar,
+                roleId
+            });
+            res.status(201).json({
+                message: 'Usuario creado exitosamente',
+                userId: user.id,
+                username: user.username
+            });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Error creating user' });
+        }
+    },
 
     updateUser: async(req,res) => {
         try {
@@ -102,6 +109,75 @@ const UserController = {
             res.status(500).send("Server error")
         }
     },
+
+    createEmployee: async (req, res) => {
+        try {
+            const {
+            username,
+            password,
+            full_name,
+            email,
+            date_of_birth,
+            phone,
+            status,
+            avatar,
+            roleId,
+            storeId,
+            shiftId
+            } = req.body;
+
+            const user = await UserService.createEmployee({
+            username,
+            password,
+            full_name,
+            email,
+            date_of_birth,
+            phone,
+            status,
+            avatar,
+            roleId,
+            storeId,
+            shiftId
+            });
+
+            res.status(201).json({
+            message: 'Empleado creado exitosamente',
+            userId: user.id
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error al crear el empleado' });
+        }
+    },
+
+
+    searchEmployees: async (req, res) => {
+        try {
+            const query = req.query.query || '';
+            const employees = await UserService.searchUsersByRole(query);
+            res.status(200).json(employees);
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).send("Server error");
+        }
+    }
+,
+
+    assignSchedule: async (req, res) => {
+        try {
+            const { shift_id, store_id } = req.body;
+            const user_id = req.params.id;
+            await UserService.assignUserToShiftStore(user_id, shift_id, store_id);
+            res.status(200).json({ message: 'Asignación exitosa' });
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).json({ error: 'Error en asignación de horario' });
+        }
+    }
+
+
   };
+
+
 
 module.exports = UserController;

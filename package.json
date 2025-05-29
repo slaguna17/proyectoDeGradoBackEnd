@@ -17,6 +17,8 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "migrate": "npx knex migrate:latest --knexfile knexfile.js",
+    "migrate dev": "npx knex migrate:latest --knexfile knexfile.js --env development",
+    "seeds":"npx knex seed:run --knexfile knexfile.js --env development",
     "dropAll": "npx knex migrate:down --knexfile knexfile.js"
   },
   "devDependencies": {

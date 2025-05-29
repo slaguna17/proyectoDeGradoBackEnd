@@ -19,17 +19,40 @@ const UserService = {
       return user;
     },
 
-    createUser: async (userData) => {
-        const { username, password, full_name, email, date_of_birth, phone, status, last_access, avatar, roleId } = userData;
+   createUser: async (userData) => {
+        const {
+            username,
+            password,
+            full_name,
+            email,
+            date_of_birth,
+            phone,
+            status = 'activo',
+            avatar,
+            roleId
+        } = userData;
+
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = await UserModel.createUser(username, hashedPassword, full_name, email, date_of_birth, phone, status, last_access, avatar);
-    
+
+        const newUser = await UserModel.createUser({
+            username,
+            password: hashedPassword,
+            full_name,
+            email,
+            date_of_birth,
+            phone,
+            status,
+            avatar
+        });
+
         if (roleId) {
-            await UserModel.createUser(newUser.id, roleId);
+            await UserModel.createUserRole(newUser.id, roleId);
         }
-    
+
         return newUser;
     },
+
+
 
     updateUser: async (id, updateBody) => {
         const {password} = updateBody
@@ -78,7 +101,58 @@ const UserService = {
     getRoles: async () => {
         const roles = await UserModel.getRoles();
         return roles;
+    },
+
+    createEmployee: async (data) => {
+        const {
+            username,
+            password,
+            full_name,
+            email,
+            date_of_birth,
+            phone,
+            status = 'activo',
+            avatar,
+            roleId,
+            storeId,
+            shiftId
+        } = data;
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newUser = await UserModel.createUser({
+            username,
+            password: hashedPassword,
+            full_name,
+            email,
+            date_of_birth,
+            phone,
+            status,
+            avatar
+        });
+
+        if (roleId) {
+            await UserModel.createUserRole(newUser.id, roleId);
+        }
+
+        if (storeId && shiftId) {
+            await UserModel.assignShiftStore(newUser.id, shiftId, storeId);
+        }
+
+        return newUser;
+    },
+
+
+    searchUsersByRole: async (query) => {
+        return await UserModel.getUsersByRoleAndQuery(query);
+    },
+
+
+    assignUserToShiftStore: async (userId, shiftId, storeId) => {
+        await UserModel.assignShiftStore(userId, shiftId, storeId);
     }
+
+
   };
 
 module.exports = UserService;
