@@ -10,14 +10,22 @@ const UserController = {
             res.status(500).send("Server error")
         }
     },
+
     getUserById: async (req, res) => {
-      try {
-        const user = await UserService.getUserById(req.params.id);
-        res.status(200).json(user); // Devuelve la respuesta
-      } catch (error) {
-        console.error(error.message);
-        res.status(404).send("User not found")
-      }
+        const { id } = req.params;
+
+        try {
+            const user = await UserService.getUserById(id);
+
+            if (user) {
+                res.status(200).json(user);
+            } else {
+                res.status(404).json({ message: 'User not found' });
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error obtaining user' });
+        }
     },
 
     createUser: async (req, res) => {
@@ -56,27 +64,74 @@ const UserController = {
         }
     },
 
-    updateUser: async(req,res) => {
-        try {
-            const id = req.params.id;
-            const updateBody = req.body;
+    updateUser: async (req, res) => {
+        const { id } = req.params;
+        const updatableFields = [
+            'full_name',
+            'email',
+            'phone',
+            'avatar',
+            'date_of_birth',
+            'status'
+        ];
 
-            const updatedUser = await UserService.updateUser(id, updateBody)
-            res.status(201).json(updatedUser)
+        const updateData = {};
+
+        updatableFields.forEach(field => {
+            if (req.body[field] !== undefined) {
+                updateData[field] = req.body[field];
+            }
+        });
+
+        try {
+            const updated = await UserService.updateUser(id, updateData);
+
+            if (updated) {
+            res.status(200).json({ message: 'User updated successfully' });
+            } else {
+            res.status(404).json({ message: 'User not found' });
+            }
         } catch (error) {
-            console.error(error.message);
-            res.status(404).send("User not found")
+            console.error(error);
+            res.status(500).json({ error: 'Error updating user' });
         }
     },
 
-    deleteUser: async(req, res) => {
+    changePassword: async (req, res) => {
+        const { id } = req.params;
+        const { newPassword } = req.body;
+
+        if (!newPassword || newPassword.length < 6) {
+            return res.status(400).json({ error: 'Password must have minimum 6 characters' });
+        }
+
         try {
-            const id = req.params.id
-            const deleteUser = await UserService.deleteUser(id)
-            res.status(200).json(deleteUser)
+            const updated = await UserService.changePassword(id, newPassword);
+
+            if (updated) {
+                res.status(200).json({ message: 'Successfully changed password' });
+            } else {
+                res.status(404).json({ error: 'User not found' });
+            }
         } catch (error) {
-            console.error(error.message);
-            res.status(404).send("User not found")
+            console.error(error);
+            res.status(500).json({ error: 'Error changing password' });
+        }
+    },
+
+
+    deleteUser: async (req, res) => {
+        const { id } = req.params;
+        try {
+            const deleted = await UserService.deleteUser(id);
+            if (deleted) {
+                res.status(200).json({ message: 'User deleted successfully' });
+            } else {
+                res.status(404).json({ message: 'User not found' });
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error deleting user' });
         }
     },
 
@@ -109,6 +164,19 @@ const UserController = {
             res.status(500).send("Server error")
         }
     },
+
+    getEmployeesByStore: async (req, res) => {
+        const { storeId } = req.params;
+
+        try {
+            const employees = await UserService.getEmployeesByStore(storeId);
+            res.status(200).json(employees);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error obtaining employees' });
+        }
+    },
+
 
     createEmployee: async (req, res) => {
         try {

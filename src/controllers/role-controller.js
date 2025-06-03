@@ -1,4 +1,3 @@
-// src/controllers/role-controller.js
 const RoleService = require('../services/role-service');
 
 const RoleController = {
@@ -8,7 +7,7 @@ const RoleController = {
             res.status(200).json(roles);
         } catch (error) {
             console.error("Error en RoleController.getAllRoles:", error.message);
-            res.status(500).json({ message: "Error del servidor, no se pudieron obtener los roles." });
+            res.status(500).json({ message: "Server Error, couldn't obtain roles" });
         }
     },
 
@@ -31,54 +30,102 @@ const RoleController = {
     },
 
     createRole: async (req, res) => {
+        const { name, description, isAdmin } = req.body;
+
+        if (!name || typeof isAdmin !== 'boolean') {
+            return res.status(400).json({ error: 'Name and isAdmin fields are required' });
+        }
         try {
-            const newRole = await RoleService.createRole(req.body);
-            res.status(201).json(newRole);
+            const newRole = await RoleService.createRole({ name, description, isAdmin });
+            res.status(201).json({ message: 'Role created successfully', role: newRole });
         } catch (error) {
-            console.error("Error en RoleController.createRole:", error.message);
-             if (error.message.toLowerCase().includes('ya existe') || error.message.toLowerCase().includes('requerido')) {
-                res.status(400).json({ message: error.message });
-            } else {
-                res.status(500).json({ message: "Error del servidor, no se pudo crear el rol." });
-            }
+            console.error(error);
+            res.status(500).json({ error: 'Error creating role' });
         }
     },
 
     updateRole: async (req, res) => {
+        const { id } = req.params;
+        const { name, descripcion, isAdmin } = req.body;
+
+        if (!name || typeof isAdmin !== 'boolean') {
+            return res.status(400).json({ error: 'Missing required fields (name, isAdmin)' });
+        }
+
         try {
-            const roleId = parseInt(req.params.id, 10);
-            if (isNaN(roleId)) {
-                return res.status(400).json({ message: "ID de rol inválido." });
-            }
-            const updatedRole = await RoleService.updateRole(roleId, req.body);
-            res.status(200).json(updatedRole);
-        } catch (error) {
-            console.error(`Error en RoleController.updateRole (id: ${req.params.id}):`, error.message);
-            if (error.message.toLowerCase().includes('no encontrado') || error.message.toLowerCase().includes('requerido') || error.message.toLowerCase().includes('ya existe')) {
-                res.status(400).json({ message: error.message }); // 404 si no encontrado, 400 si datos invalidos
+            const updated = await RoleService.updateRole(id, { name, descripcion, isAdmin });
+
+            if (updated) {
+            res.status(200).json({ message: 'Role updated successfully' });
             } else {
-                res.status(500).json({ message: "Error del servidor al actualizar el rol." });
+            res.status(404).json({ error: 'Role not found' });
             }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error updating role' });
         }
     },
 
     deleteRole: async (req, res) => {
+        const { id } = req.params;
+
         try {
-            const roleId = parseInt(req.params.id, 10);
-            if (isNaN(roleId)) {
-                return res.status(400).json({ message: "ID de rol inválido." });
-            }
-            const result = await RoleService.deleteRole(roleId);
-            res.status(200).json(result); // Devuelve { message: "..." }
-        } catch (error) {
-            console.error(`Error en RoleController.deleteRole (id: ${req.params.id}):`, error.message);
-             if (error.message.toLowerCase().includes('no encontrado') || error.message.toLowerCase().includes('requerido') || error.message.toLowerCase().includes('no se puede eliminar')) {
-                res.status(400).json({ message: error.message }); // 404 si no encontrado, 400 si no se puede eliminar
+            const deleted = await RoleService.deleteRole(id);
+
+            if (deleted) {
+                res.status(200).json({ message: 'Role deleted successfully' });
             } else {
-                res.status(500).json({ message: "Error del servidor al eliminar el rol." });
+                res.status(404).json({ error: 'Role not found' });
             }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error deleting role' });
+        }
+    },
+
+    //PERMITS
+    getRolePermits: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const permits = await RoleService.getRolePermits(id);
+            res.status(200).json(permits);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Error al obtener los permisos del rol' });
+        }
+    },
+
+    assignPermitsToRole: async (req, res) => {
+        const { id } = req.params;
+        const { permitIds } = req.body;
+
+        if (!Array.isArray(permitIds) || permitIds.length === 0) {
+            return res.status(400).json({ error: 'Debe enviar un array con los IDs de permisos' });
+        }
+
+        try {
+            await RoleService.assignPermitsToRole(id, permitIds);
+            res.status(200).json({ message: 'Permisos asignados correctamente' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error al asignar permisos al rol' });
+        }
+    },
+
+    removeAllPermitsFromRole: async (req, res) => {
+        const { id } = req.params;
+
+        try {
+            await RoleService.removeAllPermitsFromRole(id);
+            res.status(200).json({ message: 'Permisos eliminados correctamente' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error al eliminar permisos del rol' });
         }
     }
+
+
+
 };
 
 module.exports = RoleController;

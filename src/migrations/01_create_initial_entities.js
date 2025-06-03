@@ -1,8 +1,9 @@
 //Initial entities (9 TABLES)
 //USER, PERMIT, ROLE, CATEGORY, SHIFT, STORE, PROVIDER, SALES_BOX, PURCHASE_BOX 
 exports.up = async function(knex) {
-      //1. user
-      await knex.schema.createTable("user", table => {
+      
+    //1. user
+    await knex.schema.createTable("user", table => {
         table.increments('id').primary();
         table.string('username').notNullable();
         table.string('password').notNullable();
@@ -57,7 +58,6 @@ exports.up = async function(knex) {
     })
 
     //6. provider
-
     await knex.schema.createTable("provider", table => {
         table.increments('id').primary();
         table.string('name');
@@ -79,30 +79,45 @@ exports.up = async function(knex) {
     })
 
     //8. sales box
-    await knex.schema.createTable("sales_box", table => {
+    await knex.schema.createTable('sales_box', table => {
         table.increments('id').primary();
-        table.time('opening_time');
-        table.time('clossing_time');
-        table.time('date');
-        table.integer('initial_amount');
-        table.integer('clossing_amount');
-        table.integer('total');
-        table.boolean('isProfit');
+
+        table.integer('store_id').unsigned().notNullable()
+            .references('id').inTable('store')
+            .onDelete('CASCADE');
+
+        table.integer('user_id').unsigned().notNullable()
+            .references('id').inTable('user')
+            .onDelete('CASCADE');
+
+        table.decimal('total', 10, 2).notNullable().defaultTo(0);
+        table.integer('sales_count').notNullable().defaultTo(0);
+
+        table.date('date').notNullable().defaultTo(knex.fn.now());
+
         table.timestamps(true, true);
     })
     
     //9. purchase box
-    await knex.schema.createTable("purchase_box", table => {
+    await knex.schema.createTable('purchase_box', table => {
         table.increments('id').primary();
-        table.time('opening_time');
-        table.time('clossing_time');
-        table.time('date');
-        table.integer('initial_amount');
-        table.integer('clossing_amount');
-        table.integer('total');
-        table.boolean('isProfit');
+
+        table.integer('store_id').unsigned().notNullable()
+            .references('id').inTable('store')
+            .onDelete('CASCADE');
+
+        table.integer('user_id').unsigned().notNullable()
+            .references('id').inTable('user')
+            .onDelete('CASCADE');
+
+        table.decimal('total', 10, 2).notNullable().defaultTo(0);
+        table.integer('purchases_count').notNullable().defaultTo(0);
+
+        table.date('date').notNullable().defaultTo(knex.fn.now());
+
         table.timestamps(true, true);
-    })
+    });
+
 };
 
 

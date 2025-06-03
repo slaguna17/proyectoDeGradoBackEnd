@@ -1,7 +1,8 @@
 //Dependant entities (5 TABLES)
 //PRODUCT, FORECAST, SALES, PURCHASE, TOTAL_CASH
 exports.up = async function(knex) {
-    //8. product
+
+    //10. product
     await knex.schema.createTable("product", table => {
         table.increments('id').primary();
         table.integer('SKU');
@@ -13,7 +14,7 @@ exports.up = async function(knex) {
         table.timestamps(true, true);
     })
     
-    //9. forecast
+    //11. forecast
     await knex.schema.createTable("forecast", table => {
         table.increments('id').primary();
         table.integer('product_id').unsigned().references('id').inTable('product');
@@ -26,7 +27,7 @@ exports.up = async function(knex) {
         table.timestamps(true, true);
     })    
     
-    //10. sales
+    //12. sales
     await knex.schema.createTable("sales", table => {
         table.increments('id').primary();
         table.integer('sales_box_id').unsigned().references('id').inTable('sales_box');
@@ -43,7 +44,7 @@ exports.up = async function(knex) {
         table.timestamps(true, true);
     })
 
-    //11. purchase
+    //13. purchase
     await knex.schema.createTable("purchase", table => {
         table.increments('id').primary();
         table.integer('purchase_box_id').unsigned().references('id').inTable('purchase_box');
@@ -62,18 +63,36 @@ exports.up = async function(knex) {
         table.timestamps(true, true);
     })
     
-    //14. total cash
-    await knex.schema.createTable("total_cash", table => {
+    // 14. total_cash
+    await knex.schema.createTable('total_cash', table => {
         table.increments('id').primary();
-        table.integer('purchase_box_id').unsigned().references('id').inTable('purchase_box');
-        table.integer('sales_box_id').unsigned().references('id').inTable('sales_box');
-        table.time('date');
+
+        table.integer('store_id').unsigned().notNullable()
+            .references('id').inTable('store')
+            .onDelete('CASCADE');
+
+        table.integer('purchase_box_id').unsigned()
+            .references('id').inTable('purchase_box')
+            .onDelete('SET NULL');
+
+        table.integer('sales_box_id').unsigned()
+            .references('id').inTable('sales_box')
+            .onDelete('SET NULL');
+
+        table.decimal('opening_amount', 10, 2).notNullable().defaultTo(0);
+        table.decimal('closing_amount', 10, 2); 
+        table.string('status').notNullable().defaultTo('open'); 
+        table.timestamp('opened_at').notNullable().defaultTo(knex.fn.now());
+        table.timestamp('closed_at'); 
+
         table.boolean('isProfit');
         table.integer('period');
         table.string('filters');
         table.string('graphs');
+
         table.timestamps(true, true);
-    })    
+    });
+
 };
 
 

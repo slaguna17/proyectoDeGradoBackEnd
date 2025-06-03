@@ -9,14 +9,7 @@ const UserService = {
     },
 
     getUserById: async (id) => {
-      if (!id) {
-        throw new Error('User ID is required');
-      }
-      const user = await UserModel.getUserById(id);
-      if (!user) {
-        throw new Error('User not found');
-      }
-      return user;
+        return await UserModel.getUserById(id);
     },
 
    createUser: async (userData) => {
@@ -27,7 +20,7 @@ const UserService = {
             email,
             date_of_birth,
             phone,
-            status = 'activo',
+            status = 'ACTIVE',
             avatar,
             roleId
         } = userData;
@@ -52,29 +45,19 @@ const UserService = {
         return newUser;
     },
 
-
-
-    updateUser: async (id, updateBody) => {
-        const {password} = updateBody
-        const hashedPassword = await bcrypt.hash(password,10);
-        updateBody.password = hashedPassword
-    
-        const user = await UserModel.updateUser(id, updateBody)
-        if(!user){
-            throw new Error("User not found")
-        }
-        return user; 
+    updateUser: async (id, data) => {
+        return await UserModel.updateUser(id, data);
     },
 
+    changePassword: async (id, newPassword) => {
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        return await UserModel.updatePassword(id, hashedPassword);
+    },
+
+
     deleteUser: async (id) => {
-        if (!id) {
-            throw new Error('Wrong ID');
-        }
-        const user = await UserModel.deleteUser(id);
-        if (!user) {
-            throw new Error('User not found');
-        }
-        return user;
+        await UserModel.deleteUserRelations(id);
+        return await UserModel.deleteUser(id);
     },
          
 
@@ -103,6 +86,10 @@ const UserService = {
         return roles;
     },
 
+    getEmployeesByStore: async (storeId) => {
+        return await UserModel.getEmployeesByStore(storeId);
+    },
+
     createEmployee: async (data) => {
         const {
             username,
@@ -111,7 +98,7 @@ const UserService = {
             email,
             date_of_birth,
             phone,
-            status = 'activo',
+            status = 'ACTIVE',
             avatar,
             roleId,
             storeId,

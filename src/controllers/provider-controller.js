@@ -1,15 +1,17 @@
 const ProviderService = require('../services/provider-service');
 
 const ProviderController = {
-    getProviders: async (req,res) => {
+
+    getAllProviders: async (req, res) => {
         try {
-            const providers = await ProviderService.getProviders()
+            const providers = await ProviderService.getAllProviders();
             res.status(200).json(providers);
         } catch (error) {
-            console.error(error.message);
-            res.status(500).send("Server error, couldn't get Providers")
+            console.error(error);
+            res.status(500).json({ error: 'Error retrieving providers' });
         }
     },
+
     getProviderById: async (req, res) => {
       try {
         const provider = await ProviderService.getProviderById(req.params.id);
@@ -20,35 +22,93 @@ const ProviderController = {
       }
     },
 
-    createProvider: async(req,res) => {
+    createProvider: async (req, res) => {
+        const {
+            name,
+            address,
+            phone,
+            email,
+            contact_person_name,
+            notes
+        } = req.body;
+
+        if (!name || !address || !phone) {
+            return res.status(400).json({ error: 'Required fields: name, address, phone' });
+        }
+
         try {
-            const newProvider = await ProviderService.createProvider(req.body);
-            res.status(201).json(newProvider)
+            const newProvider = await ProviderService.createProvider({
+                name,
+                address,
+                phone,
+                email,
+                contact_person_name,
+                notes
+            });
+
+            res.status(201).json({ message: 'Provider created successfully', provider: newProvider });
         } catch (error) {
-            console.error(error.message);
-            res.status(500).send("Server error, couldn't create Provider")
+            console.error(error);
+            res.status(500).json({ error: 'Error creating provider' });
         }
     },
 
-    updateProvider: async(req,res) => {
+    updateProvider: async (req, res) => {
+        const { id } = req.params;
+        const {
+            name,
+            address,
+            phone,
+            email,
+            contact_person_name,
+            notes
+        } = req.body;
+
+        if (!name || !address || !phone) {
+            return res.status(400).json({ error: 'Required fields: name, address, phone' });
+        }
+
         try {
-            const updatedProvider = await ProviderService.updateProvider(req.params.id, req.body);
-            res.status(200).json(updatedProvider);
+            const updated = await ProviderService.updateProvider(id, {
+                name,
+                address,
+                phone,
+                email,
+                contact_person_name,
+                notes
+            });
+
+            if (updated) {
+                res.status(200).json({ message: 'Provider updated successfully' });
+            } else {
+                res.status(404).json({ error: 'Provider not found' });
+            }
         } catch (error) {
-            console.error(error.message);
-            res.status(404).send({ error: "Couldn't update, Provider not found" })
+            console.error(error);
+            res.status(500).json({ error: 'Error updating provider' });
         }
     },
 
-    deleteProvider: async(req, res) => {
+    deleteProvider: async (req, res) => {
+        const { id } = req.params;
+
         try {
-            await ProviderService.deleteProvider(req.params.id);
-            res.status(200).json({message: "Provider deleted successfully"});
+            const result = await ProviderService.deleteProvider(id);
+
+            if (result === 'in_use') {
+                return res.status(400).json({ error: 'Cannot delete provider: linked to products' });
+            }
+            if (result) {
+                return res.status(200).json({ message: 'Provider deleted successfully' });
+            } else {
+                return res.status(404).json({ error: 'Provider not found' });
+            }
         } catch (error) {
-            console.error(error.message);
-            res.status(404).send({ error: "Couldn't delete, Provider not found" })
+            console.error(error);
+            res.status(500).json({ error: 'Error deleting provider' });
         }
     }
+
   };
 
 module.exports = ProviderController;

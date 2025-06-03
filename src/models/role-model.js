@@ -1,68 +1,65 @@
 // src/models/role-model.js
 const db = require('../config/db');
-const ROLE_TABLE = 'role'; // Nombre de tabla confirmado
 
 const RoleModel = {
     getAllRoles: async () => {
-        return db(ROLE_TABLE).select('*');
+        return await db('role').select('*');
     },
 
     getRoleById: async (id) => {
-        return db(ROLE_TABLE).where({ id }).first();
+        return db('role').where({ id }).first();
     },
 
-    // Para obtener el rol por nombre, útil para el servicio de empleados
     getRoleByName: async (roleName) => {
-        return db(ROLE_TABLE).where({ name: roleName }).first(); // 'name' es la columna correcta
+        return db('role').where({ name: roleName }).first();
     },
 
-    createRole: async (roleData) => {
-        // roleData: { name, description (opcional), isAdmin (opcional, boolean) }
-        const { name, description, isAdmin } = roleData;
-        const dataToInsert = { name };
-        if (description !== undefined) dataToInsert.description = description;
-        if (isAdmin !== undefined) dataToInsert.isAdmin = isAdmin;
-
-        const [newRole] = await db(ROLE_TABLE).insert(dataToInsert).returning('*');
+    createRole: async ({ name, description, isAdmin }) => {
+        const [newRole] = await db('role')
+            .insert({ name, description, isAdmin })
+            .returning(['id', 'name', 'description', 'isAdmin']);
         return newRole;
     },
 
-    updateRole: async (id, updateData) => {
-        // updateData: { name, description, isAdmin }
-        const dataToUpdate = {};
-        if (updateData.name !== undefined) dataToUpdate.name = updateData.name;
-        if (updateData.description !== undefined) dataToUpdate.description = updateData.description;
-        if (updateData.isAdmin !== undefined) dataToUpdate.isAdmin = updateData.isAdmin;
-        
-        if (Object.keys(dataToUpdate).length === 0) {
-            return this.getRoleById(id); // No hay nada que actualizar
-        }
-
-        const [updatedRole] = await db(ROLE_TABLE).where({ id }).update(dataToUpdate).returning('*');
-        return updatedRole;
+    updateRole: async (id, data) => {
+        return await db('role')
+            .where({ id })
+            .update({
+                ...data,
+                updated_at: db.fn.now()
+            });
     },
 
     deleteRole: async (id) => {
-        // Consideraciones:
-        // 1. No permitir eliminar roles esenciales (ej. 'Administrador', 'Empleado') si están protegidos.
-        // 2. ¿Qué pasa con user_role y role_permit si se elimina un rol?
-        //    Por defecto, si hay FKs con onDelete('RESTRICT') o sin onDelete, la DB podría impedirlo si hay referencias.
-        //    Si es onDelete('CASCADE'), se eliminarían las referencias (puede ser peligroso para user_role).
-        //    Lo más seguro es verificar primero si el rol está en uso.
-        
-        // Ejemplo de verificación (a implementar mejor en el servicio):
-        // const usersInRole = await db('user_role').where({ role_id: id }).count('* as count').first();
-        // if (usersInRole && usersInRole.count > 0) {
-        //    throw new Error("No se puede eliminar el rol, está asignado a usuarios.");
-        // }
-        // const permissionsForRole = await db('role_permit').where({ role_id: id }).count('* as count').first();
-        // if (permissionsForRole && permissionsForRole.count > 0) {
-        //    throw new Error("No se puede eliminar el rol, tiene permisos asignados.");
-        // }
+        return await db('role')
+            .where({ id })
+            .del();
+    },
 
-        const deletedCount = await db(ROLE_TABLE).where({ id }).del();
-        return deletedCount;
+    //PERMITS
+    getRolePermits: async (roleId) => {
+        return await db('role_permit')
+            .join('permit', 'role_permit.permit_id', 'permit.id')
+            .where('role_permit.role_id', roleId)
+            .select('permit.id', 'permit.name', 'permit.code');
+    },
+
+    assignPermitsToRole: async (roleId, permitIds) => {
+        const inserts = permitIds.map(permitId => ({
+            role_id: roleId,
+            permit_id: permitId
+        }));
+
+        return await db('role_permit').insert(inserts);
+    },
+
+    removeAllPermitsFromRole: async (roleId) => {
+        return await db('role_permit')
+            .where({ role_id: roleId })
+            .del();
     }
+
+
 };
 
 module.exports = RoleModel;

@@ -11,6 +11,7 @@ router.get('/', UserController.getUsers);
 router.get('/:id', UserController.getUserById);
 router.post('/register', UserController.createUser);
 router.put('/updateUser/:id', UserController.updateUser);
+router.put('/changePassword/:id', UserController.changePassword);
 router.delete('/deleteUser/:id', UserController.deleteUser); 
 
 //Login y Token
@@ -26,7 +27,6 @@ router.get("/default/roles", UserController.getRoles);
 router.post('/employees', UserController.createEmployee);
 router.get('/search/employees', UserController.searchEmployees);
 router.put('/:id/assign-schedule', UserController.assignSchedule);
-
-
+router.get('/employeesByStore/:storeId', UserController.getEmployeesByStore);
 
 module.exports = router;

@@ -1,27 +1,63 @@
 const db = require('../config/db');
 
 const ProviderModel = {
-    getProviders: async () => {
-        return db('provider').select('*')
+
+    getAllProviders: async () => {
+        return await db('provider').select('*');
     },
+
     getProviderById: async (id) => {
         return db('provider').where({ id }).first();
     },
 
-    createProvider: async (providerData) => {
-        const [newProvider] = await db('provider').insert(providerData).returning('*');
-        return newProvider;
+    createProvider: async ({
+        name,
+        address,
+        phone,
+        email,
+        contact_person_name,
+        notes
+        }) => {
+        const [provider] = await db('provider')
+            .insert({
+                name,
+                address,
+                phone,
+                email,
+                contact_person_name,
+                notes,
+                created_at: db.fn.now(),
+                updated_at: db.fn.now()
+            })
+            .returning('*');
+
+        return provider;
     },
 
-    updateProvider: async(id,updateBody) => {
-        const [updatedProvider] = await db('provider').where({id}).update(updateBody).returning('*')
-        return updatedProvider;
+    updateProvider: async (id, data) => {
+        const updated = await db('provider')
+            .where({ id })
+            .update({
+                ...data,
+                updated_at: db.fn.now()
+            });
+        return updated;
     },
     
-    deleteProvider: async(id) => {
-        const deletedCount = await db('provider').where({ id }).del();
-        return deletedCount;
+   deleteProvider: async (id) => {
+        const hasProducts = await db('product')
+            .where({ provider_id: id })
+            .first();
+
+        if (hasProducts) return 'in_use';
+
+        const deleted = await db('provider')
+            .where({ id })
+            .del();
+
+        return deleted;
     }
+
 
 }
 
