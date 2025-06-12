@@ -7,10 +7,10 @@ router.get('/', RoleController.getAllRoles);
 router.get('/:id', RoleController.getRoleById);
 router.post('/createRole', RoleController.createRole);
 router.put('/updateRole/:id', RoleController.updateRole);
-router.delete('deleteRole/:id', RoleController.deleteRole);
+router.delete('/deleteRole/:id', RoleController.deleteRole);
 
 //PERMITS
-router.get('/:id/permits', RoleController.getRolePermits);
+router.get('/:id/permits', RoleController.getPermitsByRole);
 router.post('/:id/assignPermit', RoleController.assignPermitsToRole);
 router.delete('/:id/removeAllPermitsFromRole', RoleController.removeAllPermitsFromRole);
 

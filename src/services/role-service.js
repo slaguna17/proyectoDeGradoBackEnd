@@ -38,8 +38,8 @@ const RoleService = {
     },
 
     //PERMITS
-    getRolePermits: async (roleId) => {
-        return await RoleModel.getRolePermits(roleId);
+    getPermitsByRole: async (roleId) => {
+        return await RoleModel.getPermitsByRole(roleId);
     },
 
     assignPermitsToRole: async (roleId, permitIds) => {

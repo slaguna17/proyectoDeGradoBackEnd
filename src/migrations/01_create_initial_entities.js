@@ -20,7 +20,7 @@ exports.up = async function(knex) {
     //2. permit
     await knex.schema.createTable("permit", table => {
         table.increments('id').primary();
-        table.string('name');
+        table.string('name').notNullable().unique();
         table.string('description');
         table.timestamps(true, true);
     })

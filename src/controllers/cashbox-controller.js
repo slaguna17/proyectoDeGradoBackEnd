@@ -20,6 +20,17 @@ const CashboxController = {
       console.error(error);
       res.status(500).json({ error: 'Error opening cashbox' });
     }
+  },
+
+  closeCashbox: async (req, res) => {
+    try {
+      const summary = await CashboxService.closeCashbox(req.body);
+      res.status(200).json({ message: "Cashbox closed successfully", summary });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Error closing cash box" });
+    }
   }
+
 };
 module.exports = CashboxController;

@@ -46,14 +46,14 @@ const RoleController = {
 
     updateRole: async (req, res) => {
         const { id } = req.params;
-        const { name, descripcion, isAdmin } = req.body;
+        const { name, description, isAdmin } = req.body;
 
         if (!name || typeof isAdmin !== 'boolean') {
             return res.status(400).json({ error: 'Missing required fields (name, isAdmin)' });
         }
 
         try {
-            const updated = await RoleService.updateRole(id, { name, descripcion, isAdmin });
+            const updated = await RoleService.updateRole(id, { name, description, isAdmin });
 
             if (updated) {
             res.status(200).json({ message: 'Role updated successfully' });
@@ -84,14 +84,14 @@ const RoleController = {
     },
 
     //PERMITS
-    getRolePermits: async (req, res) => {
+    getPermitsByRole: async (req, res) => {
+        const { id } = req.params;
         try {
-            const { id } = req.params;
-            const permits = await RoleService.getRolePermits(id);
-            res.status(200).json(permits);
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ error: 'Error al obtener los permisos del rol' });
+            const permits = await RoleService.getPermitsByRole(id);
+            res.json({ role_id: id, permits });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error fetching permits for role' });
         }
     },
 

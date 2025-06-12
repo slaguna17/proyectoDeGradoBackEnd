@@ -14,7 +14,7 @@ const imageRoutes = require('./routes/image-routes');
 const roleRoutes = require('./routes/role-routes');
 const cashboxRoutes = require('./routes/cashbox-routes')
 const purchaseRoutes = require('./routes/purchase-routes')
-
+const salesRoutes = require('./routes/sales-routes')
 
 //Configs
 dotenv.config();
@@ -34,7 +34,6 @@ app.use('/api/images', imageRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/cashbox', cashboxRoutes);
 app.use('/api/purchase', purchaseRoutes);
-
-
+app.use('/api/sales', salesRoutes);
 
 module.exports = app;

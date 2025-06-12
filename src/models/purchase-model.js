@@ -7,11 +7,11 @@ const PurchaseModel = {
     provider_id,
     products,
     notes,
-    date
+    purchase_date
   }) => {
     return await db.transaction(async trx => {
       // Calcular total
-      const total = products.reduce((sum, p) => sum + p.unit_price * p.quantity, 0);
+      const purchase_total = products.reduce((sum, p) => sum + p.unit_price * p.quantity, 0);
 
       // Insertar en purchase
       const [purchase] = await trx('purchase')
@@ -19,9 +19,9 @@ const PurchaseModel = {
           store_id,
           user_id,
           provider_id,
-          total,
+          purchase_total,
           notes,
-          date,
+          purchase_date,
           created_at: trx.fn.now(),
           updated_at: trx.fn.now()
         })
@@ -41,9 +41,9 @@ const PurchaseModel = {
       await trx('purchase_box').insert({
         store_id,
         user_id,
-        total,
+        purchase_total,
         purchases_count: 1,
-        date,
+        purchase_date,
         created_at: trx.fn.now(),
         updated_at: trx.fn.now()
       });

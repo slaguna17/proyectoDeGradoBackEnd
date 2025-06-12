@@ -37,11 +37,11 @@ const RoleModel = {
     },
 
     //PERMITS
-    getRolePermits: async (roleId) => {
+    getPermitsByRole: async (roleId) => {
         return await db('role_permit')
             .join('permit', 'role_permit.permit_id', 'permit.id')
             .where('role_permit.role_id', roleId)
-            .select('permit.id', 'permit.name', 'permit.code');
+            .select('permit.id', 'permit.name', 'permit.description');
     },
 
     assignPermitsToRole: async (roleId, permitIds) => {

@@ -5,7 +5,7 @@ exports.seed = async function(knex) {
   await knex('store').insert([
     {
       name: 'Juan del Sur',
-      address: 'Irpavi calle 10 Av. Vera',
+      address: 'Irpavi calle 10 Av.Vera',
       city: 'La Paz',
       logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL0MrKSYCRLUXUZAuoCedxZ8Jw_-VD0fw9WA&s',
       history: 'Fundada en 2010, orientada al autoservicio.',

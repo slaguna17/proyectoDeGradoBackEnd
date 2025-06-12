@@ -142,7 +142,7 @@ const UserController = {
             res.status(200).json({token})
         } catch (error) {
             console.error(error.message);
-            res.status(500).send("Server error")
+            res.status(500).send({ message: `Server error: ${error.message}` });
         }
     },
 
