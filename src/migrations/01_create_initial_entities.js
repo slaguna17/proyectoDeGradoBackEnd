@@ -113,7 +113,7 @@ exports.up = async function(knex) {
         table.decimal('total', 10, 2).notNullable().defaultTo(0);
         table.integer('purchases_count').notNullable().defaultTo(0);
 
-        table.date('date').notNullable().defaultTo(knex.fn.now());
+        table.date('purchase_date').notNullable().defaultTo(knex.fn.now());
 
         table.timestamps(true, true);
     });

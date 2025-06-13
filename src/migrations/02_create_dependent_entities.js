@@ -6,7 +6,7 @@ exports.up = async function(knex) {
     // 10. product
     await knex.schema.createTable("product", table => {
         table.increments('id').primary();
-        table.integer('SKU');
+        table.string('SKU');
         table.string('name');
         table.string('description');
         table.string('image');
@@ -34,6 +34,7 @@ exports.up = async function(knex) {
         table.integer('sales_box_id').unsigned().references('id').inTable('sales_box');
         table.integer('user_id').unsigned().references('id').inTable('user');
         table.integer('store_id').unsigned().references('id').inTable('store');
+        table.decimal('total', 10, 2).defaultTo(0);
         table.timestamp('sale_date');
         table.string('payment_method');
         table.string('status');
@@ -48,6 +49,8 @@ exports.up = async function(knex) {
         table.integer('user_id').unsigned().references('id').inTable('user');
         table.integer('store_id').unsigned().references('id').inTable('store');
         table.integer('provider_id').unsigned().references('id').inTable('provider');
+            table.decimal('total', 10, 2).defaultTo(0);
+
         table.timestamp('purchase_date');
         table.string('payment_method');
         table.string('status');

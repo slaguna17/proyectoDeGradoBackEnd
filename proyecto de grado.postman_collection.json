@@ -7,113 +7,6542 @@
 	},
 	"item": [
 		{
-			"name": "Register",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\":\"slaguna4\",\r\n    \"password\":\"12345\",\r\n    \"full_name\":\"Sergio Laguna Jordan\",\r\n    \"email\":\"slaguna4@gmail.com\",\r\n    \"date_of_birth\":\"01/04/1999\",\r\n    \"phone\": \"76742300\",\r\n    \"status\":\"Active\",\r\n    \"last_access\": \"10/10/2024\",\r\n    \"avatar\":\"https://images.pexels.com/photos/15539380/pexels-photo-15539380/free-photo-of-a-great-white-shark-swimming-in-the-ocean.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Users",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"ajordan\",\r\n    \"password\":\"1\",\r\n    \"full_name\":\"Andres Laguna Jordan\",\r\n    \"email\":\"ajordan@gmail.com\",\r\n    \"date_of_birth\":\"31/12/2000\",\r\n    \"phone\": \"66742300\",\r\n    \"avatar\":\"https://images.pexels.com/photos/15539380/pexels-photo-15539380/free-photo-of-a-great-white-shark-swimming-in-the-ocean.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\",\r\n    \"roleId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"register"
+							]
 						}
-					}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\":\"ajordan\",\r\n    \"password\":\"1\",\r\n    \"full_name\":\"Andres Laguna Jordan\",\r\n    \"email\":\"ajordan@gmail.com\",\r\n    \"date_of_birth\":\"31/12/2000\",\r\n    \"phone\": \"66742300\",\r\n    \"avatar\":\"https://images.pexels.com/photos/15539380/pexels-photo-15539380/free-photo-of-a-great-white-shark-swimming-in-the-ocean.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\",\r\n    \"roleId\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/users/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "73"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"49-jeDtf3q7lD8wH+dFU77cvteRGbM\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:46:39 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Usuario creado exitosamente\",\n    \"userId\": 2,\n    \"username\": \"ajordan\"\n}"
+						}
+					]
 				},
-				"url": {
-					"raw": "http://localhost:3000/register",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"register"
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"email\":\"slaguna@gmail.com\",\r\n        \"password\":\"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n        \"email\":\"slaguna@gmail.com\",\r\n        \"password\":\"1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/users/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "155"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"9b-r/a653FKo4hQkExRWyujbBGAx9A\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:46:51 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0OTgyOTYxMSwiZXhwIjoxNzQ5ODI5OTExfQ.4nOD5DrnMiTZmCKAw9PARXfp1a5xcp_kasocpeycL4c\"\n}"
+						}
+					]
+				},
+				{
+					"name": "UserInfo",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0OTgyOTYyOSwiZXhwIjoxNzQ5ODI5OTI5fQ.7k3xWzQFNje7lABQHsxWE9s5oLl2mps1G9hUSZEhL7Y",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/users/login/userInfoByToken",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"login",
+								"userInfoByToken"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc0OTgyOTYyOSwiZXhwIjoxNzQ5ODI5OTI5fQ.7k3xWzQFNje7lABQHsxWE9s5oLl2mps1G9hUSZEhL7Y",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/api/users/login/userInfoByToken",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"login",
+										"userInfoByToken"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "55"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"37-v6kwSpt1uN8MP4ywc6qs69e4No0\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:47:30 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"user\": {\n        \"userId\": 1,\n        \"iat\": 1749829629,\n        \"exp\": 1749829929\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get all Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "902"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"386-4+p9BAh1nqk0o/2DRfSscqzG+k8\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:47:49 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"username\": \"slaguna\",\n        \"password\": \"$2b$10$3A1SzbfHdRV8LYXPhWBDFOPME2.WCAHgQ8hVUZ9U71YN/zOEUybYG\",\n        \"full_name\": \"Sergio Laguna\",\n        \"email\": \"slaguna@gmail.com\",\n        \"date_of_birth\": \"1999-04-01\",\n        \"phone\": \"76742300\",\n        \"status\": \"ACTIVE\",\n        \"last_access\": \"2025-06-13T14:55:09.707Z\",\n        \"avatar\": null,\n        \"created_at\": \"2025-06-13T14:55:09.708Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.708Z\"\n    },\n    {\n        \"id\": 2,\n        \"username\": \"ajordan\",\n        \"password\": \"$2b$10$6yrdifc3rpqRAflVYg55CO9dygcI8u7omfJ4ME2ky0s7EiksFag8y\",\n        \"full_name\": \"Andres Laguna Jordan\",\n        \"email\": \"ajordan@gmail.com\",\n        \"date_of_birth\": \"31/12/2000\",\n        \"phone\": \"66742300\",\n        \"status\": \"ACTIVE\",\n        \"last_access\": \"2025-06-13 11:46:39.009146-04\",\n        \"avatar\": \"https://images.pexels.com/photos/15539380/pexels-photo-15539380/free-photo-of-a-great-white-shark-swimming-in-the-ocean.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\",\n        \"created_at\": \"2025-06-13T15:46:39.009Z\",\n        \"updated_at\": \"2025-06-13T15:46:39.009Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get User By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/users/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "609"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"261-4whbRdp6u2P8iqqKD56UA2X+y3E\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:48:04 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 2,\n    \"username\": \"ajordan\",\n    \"password\": \"$2b$10$6yrdifc3rpqRAflVYg55CO9dygcI8u7omfJ4ME2ky0s7EiksFag8y\",\n    \"full_name\": \"Andres Laguna Jordan\",\n    \"email\": \"ajordan@gmail.com\",\n    \"date_of_birth\": \"31/12/2000\",\n    \"phone\": \"66742300\",\n    \"status\": \"ACTIVE\",\n    \"last_access\": \"2025-06-13 11:46:39.009146-04\",\n    \"avatar\": \"https://images.pexels.com/photos/15539380/pexels-photo-15539380/free-photo-of-a-great-white-shark-swimming-in-the-ocean.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\",\n    \"created_at\": \"2025-06-13T15:46:39.009Z\",\n    \"updated_at\": \"2025-06-13T15:46:39.009Z\",\n    \"roles\": [\n        {\n            \"id\": 2,\n            \"name\": \"Empleado\",\n            \"isAdmin\": false\n        }\n    ],\n    \"assignments\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"Juan P. Actualizado\",\r\n    \"email\": \"juan.nuevo@correo.com\",\r\n    \"phone\": \"78900011\",\r\n    \"avatar\": \"https://example.com/avatar.jpg\",\r\n    \"date_of_birth\": \"1990-01-01\",\r\n    \"status\": \"active\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/updateUser/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"updateUser",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"full_name\": \"Juan P. Actualizado\",\r\n    \"email\": \"juan.nuevo@correo.com\",\r\n    \"phone\": \"78900011\",\r\n    \"avatar\": \"https://example.com/avatar.jpg\",\r\n    \"date_of_birth\": \"1990-01-01\",\r\n    \"status\": \"active\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/users/updateUser/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"updateUser",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "39"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"27-dfFyQgR3GE+Pkj6o/3TrBgkhH1g\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:48:18 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"User updated successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"newPassword\": \"123456\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/changePassword/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"changePassword",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"newPassword\": \"123456\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/users/changePassword/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"changePassword",
+										"3"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "43"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2b-yQrbcxRFQLzT1gcPLTU3x0H+QVU\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:49:11 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Successfully changed password\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get all roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/default/roles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"default",
+								"roles"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/users/default/roles",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"default",
+										"roles"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "665"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"299-6doORZyqcuRm2agdQ0NntmmlOwk\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:49:28 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Administrador\",\n        \"description\": \"Rol con todos los permisos\",\n        \"isAdmin\": true,\n        \"created_at\": \"2025-06-13T14:55:09.646Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.646Z\"\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Empleado\",\n        \"description\": \"Empleado de multiples funciones\",\n        \"isAdmin\": false,\n        \"created_at\": \"2025-06-13T14:55:09.646Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.646Z\"\n    },\n    {\n        \"id\": 3,\n        \"name\": \"Vendedor\",\n        \"description\": \"Puede registrar ventas\",\n        \"isAdmin\": false,\n        \"created_at\": \"2025-06-13T14:55:09.646Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.646Z\"\n    },\n    {\n        \"id\": 4,\n        \"name\": \"Limpieza\",\n        \"description\": \"Encargado de limpieza\",\n        \"isAdmin\": false,\n        \"created_at\": \"2025-06-13T14:55:09.646Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.646Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/deleteUser/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"deleteUser",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/users/deleteUser/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"deleteUser",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "39"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"27-27o4zzUjhHNmthTJyia4gBCjpos\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:48:35 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"User deleted successfully\"\n}"
+						}
 					]
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Login",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n        \"email\":\"slaguna@gmail.com\",\r\n        \"password\":\"12345\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Stores",
+			"item": [
+				{
+					"name": "Create Store",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Juan del sur\",\r\n    \"address\":\"Irpavi calle 2\",\r\n    \"city\":\"La paz\",\r\n    \"logo\":\"https://images.pexels.com/photos/15539380/pexels-photo-15539380/free-photo-of-a-great-white-shark-swimming-in-the-ocean.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\",\r\n    \"history\":\"Juan en el 1980 decidio emprender y abrir un micromarket, hasta el dia de hoy sigue estando ese micro micromarket\",\r\n    \"phone\": \"66742300\",\r\n    \"socials\": {\"Facebook\": \"https://www.facebook.com/?locale=es_LA\"}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/stores/createStore",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"stores",
+								"createStore"
+							]
 						}
-					}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Juan del sur\",\r\n    \"address\":\"Irpavi calle 2\",\r\n    \"city\":\"La paz\",\r\n    \"logo\":\"https://images.pexels.com/photos/15539380/pexels-photo-15539380/free-photo-of-a-great-white-shark-swimming-in-the-ocean.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\",\r\n    \"history\":\"Juan en el 1980 decidio emprender y abrir un micromarket, hasta el dia de hoy sigue estando ese micro micromarket\",\r\n    \"phone\": \"66742300\",\r\n    \"socials\": {\"Facebook\": \"https://www.facebook.com/?locale=es_LA\"}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/stores/createStore",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"stores",
+										"createStore"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "526"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"20e-xF7vAp7Hub2t/7Akrbp2dCdekFs\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:49:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Store created successfully\",\n    \"store\": {\n        \"id\": 3,\n        \"name\": \"Juan del sur\",\n        \"address\": \"Irpavi calle 2\",\n        \"city\": \"La paz\",\n        \"logo\": \"https://images.pexels.com/photos/15539380/pexels-photo-15539380/free-photo-of-a-great-white-shark-swimming-in-the-ocean.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\",\n        \"history\": \"Juan en el 1980 decidio emprender y abrir un micromarket, hasta el dia de hoy sigue estando ese micro micromarket\",\n        \"phone\": \"66742300\",\n        \"created_at\": \"2025-06-13T15:49:45.657Z\",\n        \"updated_at\": \"2025-06-13T15:49:45.657Z\"\n    }\n}"
+						}
+					]
 				},
-				"url": {
-					"raw": "http://localhost:3000/login",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"login"
+				{
+					"name": "Get all Stores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/stores",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"stores"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/stores",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"stores"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1164"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"48c-XQvJFipStmS7TAkZ1O0E6g32/4Q\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:49:54 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Juan del Sur\",\n        \"address\": \"Irpavi calle 10 Av.Vera\",\n        \"city\": \"La Paz\",\n        \"logo\": \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL0MrKSYCRLUXUZAuoCedxZ8Jw_-VD0fw9WA&s\",\n        \"history\": \"Fundada en 2010, orientada al autoservicio.\",\n        \"phone\": \"72000001\",\n        \"created_at\": \"2025-06-13T14:55:09.725Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.725Z\"\n    },\n    {\n        \"id\": 2,\n        \"name\": \"MiniMarket El Vecino\",\n        \"address\": \"Obrajes\",\n        \"city\": \"Cochabamba\",\n        \"logo\": \"https://verdadcontinta.com/wp-content/uploads/2020/08/WhatsApp-Image-2020-08-12-at-18.54.27-1024x610.jpeg\",\n        \"history\": \"Pequeña tienda familiar en expansión.\",\n        \"phone\": \"77000002\",\n        \"created_at\": \"2025-06-13T14:55:09.725Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.725Z\"\n    },\n    {\n        \"id\": 3,\n        \"name\": \"Juan del sur\",\n        \"address\": \"Irpavi calle 2\",\n        \"city\": \"La paz\",\n        \"logo\": \"https://images.pexels.com/photos/15539380/pexels-photo-15539380/free-photo-of-a-great-white-shark-swimming-in-the-ocean.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\",\n        \"history\": \"Juan en el 1980 decidio emprender y abrir un micromarket, hasta el dia de hoy sigue estando ese micro micromarket\",\n        \"phone\": \"66742300\",\n        \"created_at\": \"2025-06-13T15:49:45.657Z\",\n        \"updated_at\": \"2025-06-13T15:49:45.657Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get Store By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/stores/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"stores",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/stores/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"stores",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "339"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"153-KQ/S5gKV/COIcb2r7M7Nqi+6d2I\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:50:09 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"name\": \"Juan del Sur\",\n    \"address\": \"Irpavi calle 10 Av.Vera\",\n    \"city\": \"La Paz\",\n    \"logo\": \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL0MrKSYCRLUXUZAuoCedxZ8Jw_-VD0fw9WA&s\",\n    \"history\": \"Fundada en 2010, orientada al autoservicio.\",\n    \"phone\": \"72000001\",\n    \"created_at\": \"2025-06-13T14:55:09.725Z\",\n    \"updated_at\": \"2025-06-13T14:55:09.725Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Store",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Juan del norte\",\r\n    \"address\":\"Irpavi calle 2\",\r\n    \"city\":\"Santa Cruz\",\r\n    \"logo\":\"https://images.pexels.com/photos/15539380/pexels-photo-15539380/free-photo-of-a-great-white-shark-swimming-in-the-ocean.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\",\r\n    \"history\":\"Juan en el 1980 decidio emprender y abrir un micromarket, hasta el dia de hoy sigue estando ese micro micromarket\",\r\n    \"phone\": \"66742300\",\r\n    \"socials\": {\"Facebook\": \"https://www.facebook.com/?locale=es_LA\"}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/stores/updateStore/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"stores",
+								"updateStore",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Juan del norte\",\r\n    \"address\":\"Irpavi calle 2\",\r\n    \"city\":\"Santa Cruz\",\r\n    \"logo\":\"https://images.pexels.com/photos/15539380/pexels-photo-15539380/free-photo-of-a-great-white-shark-swimming-in-the-ocean.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\",\r\n    \"history\":\"Juan en el 1980 decidio emprender y abrir un micromarket, hasta el dia de hoy sigue estando ese micro micromarket\",\r\n    \"phone\": \"66742300\",\r\n    \"socials\": {\"Facebook\": \"https://www.facebook.com/?locale=es_LA\"}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/stores/updateStore/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"stores",
+										"updateStore",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "40"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"28-32wkw+o/XsGqUW2/j5Be7MQoJpU\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:50:23 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Store updated successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Store",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/stores/deleteStore/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"stores",
+								"deleteStore",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/stores/deleteStore/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"stores",
+										"deleteStore",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "40"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"28-J+Z1j27mJKWCqeW2XshVdDkdR8A\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:50:39 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Store deleted successfully\"\n}"
+						}
 					]
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "UserInfo",
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Bebes\",\r\n    \"description\":\"Ropa de bebes\",\r\n    \"image\": \"https://desydes.com/wp-content/uploads/2023/01/White-Neutral-Cute-Baby-Bath-With-Towel-Organic-Baby-Product-Facebook-Post.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/categories/createCategory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"categories",
+								"createCategory"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Bebes\",\r\n    \"description\":\"Ropa de bebes\",\r\n    \"image\": \"https://desydes.com/wp-content/uploads/2023/01/White-Neutral-Cute-Baby-Bath-With-Towel-Organic-Baby-Product-Facebook-Post.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/categories/createCategory",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"categories",
+										"createCategory"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "269"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"10d-0G2yHIHLS9DsSlRpqvMxJJc3pAg\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:51:07 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 4,\n    \"name\": \"Bebes\",\n    \"description\": \"Ropa de bebes\",\n    \"image\": \"https://desydes.com/wp-content/uploads/2023/01/White-Neutral-Cute-Baby-Bath-With-Towel-Organic-Baby-Product-Facebook-Post.jpg\",\n    \"created_at\": \"2025-06-13T15:51:07.595Z\",\n    \"updated_at\": \"2025-06-13T15:51:07.595Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get all Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/categories/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"categories",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/categories/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"categories",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "986"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3da-hP3Pc0gy0AN6Ico5F8qdv+vNuj4\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:51:18 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Bebes\",\n        \"description\": \"Ropa para bebes\",\n        \"image\": \"https://desydes.com/wp-content/uploads/2023/01/White-Neutral-Cute-Baby-Bath-With-Towel-Organic-Baby-Product-Facebook-Post.jpg\",\n        \"created_at\": \"2025-06-13T14:55:09.723Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.723Z\"\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Bebidas\",\n        \"description\": \"Gaseosas, jugos y agua\",\n        \"image\": \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZkZPrTm3uG2KS5kzcs1oUIdHseNpVbJWtbw&s\",\n        \"created_at\": \"2025-06-13T14:55:09.723Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.723Z\"\n    },\n    {\n        \"id\": 3,\n        \"name\": \"Papas\",\n        \"description\": \"Papas fritas\",\n        \"image\": \"https://m.media-amazon.com/images/I/81mABE1sNhL.jpg\",\n        \"created_at\": \"2025-06-13T14:55:09.723Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.723Z\"\n    },\n    {\n        \"id\": 4,\n        \"name\": \"Bebes\",\n        \"description\": \"Ropa de bebes\",\n        \"image\": \"https://desydes.com/wp-content/uploads/2023/01/White-Neutral-Cute-Baby-Bath-With-Towel-Organic-Baby-Product-Facebook-Post.jpg\",\n        \"created_at\": \"2025-06-13T15:51:07.595Z\",\n        \"updated_at\": \"2025-06-13T15:51:07.595Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get Category By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/categories/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/categories/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"categories",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "271"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"10f-wHqAhCEiHajnkjqNtOvJOxcCsB0\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:51:30 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"name\": \"Bebes\",\n    \"description\": \"Ropa para bebes\",\n    \"image\": \"https://desydes.com/wp-content/uploads/2023/01/White-Neutral-Cute-Baby-Bath-With-Towel-Organic-Baby-Product-Facebook-Post.jpg\",\n    \"created_at\": \"2025-06-13T14:55:09.723Z\",\n    \"updated_at\": \"2025-06-13T14:55:09.723Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Pizza\",\r\n    \"description\":\"Pizza con pepperoni\",\r\n    \"image\": \"https://www.laespanolaaceites.com/wp-content/uploads/2019/06/pizza-con-chorizo-jamon-y-queso-1080x671.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/categories/updateCategory/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"categories",
+								"updateCategory",
+								"4"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Pizza\",\r\n    \"description\":\"Pizza con pepperoni\",\r\n    \"image\": \"https://www.laespanolaaceites.com/wp-content/uploads/2019/06/pizza-con-chorizo-jamon-y-queso-1080x671.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/categories/updateCategory/4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"categories",
+										"updateCategory",
+										"4"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "255"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"ff-2s+wcGaNuA/2bY0mWVUj/GdfAIg\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:51:42 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 4,\n    \"name\": \"Pizza\",\n    \"description\": \"Pizza con pepperoni\",\n    \"image\": \"https://www.laespanolaaceites.com/wp-content/uploads/2019/06/pizza-con-chorizo-jamon-y-queso-1080x671.jpg\",\n    \"created_at\": \"2025-06-13T15:51:07.595Z\",\n    \"updated_at\": \"2025-06-13T15:51:07.595Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/categories/deleteCategory/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"categories",
+								"deleteCategory",
+								"4"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/categories/deleteCategory/4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"categories",
+										"deleteCategory",
+										"4"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "43"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2b-oSB9C9UJoaUkZ5Mu5gkTHkZwuV4\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:51:51 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Category deleted successfully\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Shifts",
+			"item": [
+				{
+					"name": "Create Shift",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"madrugada\",\r\n    \"length\":5,\r\n    \"start_time\":\"8:00\",\r\n    \"end_time\":\"13:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/shifts/createShift",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"shifts",
+								"createShift"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"madrugada\",\r\n    \"length\":5,\r\n    \"start_time\":\"8:00\",\r\n    \"end_time\":\"13:00\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/shifts/createShift",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"shifts",
+										"createShift"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "126"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"7e-A0khVhcFe6V26iWJRGVU5Ee+AQY\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:52:06 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Shift created successfully\",\n    \"shift\": {\n        \"id\": 4,\n        \"name\": \"madrugada\",\n        \"start_time\": \"8:00\",\n        \"end_time\": \"13:00\",\n        \"length\": 5\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get All Shifts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/shifts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"shifts"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/shifts",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"shifts"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "636"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"27c-V3QfYOl1T8QOmYC5ujv+x5VBdnQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:52:18 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Mañana\",\n        \"length\": 8,\n        \"start_time\": \"08:00\",\n        \"end_time\": \"16:00\",\n        \"created_at\": \"2025-06-13T14:55:09.727Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.727Z\"\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Tarde\",\n        \"length\": 8,\n        \"start_time\": \"14:00\",\n        \"end_time\": \"22:00\",\n        \"created_at\": \"2025-06-13T14:55:09.727Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.727Z\"\n    },\n    {\n        \"id\": 3,\n        \"name\": \"Turno completo\",\n        \"length\": 12,\n        \"start_time\": \"08:00\",\n        \"end_time\": \"20:00\",\n        \"created_at\": \"2025-06-13T14:55:09.727Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.727Z\"\n    },\n    {\n        \"id\": 4,\n        \"name\": \"madrugada\",\n        \"length\": 5,\n        \"start_time\": \"8:00\",\n        \"end_time\": \"13:00\",\n        \"created_at\": \"2025-06-13T15:52:06.925Z\",\n        \"updated_at\": \"2025-06-13T15:52:06.925Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get Shift By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/shifts/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"shifts",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/shifts/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"shifts",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "156"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"9c-OSn9D5040Rw9vyO11e0LGToOMTY\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:52:29 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"name\": \"Mañana\",\n    \"length\": 8,\n    \"start_time\": \"08:00\",\n    \"end_time\": \"16:00\",\n    \"created_at\": \"2025-06-13T14:55:09.727Z\",\n    \"updated_at\": \"2025-06-13T14:55:09.727Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Shift",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"maniana\",\r\n    \"length\":5,\r\n    \"start_time\":\"8:00\",\r\n    \"end_time\":\"13:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/shifts/updateShift/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"shifts",
+								"updateShift",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"maniana\",\r\n    \"length\":5,\r\n    \"start_time\":\"8:00\",\r\n    \"end_time\":\"13:00\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/shifts/updateShift/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"shifts",
+										"updateShift",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "40"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"28-r6w/YmpEWlnTejR0tvBDx2etIPg\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:52:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Shift updated successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Shift",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/shifts/deleteShift/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"shifts",
+								"deleteShift",
+								"4"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/shifts/deleteShift/4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"shifts",
+										"deleteShift",
+										"4"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "40"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"28-+bOrVxhDH24khRihXdDRMIaTios\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:52:55 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Shift deleted successfully\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"SKU\": 12345678,\r\n  \"name\": \"Coca Cola\",\r\n  \"description\": \"No retornable de 3L\",\r\n  \"image\": \"https://fsa.bo/productos/04432-01.jpg\",\r\n  \"brand\": \"Coca Cola Company\",\r\n  \"category_id\": 2,\r\n  \"store_id\": 1,\r\n  \"stock\": 20,\r\n  \"expiration_date\": \"No tiene fecha de expiracion\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/products/createProduct",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"products",
+								"createProduct"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"SKU\": 12345678,\r\n  \"name\": \"Coca Cola\",\r\n  \"description\": \"No retornable de 3L\",\r\n  \"image\": \"https://fsa.bo/productos/04432-01.jpg\",\r\n  \"brand\": \"Coca Cola Company\",\r\n  \"category_id\": 2,\r\n  \"store_id\": 1,\r\n  \"stock\": 20,\r\n  \"expiration_date\": \"No tiene fecha de expiracion\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/products/createProduct",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"products",
+										"createProduct"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "305"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"131-flHXSfOdveFHYp2D4OR6kVgTg88\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:02:22 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Product created successfully\",\n    \"product\": {\n        \"id\": 4,\n        \"SKU\": \"12345678\",\n        \"name\": \"Coca Cola\",\n        \"description\": \"No retornable de 3L\",\n        \"image\": \"https://fsa.bo/productos/04432-01.jpg\",\n        \"brand\": \"Coca Cola Company\",\n        \"category_id\": 2,\n        \"created_at\": \"2025-06-13T16:02:22.182Z\",\n        \"updated_at\": \"2025-06-13T16:02:22.182Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get all Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/products",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"products"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1085"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"43d-Y2ZbPR1KakBViLdAFfv0b61aA9E\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:02:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"SKU\": \"SKU-001\",\n        \"name\": \"Coca Cola 2L\",\n        \"description\": \"Botella de gaseosa de 2 litros\",\n        \"image\": null,\n        \"brand\": \"Coca Cola\",\n        \"category_id\": 1,\n        \"created_at\": \"2025-06-13T14:55:09.731Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.731Z\",\n        \"stores\": [\n            {\n                \"id\": 1,\n                \"name\": \"Juan del norte\"\n            }\n        ],\n        \"providers\": []\n    },\n    {\n        \"id\": 2,\n        \"SKU\": \"SKU-002\",\n        \"name\": \"Papas Lays Clásicas\",\n        \"description\": \"Bolsa de papas fritas\",\n        \"image\": null,\n        \"brand\": \"Lays\",\n        \"category_id\": 2,\n        \"created_at\": \"2025-06-13T14:55:09.731Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.731Z\",\n        \"stores\": [],\n        \"providers\": []\n    },\n    {\n        \"id\": 3,\n        \"SKU\": \"SKU-003\",\n        \"name\": \"Leche Pil 1L\",\n        \"description\": \"Leche entera en envase Tetra Pak\",\n        \"image\": null,\n        \"brand\": \"Pil\",\n        \"category_id\": 3,\n        \"created_at\": \"2025-06-13T14:55:09.731Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.731Z\",\n        \"stores\": [],\n        \"providers\": []\n    },\n    {\n        \"id\": 4,\n        \"SKU\": \"12345678\",\n        \"name\": \"Coca Cola\",\n        \"description\": \"No retornable de 3L\",\n        \"image\": \"https://fsa.bo/productos/04432-01.jpg\",\n        \"brand\": \"Coca Cola Company\",\n        \"category_id\": 2,\n        \"created_at\": \"2025-06-13T16:02:22.182Z\",\n        \"updated_at\": \"2025-06-13T16:02:22.182Z\",\n        \"stores\": [\n            {\n                \"id\": 1,\n                \"name\": \"Juan del norte\"\n            }\n        ],\n        \"providers\": []\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get Product By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/products/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/products/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"products",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "222"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"de-VH8b6+iTAIk8ivLCV74bKg1XiJg\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:02:58 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"SKU\": \"SKU-001\",\n    \"name\": \"Coca Cola 2L\",\n    \"description\": \"Botella de gaseosa de 2 litros\",\n    \"image\": null,\n    \"brand\": \"Coca Cola\",\n    \"category_id\": 1,\n    \"created_at\": \"2025-06-13T14:55:09.731Z\",\n    \"updated_at\": \"2025-06-13T14:55:09.731Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"SKU\": 12345678,\r\n    \"name\":\"Fanta\",\r\n    \"description\":\"Coca cola no retornable de 2L\",\r\n    \"image\":\"https://images.pexels.com/photos/3200651/pexels-photo-3200651.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\",\r\n    \"brand\":\"Coca Cola Company\",\r\n    \"category_id\":\"2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/products/updateProduct/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"products",
+								"updateProduct",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"SKU\": 12345678,\r\n    \"name\":\"Fanta\",\r\n    \"description\":\"Coca cola no retornable de 2L\",\r\n    \"image\":\"https://images.pexels.com/photos/3200651/pexels-photo-3200651.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\",\r\n    \"brand\":\"Coca Cola Company\",\r\n    \"category_id\":\"2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/products/updateProduct/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"products",
+										"updateProduct",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "42"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2a-xkx5KN1R/KioLOUe4KCUrVOtulk\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:03:27 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Product updated successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Products by Category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/products/categories/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"products",
+								"categories",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/products/categories/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"products",
+										"categories",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "804"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"324-E2gugEI1XKhS9MTEEvEZqYfoaJU\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:04:14 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 2,\n        \"SKU\": \"SKU-002\",\n        \"name\": \"Papas Lays Clásicas\",\n        \"description\": \"Bolsa de papas fritas\",\n        \"image\": null,\n        \"brand\": \"Lays\",\n        \"category_id\": 2,\n        \"created_at\": \"2025-06-13T14:55:09.731Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.731Z\"\n    },\n    {\n        \"id\": 4,\n        \"SKU\": \"12345678\",\n        \"name\": \"Coca Cola\",\n        \"description\": \"No retornable de 3L\",\n        \"image\": \"https://fsa.bo/productos/04432-01.jpg\",\n        \"brand\": \"Coca Cola Company\",\n        \"category_id\": 2,\n        \"created_at\": \"2025-06-13T16:02:22.182Z\",\n        \"updated_at\": \"2025-06-13T16:02:22.182Z\"\n    },\n    {\n        \"id\": 1,\n        \"SKU\": \"12345678\",\n        \"name\": \"Fanta\",\n        \"description\": \"Coca cola no retornable de 2L\",\n        \"image\": \"https://images.pexels.com/photos/3200651/pexels-photo-3200651.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\",\n        \"brand\": \"Coca Cola Company\",\n        \"category_id\": 2,\n        \"created_at\": \"2025-06-13T14:55:09.731Z\",\n        \"updated_at\": \"2025-06-13T16:03:27.548Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get Products By Store",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/products/stores/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"products",
+								"stores",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/products/stores/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"products",
+										"stores",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "521"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"209-5MRNRtLc968u/X/yLH69lYCyavs\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:04:31 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"SKU\": \"12345678\",\n        \"name\": \"Fanta\",\n        \"description\": \"Coca cola no retornable de 2L\",\n        \"image\": \"https://images.pexels.com/photos/3200651/pexels-photo-3200651.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\",\n        \"category_id\": 2,\n        \"brand\": \"Coca Cola Company\",\n        \"stock\": 15,\n        \"expiration_date\": null\n    },\n    {\n        \"id\": 4,\n        \"SKU\": \"12345678\",\n        \"name\": \"Coca Cola\",\n        \"description\": \"No retornable de 3L\",\n        \"image\": \"https://fsa.bo/productos/04432-01.jpg\",\n        \"category_id\": 2,\n        \"brand\": \"Coca Cola Company\",\n        \"stock\": 20,\n        \"expiration_date\": \"No tiene fecha de expiracion\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get Products By Category And Store",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/products/:categoryId/store/:storeId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"products",
+								":categoryId",
+								"store",
+								":storeId"
+							],
+							"variable": [
+								{
+									"key": "categoryId",
+									"value": "2"
+								},
+								{
+									"key": "storeId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/products/:categoryId/store/:storeId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"products",
+										":categoryId",
+										"store",
+										":storeId"
+									],
+									"variable": [
+										{
+											"key": "categoryId",
+											"value": "2"
+										},
+										{
+											"key": "storeId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "681"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2a9-zSpmmAkaPHJygBmaDVpoUloSVqg\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:05:09 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"SKU\": \"12345678\",\n        \"name\": \"Fanta\",\n        \"description\": \"Coca cola no retornable de 2L\",\n        \"image\": \"https://images.pexels.com/photos/3200651/pexels-photo-3200651.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\",\n        \"brand\": \"Coca Cola Company\",\n        \"category_id\": 2,\n        \"created_at\": \"2025-06-13T14:55:09.731Z\",\n        \"updated_at\": \"2025-06-13T16:03:27.548Z\",\n        \"stock\": 15,\n        \"expiration_date\": null\n    },\n    {\n        \"id\": 4,\n        \"SKU\": \"12345678\",\n        \"name\": \"Coca Cola\",\n        \"description\": \"No retornable de 3L\",\n        \"image\": \"https://fsa.bo/productos/04432-01.jpg\",\n        \"brand\": \"Coca Cola Company\",\n        \"category_id\": 2,\n        \"created_at\": \"2025-06-13T16:02:22.182Z\",\n        \"updated_at\": \"2025-06-13T16:02:22.182Z\",\n        \"stock\": 20,\n        \"expiration_date\": \"No tiene fecha de expiracion\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Assign Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"storeIds\": [\r\n    { \"store_id\": 1, \"stock\": 15, \"expiration_date\": \"2025-12-31\" }\r\n  ],\r\n  \"providerIds\": [1,2]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/products/assign/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"products",
+								"assign",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"storeIds\": [\r\n    { \"store_id\": 1, \"stock\": 15, \"expiration_date\": \"2025-12-31\" }\r\n  ],\r\n  \"providerIds\": [1,2]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/products/assign/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"products",
+										"assign",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "45"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2d-otKI37IrCWJnGbAlYDqNcRnaDGA\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:10:49 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Relations assigned successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/products/deleteProduct/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"products",
+								"deleteProduct",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/products/deleteProduct/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"products",
+										"deleteProduct",
+										"5"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "42"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2a-a+2htZNpkCDaj0ausIFBiheaYZ4\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:03:49 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Product deleted successfully\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Inventory",
+			"item": [
+				{
+					"name": "Update Stock",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"stock\": 15\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/inventory/updateStock/:storeId/:productId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"inventory",
+								"updateStock",
+								":storeId",
+								":productId"
+							],
+							"variable": [
+								{
+									"key": "storeId",
+									"value": "1"
+								},
+								{
+									"key": "productId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"stock\": 15\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/inventory/updateStock/:storeId/:productId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"inventory",
+										"updateStock",
+										":storeId",
+										":productId"
+									],
+									"variable": [
+										{
+											"key": "storeId",
+											"value": "1"
+										},
+										{
+											"key": "productId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "199"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c7-/iv3tyUBrmfwMtpkxHCBQhtggP4\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 15:46:21 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Stock updated successfully\",\n    \"stock\": {\n        \"id\": 1,\n        \"store_id\": 1,\n        \"product_id\": 1,\n        \"stock\": 15,\n        \"expiration_date\": null,\n        \"created_at\": \"2025-06-13T15:46:21.342Z\",\n        \"updated_at\": \"2025-06-13T15:46:21.342Z\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Images",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/images/presigned?fileName=example.jpg&fileType=image/jpeg",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"images",
+								"presigned"
+							],
+							"query": [
+								{
+									"key": "fileName",
+									"value": "example.jpg"
+								},
+								{
+									"key": "fileType",
+									"value": "image/jpeg"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employees",
+			"item": [
+				{
+					"name": "Create Employee",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"juan\",\r\n  \"email\": \"juan@tienda.com\",\r\n  \"password\": \"123456\",\r\n  \"full_name\": \"Juan Perez\",\r\n  \"phone\":\"78789898\",\r\n  \"storeId\": 1,\r\n  \"shiftId\": 1,\r\n  \"roleId\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"employees"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"username\": \"juan\",\r\n  \"email\": \"juan@tienda.com\",\r\n  \"password\": \"123456\",\r\n  \"full_name\": \"Juan Perez\",\r\n  \"phone\":\"78789898\",\r\n  \"storeId\": 1,\r\n  \"shiftId\": 1,\r\n  \"roleId\": 3\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/users/employees",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"employees"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "53"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"35-4N4mJF5we+CyU62WyuZLk77JUYo\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:11:31 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Empleado creado exitosamente\",\n    \"userId\": 4\n}"
+						}
+					]
+				},
+				{
+					"name": "Search Employees",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/search/employees?query=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"search",
+								"employees"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/users/search/employees?query=",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"search",
+										"employees"
+									],
+									"query": [
+										{
+											"key": "query",
+											"value": ""
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "447"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1bf-VVLhvAEMZpKZS3OUuuWST3XTHUI\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:11:42 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 4,\n        \"username\": \"juan\",\n        \"full_name\": \"Juan Perez\",\n        \"email\": \"juan@tienda.com\",\n        \"avatar\": null,\n        \"created_at\": \"2025-06-13T16:11:31.604Z\"\n    },\n    {\n        \"id\": 3,\n        \"username\": \"ajordan\",\n        \"full_name\": \"Andres Laguna Jordan\",\n        \"email\": \"ajordan@gmail.com\",\n        \"avatar\": \"https://images.pexels.com/photos/15539380/pexels-photo-15539380/free-photo-of-a-great-white-shark-swimming-in-the-ocean.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\",\n        \"created_at\": \"2025-06-13T15:49:04.213Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Assign Schedule",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"store_id\": 1,\r\n  \"shift_id\": 2\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/:id/assign-schedule",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								":id",
+								"assign-schedule"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"store_id\": 1,\r\n  \"shift_id\": 2\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/users/:id/assign-schedule",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										":id",
+										"assign-schedule"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "33"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"21-41pzBm4/A+H+NHliUCSJV/P4hLA\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:11:58 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Asignación exitosa\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get employees by Store",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/users/employeesByStore/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"employeesByStore",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/users/employeesByStore/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"users",
+										"employeesByStore",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "120"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"78-d/gyI8bbLGwRR7Tj7dUNbeIzwe8\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:13:34 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"user_id\": 4,\n        \"username\": \"juan\",\n        \"full_name\": \"Juan Perez\",\n        \"email\": \"juan@tienda.com\",\n        \"shift_id\": 1,\n        \"shift_name\": \"maniana\"\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Permit",
+			"item": [
+				{
+					"name": "Get All Permits",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/permits/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"permits",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/permits/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"permits",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "327"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"147-UpfOq895OxjTRNW1tXrW0Sn2zlk\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:13:59 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"ACCESS_ALL\",\n        \"description\": \"Acceso completo al sistema\",\n        \"created_at\": \"2025-06-13T14:55:09.652Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.652Z\"\n    },\n    {\n        \"id\": 2,\n        \"name\": \"LIMITED_ACCESS\",\n        \"description\": \"Acceso limitado: sin empleados, turnos, caja\",\n        \"created_at\": \"2025-06-13T14:55:09.652Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.652Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get Permit by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/permits/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"permits",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/permits/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"permits",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "151"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"97-nxTsGEY59Z8Ka+9mH0Pdg4xze7U\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:14:09 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"name\": \"ACCESS_ALL\",\n    \"description\": \"Acceso completo al sistema\",\n    \"created_at\": \"2025-06-13T14:55:09.652Z\",\n    \"updated_at\": \"2025-06-13T14:55:09.652Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Permit",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"INVENTORY_ACCESS\",\r\n  \"description\": \"Permite acceso al módulo de inventario\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/permits/createPermit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"permits",
+								"createPermit"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"INVENTORY_ACCESS\",\r\n  \"description\": \"Permite acceso al módulo de inventario\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/permits/createPermit",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"permits",
+										"createPermit"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "208"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"d0-jrte/2uYLm5VOYKxydIOrqdfVmU\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:14:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Permit created\",\n    \"permit\": {\n        \"id\": 3,\n        \"name\": \"INVENTORY_ACCESS\",\n        \"description\": \"Permite acceso al módulo de inventario\",\n        \"created_at\": \"2025-06-13T16:14:25.954Z\",\n        \"updated_at\": \"2025-06-13T16:14:25.954Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Permit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"CAJA\",\r\n  \"description\": \"Permite acceso al módulo de caja\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/permits/updatePermit/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"permits",
+								"updatePermit",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"CAJA\",\r\n  \"description\": \"Permite acceso al módulo de caja\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/permits/updatePermit/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"permits",
+										"updatePermit",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "190"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"be-OCJKt9kiN7ExIuwA289fO9mzR2M\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:14:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Permit updated\",\n    \"permit\": {\n        \"id\": 1,\n        \"name\": \"CAJA\",\n        \"description\": \"Permite acceso al módulo de caja\",\n        \"created_at\": \"2025-06-13T14:55:09.652Z\",\n        \"updated_at\": \"2025-06-13T16:14:36.654Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Permit",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/permits/deletePermit/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"permits",
+								"deletePermit",
+								"3"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/permits/deletePermit/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"permits",
+										"deletePermit",
+										"3"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1c-1Lkdd0KRcUNbXfl8OI5/vEfkiLA\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:14:49 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Permit deleted\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Get All Roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/roles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"roles"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/roles",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"roles"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "665"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"299-6doORZyqcuRm2agdQ0NntmmlOwk\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:15:12 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Administrador\",\n        \"description\": \"Rol con todos los permisos\",\n        \"isAdmin\": true,\n        \"created_at\": \"2025-06-13T14:55:09.646Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.646Z\"\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Empleado\",\n        \"description\": \"Empleado de multiples funciones\",\n        \"isAdmin\": false,\n        \"created_at\": \"2025-06-13T14:55:09.646Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.646Z\"\n    },\n    {\n        \"id\": 3,\n        \"name\": \"Vendedor\",\n        \"description\": \"Puede registrar ventas\",\n        \"isAdmin\": false,\n        \"created_at\": \"2025-06-13T14:55:09.646Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.646Z\"\n    },\n    {\n        \"id\": 4,\n        \"name\": \"Limpieza\",\n        \"description\": \"Encargado de limpieza\",\n        \"isAdmin\": false,\n        \"created_at\": \"2025-06-13T14:55:09.646Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.646Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get Roles By Permit",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/roles/1/permits",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"roles",
+								"1",
+								"permits"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/roles/1/permits",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"roles",
+										"1",
+										"permits"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "100"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"64-rXp6CIhKZIUjSbeDWsg94d6Eg+U\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:15:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"role_id\": \"1\",\n    \"permits\": [\n        {\n            \"id\": 1,\n            \"name\": \"CAJA\",\n            \"description\": \"Permite acceso al módulo de caja\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Role",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Cajero\",\r\n  \"description\": \"Manejo de caja y dinero de la tienda\",\r\n  \"isAdmin\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/roles/createRole",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"roles",
+								"createRole"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Cajero\",\r\n  \"description\": \"Manejo de caja y dinero de la tienda\",\r\n  \"isAdmin\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/roles/createRole",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"roles",
+										"createRole"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "140"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"8c-DMUNpi8QZpVNaAsXyjpu9skcl0Q\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:15:39 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Role created successfully\",\n    \"role\": {\n        \"id\": 5,\n        \"name\": \"Cajero\",\n        \"description\": \"Manejo de caja y dinero de la tienda\",\n        \"isAdmin\": false\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Assign Permit to Role",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"permitIds\": [1, 2]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/roles/1/assignPermit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"roles",
+								"1",
+								"assignPermit"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"permitIds\": [1, 2]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/roles/1/assignPermit",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"roles",
+										"1",
+										"assignPermit"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "46"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2e-wqNh3S2vVT8il0BnYuv7f3aLHjA\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:15:53 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Permisos asignados correctamente\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Role",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Panadero\",\r\n  \"description\": \"Manejo de caja y dinero de la tienda\",\r\n  \"isAdmin\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/roles/updateRole/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"roles",
+								"updateRole",
+								"4"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Panadero\",\r\n  \"description\": \"Manejo de caja y dinero de la tienda\",\r\n  \"isAdmin\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/roles/updateRole/4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"roles",
+										"updateRole",
+										"4"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "39"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"27-xv1mka1Lyn6vasjgLdLmQsLtQz0\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:16:08 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Role updated successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Role",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/roles/deleteRole/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"roles",
+								"deleteRole",
+								"5"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/roles/deleteRole/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"roles",
+										"deleteRole",
+										"5"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "39"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"27-ubQu1fSPBtIEgZjlh4N3G6Aqn1w\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:16:22 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Role deleted successfully\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Providers",
+			"item": [
+				{
+					"name": "Get All Providers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/providers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"providers"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/providers",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"providers"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "541"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"21d-EWxjCGUG1KqIJeDXHdc8N8jDiO4\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:16:39 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Distribuidora Norte\",\n        \"address\": \"Av. 16 de Julio #456\",\n        \"phone\": \"78912345\",\n        \"email\": \"ventas@norte.com\",\n        \"contact_person_name\": \"María López\",\n        \"notes\": \"Entrega semanal\",\n        \"created_at\": \"2025-06-13T14:55:09.729Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.729Z\"\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Mayorista Central\",\n        \"address\": \"Zona Industrial KM8\",\n        \"phone\": \"77441234\",\n        \"email\": \"contacto@mayorcentral.com\",\n        \"contact_person_name\": \"Carlos Rojas\",\n        \"notes\": \"Solo pagos por transferencia\",\n        \"created_at\": \"2025-06-13T14:55:09.729Z\",\n        \"updated_at\": \"2025-06-13T14:55:09.729Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get Provider By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/providers/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"providers",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/providers/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"providers",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "260"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"104-Mvx53Cl21i0qNznZ3AX5I88tYu4\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:16:55 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"name\": \"Distribuidora Norte\",\n    \"address\": \"Av. 16 de Julio #456\",\n    \"phone\": \"78912345\",\n    \"email\": \"ventas@norte.com\",\n    \"contact_person_name\": \"María López\",\n    \"notes\": \"Entrega semanal\",\n    \"created_at\": \"2025-06-13T14:55:09.729Z\",\n    \"updated_at\": \"2025-06-13T14:55:09.729Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Provider",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Mayorista Central\",\r\n  \"address\": \"Zona Industrial KM8\",\r\n  \"phone\": \"77441234\",\r\n  \"email\": \"nuevo@mayorcentral.com\",\r\n  \"contact_person_name\": \"Carlos Rojas\",\r\n  \"notes\": \"Ahora entrega cada 10 días\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/providers/createProvider",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"providers",
+								"createProvider"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Mayorista Central\",\r\n  \"address\": \"Zona Industrial KM8\",\r\n  \"phone\": \"77441234\",\r\n  \"email\": \"nuevo@mayorcentral.com\",\r\n  \"contact_person_name\": \"Carlos Rojas\",\r\n  \"notes\": \"Ahora entrega cada 10 días\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/providers/createProvider",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"providers",
+										"createProvider"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "329"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"149-kkuF3T10mQAqEAHnNsz1q8+XPPo\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:17:13 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Provider created successfully\",\n    \"provider\": {\n        \"id\": 3,\n        \"name\": \"Mayorista Central\",\n        \"address\": \"Zona Industrial KM8\",\n        \"phone\": \"77441234\",\n        \"email\": \"nuevo@mayorcentral.com\",\n        \"contact_person_name\": \"Carlos Rojas\",\n        \"notes\": \"Ahora entrega cada 10 días\",\n        \"created_at\": \"2025-06-13T16:17:13.033Z\",\n        \"updated_at\": \"2025-06-13T16:17:13.033Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Provider",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Mayorista Central\",\r\n  \"address\": \"Zona Industrial KM8\",\r\n  \"phone\": \"77441234\",\r\n  \"email\": \"nuevo@mayorcentral.com\",\r\n  \"contact_person_name\": \"Carlos Rojas\",\r\n  \"notes\": \"Ahora entrega cada 10 días\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/providers/updateProvider/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"providers",
+								"updateProvider",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Mayorista Central\",\r\n  \"address\": \"Zona Industrial KM8\",\r\n  \"phone\": \"77441234\",\r\n  \"email\": \"nuevo@mayorcentral.com\",\r\n  \"contact_person_name\": \"Carlos Rojas\",\r\n  \"notes\": \"Ahora entrega cada 10 días\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/providers/updateProvider/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"providers",
+										"updateProvider",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "43"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2b-M79RnWv8qyRx8kZfGYaWO4PgaKw\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:17:27 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Provider updated successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Provider",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/providers/deleteProvider/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"providers",
+								"deleteProvider",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/providers/deleteProvider/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"providers",
+										"deleteProvider",
+										"3"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "43"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2b-ZFGgUGFTts7wG4SNlJxifHehB70\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:17:52 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Provider deleted successfully\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Cashbox (Total cash)",
+			"item": [
+				{
+					"name": "Open Cashbox",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"store_id\": 1,\r\n  \"opening_amount\": 500.00\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/cashbox/open",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"cashbox",
+								"open"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"store_id\": 1,\r\n  \"opening_amount\": 500.00\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/cashbox/open",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"cashbox",
+										"open"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "375"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"177-0M7997/qlnaDBdIU/pDheu9ENrg\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:18:14 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Cashbox opened successfully\",\n    \"cashbox\": {\n        \"id\": 1,\n        \"store_id\": 1,\n        \"purchase_box_id\": null,\n        \"sales_box_id\": null,\n        \"opening_amount\": \"500.00\",\n        \"closing_amount\": null,\n        \"status\": \"open\",\n        \"opened_at\": \"2025-06-13T16:18:14.898Z\",\n        \"closed_at\": null,\n        \"isProfit\": null,\n        \"period\": null,\n        \"filters\": null,\n        \"graphs\": null,\n        \"created_at\": \"2025-06-13T16:18:14.898Z\",\n        \"updated_at\": \"2025-06-13T16:18:14.898Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Close",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"store_id\": 1,\r\n  \"user_id\": 2,\r\n  \"date\": \"2025-06-13\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/cashbox/close",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"cashbox",
+								"close"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"store_id\": 1,\r\n  \"user_id\": 2,\r\n  \"date\": \"2025-06-13\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/cashbox/close",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"cashbox",
+										"close"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "403"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"193-UfhAQh2bxQgnDQ3T2WXgl6eF5cI\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:19:52 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Cashbox closed successfully\",\n    \"summary\": {\n        \"id\": 1,\n        \"store_id\": 1,\n        \"purchase_box_id\": null,\n        \"sales_box_id\": null,\n        \"opening_amount\": \"500.00\",\n        \"closing_amount\": \"400.00\",\n        \"status\": \"closed\",\n        \"opened_at\": \"2025-06-13T16:18:14.898Z\",\n        \"closed_at\": \"2025-06-13T16:19:52.802Z\",\n        \"isProfit\": null,\n        \"period\": null,\n        \"filters\": null,\n        \"graphs\": null,\n        \"created_at\": \"2025-06-13T16:18:14.898Z\",\n        \"updated_at\": \"2025-06-13T16:18:14.898Z\"\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Purchases",
+			"item": [
+				{
+					"name": "Create Purchase",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"store_id\": 1,\r\n  \"user_id\": 1,\r\n  \"provider_id\": 1,\r\n  \"payment_method\": \"cash\",\r\n  \"products\": [\r\n    { \"product_id\": 1, \"quantity\": 5, \"unit_price\": 10 }\r\n  ],\r\n  \"notes\": \"Reposición quincenal\",\r\n  \"purchase_date\": \"2025-06-05\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/purchase/createPurchase",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"purchase",
+								"createPurchase"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"store_id\": 1,\r\n  \"user_id\": 1,\r\n  \"provider_id\": 1,\r\n  \"payment_method\": \"cash\",\r\n  \"products\": [\r\n    { \"product_id\": 1, \"quantity\": 5, \"unit_price\": 10 }\r\n  ],\r\n  \"notes\": \"Reposición quincenal\",\r\n  \"purchase_date\": \"2025-06-05\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/purchase/createPurchase",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"purchase",
+										"createPurchase"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "337"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"151-pI91wNsHXH/FsCBgRxLJjNq+iDM\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:20:12 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Purchase registered successfully\",\n    \"purchase\": {\n        \"id\": 4,\n        \"purchase_box_id\": null,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"provider_id\": 1,\n        \"total\": \"50.00\",\n        \"purchase_date\": \"2025-06-05T04:00:00.000Z\",\n        \"payment_method\": null,\n        \"status\": null,\n        \"notes\": \"Reposición quincenal\",\n        \"created_at\": \"2025-06-13T16:20:12.363Z\",\n        \"updated_at\": \"2025-06-13T16:20:12.363Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get All Purchases",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/purchase/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"purchase",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/purchase/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"purchase",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "841"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"349-MnWwXlz67Dg/gGXEw8YEDGa8L40\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:20:33 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 2,\n        \"purchase_box_id\": null,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"provider_id\": 1,\n        \"total\": \"50.00\",\n        \"purchase_date\": \"2025-06-05T04:00:00.000Z\",\n        \"payment_method\": null,\n        \"status\": null,\n        \"notes\": \"Reposición quincenal\",\n        \"created_at\": \"2025-06-13T14:55:35.147Z\",\n        \"updated_at\": \"2025-06-13T14:55:35.147Z\"\n    },\n    {\n        \"id\": 3,\n        \"purchase_box_id\": null,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"provider_id\": 1,\n        \"total\": \"50.00\",\n        \"purchase_date\": \"2025-06-05T04:00:00.000Z\",\n        \"payment_method\": null,\n        \"status\": null,\n        \"notes\": \"Reposición quincenal\",\n        \"created_at\": \"2025-06-13T14:56:24.400Z\",\n        \"updated_at\": \"2025-06-13T14:56:24.400Z\"\n    },\n    {\n        \"id\": 4,\n        \"purchase_box_id\": null,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"provider_id\": 1,\n        \"total\": \"50.00\",\n        \"purchase_date\": \"2025-06-05T04:00:00.000Z\",\n        \"payment_method\": null,\n        \"status\": null,\n        \"notes\": \"Reposición quincenal\",\n        \"created_at\": \"2025-06-13T16:20:12.363Z\",\n        \"updated_at\": \"2025-06-13T16:20:12.363Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get Purchase by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/purchase/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"purchase",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/purchase/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"purchase",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "15"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"f-vfnIa/Ee2X4JU4AloATP5DE2Q+4\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:20:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"products\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Purchases By Store",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/purchase/store/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"purchase",
+								"store",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/purchase/store/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"purchase",
+										"store",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "841"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"349-MnWwXlz67Dg/gGXEw8YEDGa8L40\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:21:13 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 2,\n        \"purchase_box_id\": null,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"provider_id\": 1,\n        \"total\": \"50.00\",\n        \"purchase_date\": \"2025-06-05T04:00:00.000Z\",\n        \"payment_method\": null,\n        \"status\": null,\n        \"notes\": \"Reposición quincenal\",\n        \"created_at\": \"2025-06-13T14:55:35.147Z\",\n        \"updated_at\": \"2025-06-13T14:55:35.147Z\"\n    },\n    {\n        \"id\": 3,\n        \"purchase_box_id\": null,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"provider_id\": 1,\n        \"total\": \"50.00\",\n        \"purchase_date\": \"2025-06-05T04:00:00.000Z\",\n        \"payment_method\": null,\n        \"status\": null,\n        \"notes\": \"Reposición quincenal\",\n        \"created_at\": \"2025-06-13T14:56:24.400Z\",\n        \"updated_at\": \"2025-06-13T14:56:24.400Z\"\n    },\n    {\n        \"id\": 4,\n        \"purchase_box_id\": null,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"provider_id\": 1,\n        \"total\": \"50.00\",\n        \"purchase_date\": \"2025-06-05T04:00:00.000Z\",\n        \"payment_method\": null,\n        \"status\": null,\n        \"notes\": \"Reposición quincenal\",\n        \"created_at\": \"2025-06-13T16:20:12.363Z\",\n        \"updated_at\": \"2025-06-13T16:20:12.363Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get Purchases by User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/purchase/user/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"purchase",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/purchase/user/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"purchase",
+										"user",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "841"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"349-MnWwXlz67Dg/gGXEw8YEDGa8L40\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:21:29 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 2,\n        \"purchase_box_id\": null,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"provider_id\": 1,\n        \"total\": \"50.00\",\n        \"purchase_date\": \"2025-06-05T04:00:00.000Z\",\n        \"payment_method\": null,\n        \"status\": null,\n        \"notes\": \"Reposición quincenal\",\n        \"created_at\": \"2025-06-13T14:55:35.147Z\",\n        \"updated_at\": \"2025-06-13T14:55:35.147Z\"\n    },\n    {\n        \"id\": 3,\n        \"purchase_box_id\": null,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"provider_id\": 1,\n        \"total\": \"50.00\",\n        \"purchase_date\": \"2025-06-05T04:00:00.000Z\",\n        \"payment_method\": null,\n        \"status\": null,\n        \"notes\": \"Reposición quincenal\",\n        \"created_at\": \"2025-06-13T14:56:24.400Z\",\n        \"updated_at\": \"2025-06-13T14:56:24.400Z\"\n    },\n    {\n        \"id\": 4,\n        \"purchase_box_id\": null,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"provider_id\": 1,\n        \"total\": \"50.00\",\n        \"purchase_date\": \"2025-06-05T04:00:00.000Z\",\n        \"payment_method\": null,\n        \"status\": null,\n        \"notes\": \"Reposición quincenal\",\n        \"created_at\": \"2025-06-13T16:20:12.363Z\",\n        \"updated_at\": \"2025-06-13T16:20:12.363Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "get Purchases by Provider",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/purchase/provider/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"purchase",
+								"provider",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/purchase/provider/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"purchase",
+										"provider",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "841"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"349-MnWwXlz67Dg/gGXEw8YEDGa8L40\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:21:51 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 2,\n        \"purchase_box_id\": null,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"provider_id\": 1,\n        \"total\": \"50.00\",\n        \"purchase_date\": \"2025-06-05T04:00:00.000Z\",\n        \"payment_method\": null,\n        \"status\": null,\n        \"notes\": \"Reposición quincenal\",\n        \"created_at\": \"2025-06-13T14:55:35.147Z\",\n        \"updated_at\": \"2025-06-13T14:55:35.147Z\"\n    },\n    {\n        \"id\": 3,\n        \"purchase_box_id\": null,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"provider_id\": 1,\n        \"total\": \"50.00\",\n        \"purchase_date\": \"2025-06-05T04:00:00.000Z\",\n        \"payment_method\": null,\n        \"status\": null,\n        \"notes\": \"Reposición quincenal\",\n        \"created_at\": \"2025-06-13T14:56:24.400Z\",\n        \"updated_at\": \"2025-06-13T14:56:24.400Z\"\n    },\n    {\n        \"id\": 4,\n        \"purchase_box_id\": null,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"provider_id\": 1,\n        \"total\": \"50.00\",\n        \"purchase_date\": \"2025-06-05T04:00:00.000Z\",\n        \"payment_method\": null,\n        \"status\": null,\n        \"notes\": \"Reposición quincenal\",\n        \"created_at\": \"2025-06-13T16:20:12.363Z\",\n        \"updated_at\": \"2025-06-13T16:20:12.363Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Update Purchase",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"store_id\": 1,\r\n  \"user_id\": 1,\r\n  \"provider_id\": 1,\r\n  \"products\": [\r\n    { \"product_id\": 1, \"quantity\": 5, \"unit_price\": 10 }\r\n  ],\r\n  \"notes\": \"Reposición quincenal\",\r\n  \"purchase_date\": \"2025-06-05\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/purchase/updatePurchase/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"purchase",
+								"updatePurchase",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"store_id\": 1,\r\n  \"user_id\": 1,\r\n  \"provider_id\": 1,\r\n  \"products\": [\r\n    { \"product_id\": 1, \"quantity\": 5, \"unit_price\": 10 }\r\n  ],\r\n  \"notes\": \"Reposición quincenal\",\r\n  \"purchase_date\": \"2025-06-05\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/purchase/updatePurchase/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"purchase",
+										"updatePurchase",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "334"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"14e-9uP3MgFEj9DTVkyrOVShS4CtX3o\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:22:33 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Purchase updated successfully\",\n    \"purchase\": {\n        \"id\": 2,\n        \"purchase_box_id\": null,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"provider_id\": 1,\n        \"total\": \"50.00\",\n        \"purchase_date\": \"2025-06-05T04:00:00.000Z\",\n        \"payment_method\": null,\n        \"status\": null,\n        \"notes\": \"Reposición quincenal\",\n        \"created_at\": \"2025-06-13T14:55:35.147Z\",\n        \"updated_at\": \"2025-06-13T16:22:33.231Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Purchase",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/purchase/deletePurchase/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"purchase",
+								"deletePurchase",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/purchase/deletePurchase/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"purchase",
+										"deletePurchase",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "43"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2b-H9O6tOnse8ZW+11z9/dsaKigapQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:23:04 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Purchase deleted successfully\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Sales",
+			"item": [
+				{
+					"name": "Create Sale",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"store_id\": 1,\r\n  \"user_id\": 1,\r\n  \"shift_id\": 3,\r\n  \"products\": [\r\n    { \"product_id\": 1, \"quantity\": 2, \"unit_price\": 25 },\r\n    { \"product_id\": 2, \"quantity\": 1, \"unit_price\": 40 }\r\n  ],\r\n  \"payment_method\": \"cash\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/sales/createSale",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"sales",
+								"createSale"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"store_id\": 1,\r\n  \"user_id\": 1,\r\n  \"shift_id\": 3,\r\n  \"products\": [\r\n    { \"product_id\": 1, \"quantity\": 2, \"unit_price\": 25 },\r\n    { \"product_id\": 2, \"quantity\": 1, \"unit_price\": 40 }\r\n  ],\r\n  \"payment_method\": \"cash\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/sales/createSale",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"sales",
+										"createSale"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "291"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"123-HdSCJOfO9p/4T/Lx9b5x58Majmg\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:23:28 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Sale registered successfully\",\n    \"sale\": {\n        \"id\": 2,\n        \"sales_box_id\": 2,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"total\": \"90.00\",\n        \"sale_date\": \"2025-06-13T16:23:28.453Z\",\n        \"payment_method\": \"cash\",\n        \"status\": \"completed\",\n        \"notes\": \"\",\n        \"created_at\": \"2025-06-13T16:23:28.453Z\",\n        \"updated_at\": \"2025-06-13T16:23:28.453Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get All Sales",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/sales/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"sales",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/sales/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"sales",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "243"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"f3-GPr4iC0QYqLwbBTM5paRzUu4Gks\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:23:55 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 2,\n        \"sales_box_id\": 2,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"total\": \"90.00\",\n        \"sale_date\": \"2025-06-13T16:23:28.453Z\",\n        \"payment_method\": \"cash\",\n        \"status\": \"completed\",\n        \"notes\": \"\",\n        \"created_at\": \"2025-06-13T16:23:28.453Z\",\n        \"updated_at\": \"2025-06-13T16:23:28.453Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get Sale by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/sales/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"sales",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/sales/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"sales",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "15"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"f-vfnIa/Ee2X4JU4AloATP5DE2Q+4\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:24:14 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"products\": []\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Sales by Store",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/sales/store/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"sales",
+								"store",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/sales/store/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"sales",
+										"store",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "243"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"f3-GPr4iC0QYqLwbBTM5paRzUu4Gks\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:24:30 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 2,\n        \"sales_box_id\": 2,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"total\": \"90.00\",\n        \"sale_date\": \"2025-06-13T16:23:28.453Z\",\n        \"payment_method\": \"cash\",\n        \"status\": \"completed\",\n        \"notes\": \"\",\n        \"created_at\": \"2025-06-13T16:23:28.453Z\",\n        \"updated_at\": \"2025-06-13T16:23:28.453Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get Sales by User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/sales/user/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"sales",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/sales/user/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"sales",
+										"user",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "243"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"f3-GPr4iC0QYqLwbBTM5paRzUu4Gks\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:24:47 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 2,\n        \"sales_box_id\": 2,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"total\": \"90.00\",\n        \"sale_date\": \"2025-06-13T16:23:28.453Z\",\n        \"payment_method\": \"cash\",\n        \"status\": \"completed\",\n        \"notes\": \"\",\n        \"created_at\": \"2025-06-13T16:23:28.453Z\",\n        \"updated_at\": \"2025-06-13T16:23:28.453Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Update Sale",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"store_id\": 1,\r\n  \"user_id\": 1,\r\n  \"shift_id\": 3,\r\n  \"products\": [\r\n    { \"product_id\": 1, \"quantity\": 2, \"unit_price\": 25 },\r\n    { \"product_id\": 2, \"quantity\": 1, \"unit_price\": 40 }\r\n  ],\r\n  \"payment_method\": \"cash\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/sales/updateSale/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"sales",
+								"updateSale",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"store_id\": 1,\r\n  \"user_id\": 1,\r\n  \"shift_id\": 3,\r\n  \"products\": [\r\n    { \"product_id\": 1, \"quantity\": 2, \"unit_price\": 25 },\r\n    { \"product_id\": 2, \"quantity\": 1, \"unit_price\": 40 }\r\n  ],\r\n  \"payment_method\": \"cash\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/sales/updateSale/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"sales",
+										"updateSale",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "288"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"120-KGdoJgB0P3FAyID1Jnr2TlQK5f4\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:25:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Sale updated successfully\",\n    \"sale\": {\n        \"id\": 2,\n        \"sales_box_id\": 2,\n        \"user_id\": 1,\n        \"store_id\": 1,\n        \"total\": \"90.00\",\n        \"sale_date\": \"2025-06-13T16:23:28.453Z\",\n        \"payment_method\": \"cash\",\n        \"status\": \"completed\",\n        \"notes\": \"\",\n        \"created_at\": \"2025-06-13T16:23:28.453Z\",\n        \"updated_at\": \"2025-06-13T16:25:16.102Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Sale",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/sales/deleteSale/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"sales",
+								"deleteSale",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/sales/deleteSale/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"sales",
+										"deleteSale",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "39"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"27-zEcxDKNd8XtxhDxujFFn7pSYgNg\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 13 Jun 2025 16:25:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Sale deleted successfully\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "aws test",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTczMzk1OTk0MywiZXhwIjoxNzMzOTYwMjQzfQ.TgLuNYrHlxYqvQIKR18JazZbr0J-slEFYeD26_p4mX41",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:3000/userinfo",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"userinfo"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get all Users",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/users",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3000/user",
-			"request": {
-				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\":\"slaguna3\",\r\n    \"password\":\"12345\",\r\n    \"full_name\":\"Sergio Laguna Jordan\",\r\n    \"email\":\"slaguna3@gmail.com\",\r\n    \"date_of_birth\":\"01/04/1999\",\r\n    \"phone\": \"76742300\",\r\n    \"status\":\"Active\",\r\n    \"last_access\": \"10/10/2024\",\r\n    \"avatar\":\"https://images.pexels.com/photos/15539380/pexels-photo-15539380/free-photo-of-a-great-white-shark-swimming-in-the-ocean.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\"\r\n}",
+					"raw": "{\r\n    \"SKU\": 12345678,\r\n    \"name\":\"Coca Cola\",\r\n    \"description\":\"Coca cola no retornable de 2L\",\r\n    \"image\":\"https://images.pexels.com/photos/3200651/pexels-photo-3200651.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\",\r\n    \"brand\":\"Coca Cola Company\",\r\n    \"category_id\":\"2\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -121,14 +6550,18 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/user",
+					"raw": "http://44.201.241.181:3000/api/products",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"44",
+						"201",
+						"241",
+						"181"
 					],
 					"port": "3000",
 					"path": [
-						"user"
+						"api",
+						"products"
 					]
 				}
 			},

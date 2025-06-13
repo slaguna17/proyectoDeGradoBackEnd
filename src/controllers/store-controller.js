@@ -89,7 +89,7 @@ const StoreController = {
                 return res.status(404).json({ error: 'Store not found' });
             }
         } catch (error) {
-            console.error(error);
+            console.error('🔥 Delete Error:', error);
             res.status(500).json({ error: 'Error deleting store' });
         }
     }

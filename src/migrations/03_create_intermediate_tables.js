@@ -42,20 +42,24 @@ exports.up = async function(knex) {
     //19. Sales - Product table
     await knex.schema.createTable("sales_product", table => {
         table.increments('id').primary();
-        table.integer('sales_id').unsigned().references('id').inTable('sales');
-        table.integer('product_id').unsigned().references('id').inTable('product');
-        table.integer('quantity_per_product').notNullable()
+        table.integer('sales_id').unsigned().references('id').inTable('sales').onDelete("CASCADE");
+        table.integer('product_id').unsigned().references('id').inTable('product').onDelete("CASCADE");
+        table.integer('quantity').notNullable();
+        table.decimal("unit_price", 10, 2);
         table.timestamps(true, true);
     })
 
     //20. Purchases - Product table
     await knex.schema.createTable("purchase_product", table => {
-        table.increments('id').primary();
-        table.integer('purchase_id').unsigned().references('id').inTable('purchase');
-        table.integer('product_id').unsigned().references('id').inTable('product');
-        table.integer('quantity_per_product').notNullable()
+        table.increments("id").primary();
+        table.integer("purchase_id").unsigned().references("id").inTable("purchase").onDelete("CASCADE");
+        table.integer("product_id").unsigned().references("id").inTable("product").onDelete("CASCADE");
+        table.integer("quantity").notNullable();
+        table.decimal("unit_price", 10, 2);
         table.timestamps(true, true);
-    })    
+
+    });
+
     
     //21. Provider - Store table
     await knex.schema.createTable("provider_store", table => {

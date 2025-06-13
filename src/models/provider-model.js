@@ -45,11 +45,11 @@ const ProviderModel = {
     },
     
    deleteProvider: async (id) => {
-        const hasProducts = await db('product')
+        const hasLinks = await db('provider_product')
             .where({ provider_id: id })
             .first();
 
-        if (hasProducts) return 'in_use';
+        if (hasLinks) return 'in_use';
 
         const deleted = await db('provider')
             .where({ id })

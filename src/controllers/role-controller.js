@@ -99,6 +99,9 @@ const RoleController = {
         const { id } = req.params;
         const { permitIds } = req.body;
 
+        console.log('📥 Params ID:', id);
+        console.log('📥 permitIds:', permitIds);
+
         if (!Array.isArray(permitIds) || permitIds.length === 0) {
             return res.status(400).json({ error: 'Debe enviar un array con los IDs de permisos' });
         }
@@ -107,10 +110,11 @@ const RoleController = {
             await RoleService.assignPermitsToRole(id, permitIds);
             res.status(200).json({ message: 'Permisos asignados correctamente' });
         } catch (error) {
-            console.error(error);
+            console.error('🔥 ERROR en assignPermitsToRole:', error);
             res.status(500).json({ error: 'Error al asignar permisos al rol' });
         }
-    },
+    }
+,
 
     removeAllPermitsFromRole: async (req, res) => {
         const { id } = req.params;

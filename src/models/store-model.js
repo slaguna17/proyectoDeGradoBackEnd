@@ -4,6 +4,7 @@ const StoreModel = {
     getAllStores: async () => {
         return await db('store').select('*');
     },
+
     getStoreById: async (id) => {
         return db('store').where({ id }).first();
     },
@@ -37,17 +38,24 @@ const StoreModel = {
     },
 
     deleteStore: async (id) => {
-        const hasEmployees = await db('user_shift_store').where({ store_id: id }).first();
-        const hasProducts = await db('product').where({ store_id: id }).first();
-        const hasProviders = await db('provider').where({ store_id: id }).first();
+        const tablesToCheck = [
+            ['user_shift_store', 'store_id'],
+            ['store_product', 'store_id'],
+            ['sales', 'store_id'],
+            ['purchase', 'store_id'],
+            ['sales_box', 'store_id'],
+            ['purchase_box', 'store_id'],
+            ['cash_summary', 'store_id']
+        ];
 
-        if (hasEmployees || hasProducts || hasProviders) return 'in_use';
+        for (const [table, field] of tablesToCheck) {
+            const exists = await db(table).where(field, id).first();
+            if (exists) return 'in_use';
+        }
 
         const deleted = await db('store').where({ id }).del();
         return deleted;
     }
-
-
-}
+};
 
 module.exports = StoreModel;
