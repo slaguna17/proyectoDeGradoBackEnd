@@ -5,7 +5,6 @@ exports.seed = async function (knex) {
   // Inserts seed entries
   await knex('product').insert([
     {
-      id: 1,
       SKU: 'SKU-001',
       name: 'Coca Cola 2L',
       description: 'Botella de gaseosa de 2 litros',
@@ -16,7 +15,6 @@ exports.seed = async function (knex) {
       updated_at: knex.fn.now()
     },
     {
-      id: 2,
       SKU: 'SKU-002',
       name: 'Papas Lays Clásicas',
       description: 'Bolsa de papas fritas',
@@ -27,7 +25,6 @@ exports.seed = async function (knex) {
       updated_at: knex.fn.now()
     },
     {
-      id: 3,
       SKU: 'SKU-003',
       name: 'Leche Pil 1L',
       description: 'Leche entera en envase Tetra Pak',

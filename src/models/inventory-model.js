@@ -1,6 +1,14 @@
 const db = require('../config/db');
 
 const InventoryModel = {
+
+  getStock: async (storeId, productId) => {
+    return await db('store_product')
+      .where({ store_id: storeId, product_id: productId })
+      .select('stock')
+      .first();
+  },
+
   updateStock: async (storeId, productId, stock) => {
     const exists = await db('store_product')
       .where({ store_id: storeId, product_id: productId })

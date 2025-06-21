@@ -1,6 +1,27 @@
 const InventoryService = require('../services/inventory-service');
 
 const InventoryController = {
+
+  getStock: async (req, res) => {
+    const { storeId, productId } = req.params;
+    try {
+        const stock = await InventoryService.getStock(storeId, productId);
+        if (stock == null) {
+          return res.status(400).json({ error: 'Product not found in this store' });
+        }
+        
+        res.status(200).json({
+          store_id: parseInt(storeId),
+          product_id: parseInt(productId),
+          stock
+        });
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error fetching stock for this product in this store' });
+    }
+  },
+
   updateStock: async (req, res) => {
     const { storeId, productId } = req.params;
     const { stock } = req.body;

@@ -3,9 +3,6 @@ const router = express.Router();
 const UserController = require('../controllers/user-controller');
 const AuthMiddleware = require('../middleware/auth-middleware');
 
-
-// Definir rutas y asignarlas a métodos del controlador
-
 //CRUD
 router.get('/', UserController.getUsers);
 router.get('/:id', UserController.getUserById);
@@ -14,10 +11,8 @@ router.put('/updateUser/:id', UserController.updateUser);
 router.put('/changePassword/:id', UserController.changePassword);
 router.delete('/deleteUser/:id', UserController.deleteUser); 
 
-//Login y Token
+//Login and Authorization
 router.post("/login",UserController.login);
-
-//PROTECTED ROUTE GET
 router.get("/login/userInfoByToken", AuthMiddleware.verifyToken, UserController.getUserInfo);
 
 //Roles

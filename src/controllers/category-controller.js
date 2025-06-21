@@ -1,54 +1,79 @@
 const CategoryService = require('../services/category-service');
 
 const CategoryController = {
-    getCategories: async (req,res) => {
+
+    //CRUD
+    getAllCategories: async (req, res) => {
         try {
-            const categories = await CategoryService.getCategories()
+            const categories = await CategoryService.getAllCategories();
             res.status(200).json(categories);
         } catch (error) {
-            console.error(error.message);
-            res.status(500).send("Server error, couldn't get Categories")
+            console.error(error);
+            res.status(500).json({ error: 'Error retrieving categories' });
         }
     },
+
     getCategoryById: async (req, res) => {
-      try {
-        const category = await CategoryService.getCategoryById(req.params.id);
-        res.status(200).json(category);
-      } catch (error) {
-        console.error(error.message);
-        res.status(404).send("Category not found")
-      }
-    },
-
-    createCategory: async(req,res) => {
         try {
-            const newCategory = await CategoryService.createCategory(req.body);
-            res.status(201).json(newCategory)
+            const category = await CategoryService.getCategoryById(req.params.id);
+            if (!category) {
+                return res.status(404).json({ error: 'Category not found' });
+            }
+            res.status(200).json(category);
         } catch (error) {
-            console.error(error.message);
-            res.status(500).send("Server error, couldn't create Category")
+            console.error(error);
+            res.status(500).json({ error: 'Error retrieving category' });
         }
     },
 
-    updateCategory: async(req,res) => {
+    createCategory: async (req, res) => {
+        const { name, description, image } = req.body;
+
+        if (!name) {
+            return res.status(400).json({ error: 'Category name is required' });
+        }
+
         try {
-            const updatedCategory = await CategoryService.updateCategory(req.params.id, req.body);
-            res.status(200).json(updatedCategory); // Return 200 with updated category
+            const newCategory = await CategoryService.createCategory({ name, description, image });
+            res.status(201).json({ message: 'Category created successfully', category: newCategory });
         } catch (error) {
-            console.error(error.message);
-            res.status(404).send({ error: "Couldn't update, Category not found" })
+            console.error(error);
+            res.status(500).json({ error: 'Error creating category' });
         }
     },
 
-    deleteCategory: async(req, res) => {
+    updateCategory: async (req, res) => {
+        const { name } = req.body;
+
+        if (!name) {
+            return res.status(400).json({ error: 'Category name is required' });
+        }
         try {
-            await CategoryService.deleteCategory(req.params.id);
-            res.status(200).json({message: "Category deleted successfully"});
+            const updated = await CategoryService.updateCategory(req.params.id, { name });
+        if (updated) {
+            res.status(200).json({ message: 'Category updated successfully' });
+        } else {
+            res.status(404).json({ error: 'Category not found' });
+        }
         } catch (error) {
-            console.error(error.message);
-            res.status(404).send({ error: "Couldn't delete, Category not found" })
+            console.error(error);
+            res.status(500).json({ error: 'Error updating category' });
+        }
+    },
+
+    deleteCategory: async (req, res) => {
+        try {
+            const deleted = await CategoryService.deleteCategory(req.params.id);
+            if (deleted) {
+                res.status(200).json({ message: 'Category deleted successfully' });
+            } else {
+                res.status(404).json({ error: 'Category not found' });
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error deleting category' });
         }
     }
-  };
+};
 
 module.exports = CategoryController;
