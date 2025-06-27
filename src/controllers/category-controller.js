@@ -43,18 +43,25 @@ const CategoryController = {
     },
 
     updateCategory: async (req, res) => {
-        const { name } = req.body;
+        const { name, description, image } = req.body;
 
         if (!name) {
             return res.status(400).json({ error: 'Category name is required' });
         }
+
         try {
-            const updated = await CategoryService.updateCategory(req.params.id, { name });
-        if (updated) {
-            res.status(200).json({ message: 'Category updated successfully' });
-        } else {
-            res.status(404).json({ error: 'Category not found' });
-        }
+            const updated = await CategoryService.updateCategory(req.params.id, {
+                name,
+                description,
+                image,
+                updated_at: new Date()
+            });
+
+            if (updated) {
+                res.status(200).json({ message: 'Category updated successfully' });
+            } else {
+                res.status(404).json({ error: 'Category not found' });
+            }
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Error updating category' });
