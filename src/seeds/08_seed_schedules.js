@@ -1,8 +1,8 @@
 // src/seeds/08_seed_shifts.js
 exports.seed = async function(knex) {
-  await knex('shift').del();
+  await knex('schedule').del();
 
-  await knex('shift').insert([
+  await knex('schedule').insert([
     {
       name: 'Mañana',
       length: 8,

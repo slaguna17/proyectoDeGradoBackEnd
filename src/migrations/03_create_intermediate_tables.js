@@ -1,5 +1,5 @@
 //Intermediary entities (7 TABLES)
-//role_permit, user_role, user_shift_store, store_product, sales_product, purchase_product, provider_store, provider_product
+//role_permit, user_role, user_schedule_store, store_product, sales_product, purchase_product, provider_store, provider_product
 exports.up = async function(knex) {
     //8 intermidiary tables
 
@@ -12,10 +12,10 @@ exports.up = async function(knex) {
     })
     
     //16. User-Shift-Store table
-    await knex.schema.createTable("user_shift_store", table => {
+    await knex.schema.createTable("user_schedule_store", table => {
         table.increments('id').primary();
         table.integer('user_id').unsigned().references('id').inTable('user');
-        table.integer('shift_id').unsigned().references('id').inTable('shift');
+        table.integer('schedule_id').unsigned().references('id').inTable('schedule');
         table.integer('store_id').unsigned().references('id').inTable('store');
         table.timestamps(true, true);
     })
@@ -86,7 +86,7 @@ exports.down = async function(knex) {
     //Intermediary
     await knex.schema.dropTableIfExists('role_permit');
     await knex.schema.dropTableIfExists('user_role');
-    await knex.schema.dropTableIfExists('user_shift_store');
+    await knex.schema.dropTableIfExists('user_schedule_store');
     await knex.schema.dropTableIfExists('store_product');
     await knex.schema.dropTableIfExists('sales_product');
     await knex.schema.dropTableIfExists('purchase_product');

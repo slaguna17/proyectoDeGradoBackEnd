@@ -1,17 +1,17 @@
 const db = require('../config/db');
 const moment = require('moment');
 
-const ShiftModel = {
+const ScheduleModel = {
 
-    getAllShifts: async () => {
-        return await db('shift').select('*');
+    getAllSchedules: async () => {
+        return await db('schedule').select('*');
     },
 
-    getShiftById: async (id) => {
-        return db('shift').where({ id }).first();
+    getScheduleById: async (id) => {
+        return db('schedule').where({ id }).first();
     },
 
-    createShift: async ({ name, start_time, end_time }) => {
+    createSchedule: async ({ name, start_time, end_time }) => {
         const start = moment(start_time, 'HH:mm');
         const end = moment(end_time, 'HH:mm');
 
@@ -22,14 +22,14 @@ const ShiftModel = {
 
         const length = parseFloat((minutes / 60).toFixed(2));
 
-        const [shift] = await db('shift')
+        const [schedule] = await db('schedule')
             .insert({ name, start_time, end_time, length })
             .returning(['id', 'name', 'start_time', 'end_time', 'length']);
 
-        return shift;
+        return schedule;
     },
 
-    updateShift: async (id, { name, start_time, end_time }) => {
+    updateSchedule: async (id, { name, start_time, end_time }) => {
         const start = moment(start_time, 'HH:mm');
         const end = moment(end_time, 'HH:mm');
 
@@ -40,7 +40,7 @@ const ShiftModel = {
 
         const length = parseFloat((minutes / 60).toFixed(2));
 
-        const updated = await db('shift')
+        const updated = await db('schedule')
             .where({ id })
             .update({
                 name,
@@ -53,9 +53,9 @@ const ShiftModel = {
         return updated;
     },
     
-    deleteShift: async(id) => {
-        return await db('shift').where({id}).del();
+    deleteSchedule: async(id) => {
+        return await db('schedule').where({id}).del();
     }
 }
 
-module.exports = ShiftModel;
+module.exports = ScheduleModel;

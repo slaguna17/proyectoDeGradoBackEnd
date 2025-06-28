@@ -1,5 +1,5 @@
 //Initial entities (9 TABLES)
-//USER, PERMIT, ROLE, CATEGORY, SHIFT, STORE, PROVIDER, SALES_BOX, PURCHASE_BOX 
+//USER, PERMIT, ROLE, CATEGORY, SCHEDULE, STORE, PROVIDER, SALES_BOX, PURCHASE_BOX 
 exports.up = async function(knex) {
       
     //1. user
@@ -34,8 +34,8 @@ exports.up = async function(knex) {
         table.timestamps(true, true);
     })
 
-    //4. shift
-    await knex.schema.createTable("shift", table => {
+    //4. schedule
+    await knex.schema.createTable("schedule", table => {
         table.increments('id').primary();
         table.string('name');
         table.integer('length');
@@ -125,7 +125,7 @@ exports.down = async function(knex) {
     await knex.schema.dropTableIfExists('user');
     await knex.schema.dropTableIfExists('permit');
     await knex.schema.dropTableIfExists('role');
-    await knex.schema.dropTableIfExists('shift');
+    await knex.schema.dropTableIfExists('schedule');
     await knex.schema.dropTableIfExists('store');
     await knex.schema.dropTableIfExists('provider');
     await knex.schema.dropTableIfExists('category');
