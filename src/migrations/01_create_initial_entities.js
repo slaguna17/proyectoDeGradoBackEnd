@@ -14,6 +14,8 @@ exports.up = async function(knex) {
         table.string('status').notNullable();
         table.string('last_access').notNullable();
         table.string('avatar');
+        table.string('reset_token').nullable();
+        table.timestamp('reset_expires').nullable();
         table.timestamps(true, true);
     });
 

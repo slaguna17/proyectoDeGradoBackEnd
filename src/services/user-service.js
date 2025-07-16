@@ -4,8 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const UserService = {
     getUsers: async () => {
-        const users = await UserModel.getUsers();
-        return users;
+        return await UserModel.getUsers();
     },
 
     getUserById: async (id) => {
@@ -54,17 +53,13 @@ const UserService = {
         return await UserModel.updatePassword(id, hashedPassword);
     },
 
-
     deleteUser: async (id) => {
         await UserModel.deleteUserRelations(id);
         return await UserModel.deleteUser(id);
     },
-         
 
     login: async (email, password) => {
         const user = await UserModel.findByEmail(email);
-        
-        //Check User credetials
         if (!user){
             throw new Error('Invalid credentials');
         }
@@ -73,17 +68,40 @@ const UserService = {
         if (!isPassword){
             throw new Error('Invalid credentials');
         }
-        //Check token
+
         const token = jwt.sign({userId: user.id}, process.env.SECRET_KEY,{
             expiresIn: "5m"
         });
 
-        return token;
-    },  
+        return {
+            token,
+            user: {
+                id: user.id,
+                username: user.username,
+                full_name: user.full_name,
+                email: user.email
+            }
+        };
+    },
+
+    findByEmail: async (email) => {
+        return await UserModel.findByEmail(email);
+    },
+
+    savePasswordResetToken: async (userId, token, expires) => {
+        return await UserModel.savePasswordResetToken(userId, token, expires);
+    },
+
+    findByResetToken: async (token) => {
+        return await UserModel.findByResetToken(token);
+    },
+
+    clearPasswordResetToken: async (userId) => {
+        return await UserModel.clearPasswordResetToken(userId);
+    },
 
     getRoles: async () => {
-        const roles = await UserModel.getRoles();
-        return roles;
+        return await UserModel.getRoles();
     },
 
     getEmployeesByStore: async (storeId) => {
@@ -129,17 +147,13 @@ const UserService = {
         return newUser;
     },
 
-
     searchUsersByRole: async (query) => {
         return await UserModel.getUsersByRoleAndQuery(query);
     },
 
-
     assignUserToShiftStore: async (userId, shiftId, storeId) => {
-        await UserModel.assignShiftStore(userId, shiftId, storeId);
+        return await UserModel.assignShiftStore(userId, shiftId, storeId);
     }
-
-
-  };
+};
 
 module.exports = UserService;

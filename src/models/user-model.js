@@ -92,6 +92,21 @@ const UserModel = {
             });
     },
 
+    savePasswordResetToken: async (userId, token, expires) => {
+        return await db('user')
+            .where({ id: userId })
+            .update({ reset_token: token, reset_expires: expires });
+    },
+
+    findByResetToken: async (token) => {
+        return await db('user').where({ reset_token: token }).first();
+    },
+
+    clearPasswordResetToken: async (userId) => {
+        return await db('user')
+            .where({ id: userId })
+            .update({ reset_token: null, reset_expires: null });
+    },
     
     deleteUserRelations: async (id) => {
         await db('user_role').where({ user_id: id }).del();
@@ -102,7 +117,6 @@ const UserModel = {
         return await db('user').where({ id }).del();
     },
 
-    //login
     findByEmail: async (email) => {
         return await db('user').where({email}).first();
     },
@@ -129,7 +143,6 @@ const UserModel = {
             );
     },
 
-
    getUsersByRoleAndQuery: async (query) => {
         return db('user')
             .join('user_role', 'user.id', 'user_role.user_id')
@@ -148,8 +161,6 @@ const UserModel = {
             updated_at: db.fn.now()
         });
     }
-
-
 }
 
 module.exports = UserModel;

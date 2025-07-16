@@ -8,12 +8,14 @@ router.get('/', UserController.getUsers);
 router.get('/:id', UserController.getUserById);
 router.post('/register', UserController.createUser);
 router.put('/updateUser/:id', UserController.updateUser);
-router.put('/changePassword/:id', UserController.changePassword);
 router.delete('/deleteUser/:id', UserController.deleteUser); 
 
 //Login and Authorization
 router.post("/login",UserController.login);
 router.get("/login/userInfoByToken", AuthMiddleware.verifyToken, UserController.getUserInfo);
+router.put('/changePassword/:id', UserController.changePassword);
+router.post('/forgotPassword', UserController.forgotPassword);
+router.post('/resetPassword', UserController.resetPassword);
 
 //Roles
 router.get("/default/roles", UserController.getRoles);

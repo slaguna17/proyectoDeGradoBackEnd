@@ -1,4 +1,3 @@
-// src/seeds/03_seed_users.js
 const bcrypt = require('bcrypt');
 
 exports.seed = async function(knex) {
@@ -16,7 +15,9 @@ exports.seed = async function(knex) {
       phone: '76742300',
       status: 'ACTIVE',
       last_access: new Date().toISOString(),
-      avatar: null
+      avatar: null,
+      reset_token: null,
+      reset_expires: null
     }
   ]);
 };
