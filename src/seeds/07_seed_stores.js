@@ -1,4 +1,3 @@
-// src/seeds/07_seed_stores.js
 exports.seed = async function(knex) {
   await knex('store').del();
 

@@ -39,7 +39,7 @@ const StoreModel = {
 
     deleteStore: async (id) => {
         const tablesToCheck = [
-            ['user_shift_store', 'store_id'],
+            ['user_schedule_store', 'store_id'],
             ['store_product', 'store_id'],
             ['sales', 'store_id'],
             ['purchase', 'store_id'],

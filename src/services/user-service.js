@@ -104,6 +104,10 @@ const UserService = {
         return await UserModel.getRoles();
     },
 
+    getAllEmployees: async () => {
+        return await UserModel.getAllEmployees();
+    },
+
     getEmployeesByStore: async (storeId) => {
         return await UserModel.getEmployeesByStore(storeId);
     },
@@ -120,7 +124,7 @@ const UserService = {
             avatar,
             roleId,
             storeId,
-            shiftId
+            scheduleId
         } = data;
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -140,8 +144,8 @@ const UserService = {
             await UserModel.createUserRole(newUser.id, roleId);
         }
 
-        if (storeId && shiftId) {
-            await UserModel.assignShiftStore(newUser.id, shiftId, storeId);
+        if (storeId && scheduleId) {
+            await UserModel.assignScheduleStore(newUser.id, scheduleId, storeId);
         }
 
         return newUser;
@@ -151,8 +155,8 @@ const UserService = {
         return await UserModel.getUsersByRoleAndQuery(query);
     },
 
-    assignUserToShiftStore: async (userId, shiftId, storeId) => {
-        return await UserModel.assignShiftStore(userId, shiftId, storeId);
+    assignUserToStore: async (userId, scheduleId, storeId) => {
+        return await UserModel.assignScheduleStore(userId, scheduleId, storeId);
     }
 };
 

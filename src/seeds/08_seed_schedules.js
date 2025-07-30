@@ -1,4 +1,3 @@
-// src/seeds/08_seed_shifts.js
 exports.seed = async function(knex) {
   await knex('schedule').del();
 

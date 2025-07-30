@@ -11,7 +11,7 @@ exports.up = async function(knex) {
         table.timestamps(true, true);
     })
     
-    //16. User-Shift-Store table
+    //16. User-Schedule-Store table
     await knex.schema.createTable("user_schedule_store", table => {
         table.increments('id').primary();
         table.integer('user_id').unsigned().references('id').inTable('user');

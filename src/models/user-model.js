@@ -16,20 +16,20 @@ const UserModel = {
             .where('user_role.user_id', id)
             .select('role.id', 'role.name', 'role.isAdmin');
 
-        const assignments = await db('user_shift_store')
-            .join('store', 'user_shift_store.store_id', 'store.id')
-            .join('shift', 'user_shift_store.shift_id', 'shift.id')
-            .where('user_shift_store.user_id', id)
+        const assignments = await db('user_schedule_store')
+            .join('store', 'user_schedule_store.store_id', 'store.id')
+            .join('schedule', 'user_schedule_store.schedule_id', 'schedule.id')
+            .where('user_schedule_store.user_id', id)
             .select(
                 'store.id as storeId',
                 'store.name as storeName',
-                'shift.id as shiftId',
-                'shift.name as shiftName'
+                'schedule.id as scheduleId',
+                'schedule.name as scheduleName'
             );
 
         const mappedAssignments = assignments.map(a => ({
             store: { id: a.storeId, name: a.storeName },
-            shift: { id: a.shiftId, name: a.shiftName }
+            schedule: { id: a.scheduleId, name: a.scheduleName }
         }));
 
         return {
@@ -110,7 +110,7 @@ const UserModel = {
     
     deleteUserRelations: async (id) => {
         await db('user_role').where({ user_id: id }).del();
-        await db('user_shift_store').where({ user_id: id }).del();
+        await db('user_schedule_store').where({ user_id: id }).del();
     },
 
     deleteUser: async (id) => {
@@ -125,22 +125,51 @@ const UserModel = {
         return db('role').select('*')
     },
 
-    getEmployeesByStore: async (storeId) => {
-        return await db('user_shift_store')
-            .join('user', 'user_shift_store.user_id', 'user.id')
-            .join('shift', 'user_shift_store.shift_id', 'shift.id')
+    getAllEmployees: async () => {
+        return db('user')
             .join('user_role', 'user.id', 'user_role.user_id')
             .join('role', 'user_role.role_id', 'role.id')
-            .where('user_shift_store.store_id', storeId)
+            .leftJoin('user_schedule_store', 'user.id', 'user_schedule_store.user_id')
+            .leftJoin('store', 'user_schedule_store.store_id', 'store.id')
+            .leftJoin('schedule', 'user_schedule_store.schedule_id', 'schedule.id')
+            .where('role.isAdmin', false)
+            .select(
+                'user.id',
+                'user.username',
+                'user.full_name',
+                'user.email',
+                'user.avatar',
+                'store.id as store_id',
+                'store.name as store_name',
+                'schedule.id as schedule_id',
+                'schedule.name as schedule_name',
+                db.raw('array_agg(role.name) as roles')
+            )
+            .groupBy('user.id', 'store.id', 'schedule.id');
+    },
+
+    getEmployeesByStore: async (storeId) => {
+        return await db('user_schedule_store')
+            .join('user', 'user_schedule_store.user_id', 'user.id')
+            .join('schedule', 'user_schedule_store.schedule_id', 'schedule.id')
+            .join('store', 'user_schedule_store.store_id', 'store.id')
+            .join('user_role', 'user.id', 'user_role.user_id')
+            .join('role', 'user_role.role_id', 'role.id')
+            .where('user_schedule_store.store_id', storeId)
             .andWhere('role.isAdmin', false)
             .select(
-            'user.id as user_id',
-            'user.username',
-            'user.full_name',
-            'user.email',
-            'shift.id as shift_id',
-            'shift.name as shift_name'
-            );
+                'user.id',
+                'user.username',
+                'user.full_name',
+                'user.email',
+                'user.avatar',
+                'store.id as store_id',
+                'store.name as store_name',
+                'schedule.id as schedule_id',
+                'schedule.name as schedule_name',
+                db.raw('array_agg(role.name) as roles')
+            )
+            .groupBy('user.id', 'store.id', 'schedule.id');
     },
 
    getUsersByRoleAndQuery: async (query) => {
@@ -152,10 +181,10 @@ const UserModel = {
             .distinct('user.id', 'user.username', 'user.full_name', 'user.email', 'user.avatar', 'user.created_at');
     },
 
-    assignShiftStore: async (userId, shiftId, storeId) => {
-        return db('user_shift_store').insert({
+    assignScheduleStore: async (userId, scheduleId, storeId) => {
+        return db('user_schedule_store').insert({
             user_id: userId,
-            shift_id: shiftId,
+            schedule_id: scheduleId,
             store_id: storeId,
             created_at: db.fn.now(),
             updated_at: db.fn.now()

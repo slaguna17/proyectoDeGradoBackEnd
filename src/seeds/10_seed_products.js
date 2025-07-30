@@ -8,9 +8,9 @@ exports.seed = async function (knex) {
       SKU: 'SKU-001',
       name: 'Coca Cola 2L',
       description: 'Botella de gaseosa de 2 litros',
-      image: null,
+      image: 'https://fsa.bo/productos/01658-01.jpg',
       brand: 'Coca Cola',
-      category_id: 1, // Bebidas
+      category_id: 2, // Bebidas
       created_at: knex.fn.now(),
       updated_at: knex.fn.now()
     },
@@ -18,9 +18,9 @@ exports.seed = async function (knex) {
       SKU: 'SKU-002',
       name: 'Papas Lays Clásicas',
       description: 'Bolsa de papas fritas',
-      image: null,
+      image: 'https://m.media-amazon.com/images/I/8141nrQe0aL.jpg',
       brand: 'Lays',
-      category_id: 2, // Snacks
+      category_id: 3, // Snacks
       created_at: knex.fn.now(),
       updated_at: knex.fn.now()
     },
@@ -28,9 +28,9 @@ exports.seed = async function (knex) {
       SKU: 'SKU-003',
       name: 'Leche Pil 1L',
       description: 'Leche entera en envase Tetra Pak',
-      image: null,
+      image: 'https://pilandina.com.bo/wp-content/uploads/2019/06/Leche-caja-1.webp',
       brand: 'Pil',
-      category_id: 3, // Lácteos
+      category_id: 1, // Lácteos
       created_at: knex.fn.now(),
       updated_at: knex.fn.now()
     }

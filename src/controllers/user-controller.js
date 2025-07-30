@@ -215,6 +215,16 @@ const UserController = {
         }
     },
 
+    getAllEmployees: async (req, res) => {
+        try {
+            const employees = await UserService.getAllEmployees();
+            res.status(200).json(employees);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error obtaining all employees' });
+        }
+    },
+
     getEmployeesByStore: async (req, res) => {
         const { storeId } = req.params;
 
@@ -240,7 +250,7 @@ const UserController = {
                 avatar,
                 roleId,
                 storeId,
-                shiftId
+                scheduleId
             } = req.body;
 
             const user = await UserService.createEmployee({
@@ -254,7 +264,7 @@ const UserController = {
                 avatar,
                 roleId,
                 storeId,
-                shiftId
+                scheduleId
             });
 
             res.status(201).json({
@@ -280,9 +290,9 @@ const UserController = {
 
     assignSchedule: async (req, res) => {
         try {
-            const { shift_id, store_id } = req.body;
+            const { schedule_id, store_id } = req.body;
             const user_id = req.params.id;
-            await UserService.assignUserToShiftStore(user_id, shift_id, store_id);
+            await UserService.assignUserToScheduleStore(user_id, schedule_id, store_id);
             res.status(200).json({ message: 'Asignación exitosa' });
         } catch (error) {
             console.error(error.message);
