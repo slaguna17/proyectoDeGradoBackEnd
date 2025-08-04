@@ -3,7 +3,7 @@ const router = express.Router();
 const UserController = require('../controllers/user-controller');
 const AuthMiddleware = require('../middleware/auth-middleware');
 
-// Empleados y búsquedas (más específicas siempre primero)
+// Empleados y búsquedas
 router.get('/employees', UserController.getAllEmployees);
 router.get('/search/employees', UserController.searchEmployees);
 router.get('/employeesByStore/:storeId', UserController.getEmployeesByStore);
@@ -19,12 +19,13 @@ router.put('/changePassword/:id', UserController.changePassword);
 router.post('/forgotPassword', UserController.forgotPassword);
 router.post('/resetPassword', UserController.resetPassword);
 
-// CRUD de usuario (los de parámetros al final)
+// CRUD de usuario
 router.get('/', UserController.getUsers);
 router.post('/register', UserController.createUser);
 router.put('/updateUser/:id', UserController.updateUser);
 router.delete('/deleteUser/:id', UserController.deleteUser);
 router.put('/:id/assign-schedule', UserController.assignSchedule);
-router.get('/:id', UserController.getUserById); // SIEMPRE al final
+router.put('/:id/update-role', UserController.updateUserRole);
+router.get('/:id', UserController.getUserById);
 
 module.exports = router;

@@ -290,15 +290,42 @@ const UserController = {
 
     assignSchedule: async (req, res) => {
         try {
-            const { schedule_id, store_id } = req.body;
             const user_id = req.params.id;
+            const { schedule_id, store_id } = req.body;
+
+            if (!user_id || !schedule_id || !store_id) {
+                return res.status(400).json({ error: "Missing data for assignment" });
+            }
+
             await UserService.assignUserToScheduleStore(user_id, schedule_id, store_id);
+
             res.status(200).json({ message: 'Asignación exitosa' });
         } catch (error) {
-            console.error(error.message);
+            console.error(error);
             res.status(500).json({ error: 'Error en asignación de horario' });
         }
+    },
+
+    updateUserRole: async (req, res) => {
+        try {
+            const user_id = req.params.id;
+            const { role_id } = req.body;
+
+            const role = await db('role').where({ id: role_id }).first();
+            if (!role || role.isAdmin) {
+                return res.status(400).json({ error: "Cannot assign admin roles" });
+            }
+
+            await UserService.updateUserRole(user_id, role_id);
+
+            res.status(200).json({ message: 'Rol actualizado' });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Error actualizando rol' });
+        }
     }
+
+
   };
 
 module.exports = UserController;

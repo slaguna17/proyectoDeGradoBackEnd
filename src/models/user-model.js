@@ -182,6 +182,7 @@ const UserModel = {
     },
 
     assignScheduleStore: async (userId, scheduleId, storeId) => {
+        await db('user_schedule_store').where({ user_id: userId }).del();
         return db('user_schedule_store').insert({
             user_id: userId,
             schedule_id: scheduleId,
@@ -189,7 +190,13 @@ const UserModel = {
             created_at: db.fn.now(),
             updated_at: db.fn.now()
         });
+    },
+
+    updateUserRole: async (userId, newRoleId) => {
+        await db('user_role').where({ user_id: userId }).del();
+        return db('user_role').insert({ user_id: userId, role_id: newRoleId });
     }
+
 }
 
 module.exports = UserModel;

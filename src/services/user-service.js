@@ -157,7 +157,17 @@ const UserService = {
 
     assignUserToStore: async (userId, scheduleId, storeId) => {
         return await UserModel.assignScheduleStore(userId, scheduleId, storeId);
+    },
+
+    assignUserToScheduleStore: async (userId, scheduleId, storeId) => {
+        return await UserModel.assignScheduleStore(userId, scheduleId, storeId);
+    },
+
+    updateUserRole: async (userId, newRoleId) => {
+        return await UserModel.updateUserRole(userId, newRoleId);
     }
+
+
 };
 
 module.exports = UserService;
