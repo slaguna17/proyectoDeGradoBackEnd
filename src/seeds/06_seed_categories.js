@@ -1,4 +1,3 @@
-// src/seeds/06_seed_categories.js
 exports.seed = async function(knex) {
   await knex('category').del();
 

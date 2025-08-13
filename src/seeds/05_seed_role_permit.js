@@ -1,4 +1,3 @@
-// src/seeds/05_seed_role_permit.js
 exports.seed = async function (knex) {
   await knex('role_permit').del();
 
