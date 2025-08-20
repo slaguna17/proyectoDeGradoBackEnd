@@ -1,92 +1,116 @@
-const { S3Client, PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+const {
+  PutObjectCommand,
+  GetObjectCommand,
+  DeleteObjectCommand,
+  HeadObjectCommand,
+} = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-const { v4: uuidv4 } = require("uuid");
-const dotenv = require("dotenv");
+const { createPresignedPost } = require("@aws-sdk/s3-presigned-post");
 
-dotenv.config();
+const {
+  s3,
+  S3_BUCKET,
+  basePublicUrl,
+  PRESIGNED_URL_EXPIRES_IN,
+  S3_UPLOAD_MAX_MB,
+} = require("../config/s3");
 
-// Valida variables de entorno esenciales al iniciar el servicio
-const BUCKET_NAME = process.env.S3_BUCKET;
-const AWS_REGION = process.env.AWS_REGION;
-const AWS_ACCESS_KEY_ID = process.env.AWS_KEY;
-const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
-
-if (!BUCKET_NAME || !AWS_REGION || !AWS_ACCESS_KEY_ID || !AWS_SECRET_ACCESS_KEY) {
-  console.error("Error: Faltan configuraciones de AWS S3 en las variables de entorno (.env)");
-  throw new Error("Configuración de AWS S3 incompleta.");
+// ---------- helpers de sanitización ----------
+function sanitizeFolder(input = "") {
+  const clean = String(input)
+    .replace(/^\/*|\/*$/g, "")
+    .replace(/[^a-zA-Z0-9/_-]+/g, "-")
+    .replace(/\/{2,}/g, "/")
+    .slice(0, 200);
+  if (clean.includes("..")) throw new Error("Invalid folder");
+  return clean;
 }
 
-const s3Client = new S3Client({
-  region: AWS_REGION,
-  credentials: {
-    accessKeyId: AWS_ACCESS_KEY_ID,
-    secretAccessKey: AWS_SECRET_ACCESS_KEY,
-  }
-});
+function sanitizeFileName(input = "") {
+  const clean = String(input)
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-zA-Z0-9._-]+/g, "-")
+    .slice(0, 200);
+  if (!clean) throw new Error("Invalid fileName");
+  if (clean.includes("/") || clean.includes("..")) throw new Error("Invalid fileName");
+  return clean;
+}
 
-/**
- * Genera una URL prefirmada para subir un archivo a S3 y la URL pública final.
- * @param {string} contentType - El tipo MIME del archivo (ej. 'image/jpeg').
- * @param {string} [entityType='general'] - Tipo de entidad para organizar en S3 (ej. 'avatars', 'products').
- * @returns {Promise<{signedUrl: string, publicUrl: string, key: string}>}
- */
-const generatePresignedPutUrl = async (contentType, entityType = 'general') => {
-  if (!contentType || typeof contentType !== 'string') {
-    throw new Error("contentType es inválido.");
-  }
-  if (!BUCKET_NAME) {
-    throw new Error("Nombre del bucket S3 no configurado.");
-  }
+// ---------- Key build ----------
+function buildKey({ folder = "", fileName }) {
+  const f = sanitizeFolder(folder);
+  const n = sanitizeFileName(fileName);
+  return f ? `${f}/${n}` : n;
+}
 
-  const fileExtension = contentType.split('/')[1] || 'bin';
-  const uniqueKey = `${entityType}/${uuidv4()}.${fileExtension}`;
+// ---------- existencia opcional ----------
+async function headObject(key) {
+  const cmd = new HeadObjectCommand({ Bucket: S3_BUCKET, Key: key });
+  return s3.send(cmd);
+}
 
-  const command = new PutObjectCommand({
-    Bucket: BUCKET_NAME,
-    Key: uniqueKey,
-    ContentType: contentType,
-  });
+// ---------- URL firmada para lectura (GET) ----------
+async function getSignedReadUrl(key, expiresIn = PRESIGNED_URL_EXPIRES_IN) {
+  const cmd = new GetObjectCommand({ Bucket: S3_BUCKET, Key: key });
+  return getSignedUrl(s3, cmd, { expiresIn });
+}
 
-  try {
-    const signedUrl = await getSignedUrl(s3Client, command, { expiresIn: 300 });
-    const publicUrl = `https://${BUCKET_NAME}.s3.${AWS_REGION}.amazonaws.com/${uniqueKey}`;
-
-    console.log(`Generated Presigned URL. Key: ${uniqueKey}`);
-    return { signedUrl, publicUrl, key: uniqueKey };
-  } catch (error) {
-    console.error(`Error generando presigned URL para S3:`, error);
-    throw new Error(`No se pudo generar la URL prefirmada. ${error.message}`);
-  }
-};
-
-/**
- * Elimina un objeto de S3 usando su clave.
- * @param {string} key - La clave del objeto S3 a eliminar.
- * @returns {Promise<void>}
- */
-const deleteImageFromS3 = async (key) => {
-  if (!key || typeof key !== 'string') {
-    console.warn("Intento de eliminar imagen S3 con clave inválida:", key);
-    return;
-  }
-  if (!BUCKET_NAME) {
-    throw new Error("Nombre del bucket S3 no configurado.");
-  }
-
-  const command = new DeleteObjectCommand({
-    Bucket: BUCKET_NAME,
+// ---------- URL firmada para subida directa (PUT) ----------
+async function getSignedPutUrl({ key, contentType, expiresIn = PRESIGNED_URL_EXPIRES_IN }) {
+  if (!contentType) throw new Error("contentType is required");
+  const cmd = new PutObjectCommand({
+    Bucket: S3_BUCKET,
     Key: key,
+    ContentType: contentType,
+    // ACL: "public-read", // no recomendado; preferir privado + GET firmado o CDN
   });
+  return getSignedUrl(s3, cmd, { expiresIn });
+}
 
+// ---------- POST presign (alternativa a PUT) ----------
+async function getPresignedPost({ key, contentType, maxMB = S3_UPLOAD_MAX_MB, expiresIn = PRESIGNED_URL_EXPIRES_IN }) {
+  if (!contentType) throw new Error("contentType is required");
+  return createPresignedPost(s3, {
+    Bucket: S3_BUCKET,
+    Key: key,
+    Conditions: [
+      ["content-length-range", 0, maxMB * 1024 * 1024],
+      ["starts-with", "$Content-Type", contentType.split("/")[0] + "/"],
+    ],
+    Fields: { "Content-Type": contentType },
+    Expires: expiresIn,
+  });
+}
+
+// ---------- conversiones key <-> url ----------
+function publicUrlFromKey(key) {
+  return `${basePublicUrl()}/${encodeURI(key)}`;
+}
+
+function keyFromUrl(url) {
   try {
-    await s3Client.send(command);
-    console.log(`Successfully deleted image from S3. Key: ${key}`);
-  } catch (error) {
-    console.error(`Error eliminando imagen de S3 (Key: ${key}):`, error);
+    const u = new URL(url);
+    return decodeURI(u.pathname.replace(/^\/+/, ""));
+  } catch {
+    // si no era URL válida, asumimos que ya es una key
+    return url;
   }
-};
+}
+
+// ---------- borrar objeto ----------
+async function deleteObject(key) {
+  const cmd = new DeleteObjectCommand({ Bucket: S3_BUCKET, Key: key });
+  await s3.send(cmd);
+}
 
 module.exports = {
-  generatePresignedPutUrl,
-  deleteImageFromS3
+  buildKey,
+  headObject,
+  getSignedReadUrl,
+  getSignedPutUrl,
+  getPresignedPost,
+  publicUrlFromKey,
+  keyFromUrl,
+  deleteObject,
 };

@@ -6,14 +6,23 @@ exports.up = async function(knex) {
   // 10. product
   await knex.schema.createTable("product", table => {
     table.increments('id').primary();
-    table.string('SKU');
-    table.string('name');
+    table.string('SKU').notNullable();
+    table.string('name').notNullable();
     table.string('description');
     table.string('image');
-    table.string('brand');
-    table.integer('category_id').unsigned().references('id').inTable('category');
+    table.string('brand').notNullable();
+    table
+      .integer('category_id')
+      .unsigned()
+      .notNullable()
+      .references('id')
+      .inTable('category')
+      .onDelete('RESTRICT');
     table.timestamps(true, true);
+    table.unique(['SKU'], 'uniq_product_sku');
+    table.index(['category_id'], 'idx_product_category_id');
   });
+
 
   // 11. forecast
   await knex.schema.createTable("forecast", table => {

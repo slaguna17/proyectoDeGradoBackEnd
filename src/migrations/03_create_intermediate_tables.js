@@ -1,7 +1,6 @@
 //Intermediary entities (7 TABLES)
 //role_permit, user_role, user_schedule_store, store_product, sales_product, purchase_product, provider_store, provider_product
 exports.up = async function(knex) {
-    //8 intermidiary tables
 
     //15. Role-Permit table
     await knex.schema.createTable("role_permit", table => {
@@ -32,12 +31,36 @@ exports.up = async function(knex) {
     //18. Store-Product table
     await knex.schema.createTable("store_product", table => {
         table.increments('id').primary();
-        table.integer('store_id').unsigned().references('id').inTable('store');
-        table.integer('product_id').unsigned().references('id').inTable('product');
-        table.integer('stock').notNullable();
-        table.string('expiration_date')
+
+        table
+            .integer('store_id')
+            .unsigned()
+            .notNullable()
+            .references('id')
+            .inTable('store')
+            .onDelete('CASCADE');
+
+        table
+            .integer('product_id')
+            .unsigned()
+            .notNullable()
+            .references('id')
+            .inTable('product')
+            .onDelete('CASCADE');
+
+        table.integer('stock').notNullable().defaultTo(0);
+        table.string('expiration_date');
         table.timestamps(true, true);
-    })
+        table.unique(['store_id', 'product_id'], 'uniq_store_product_store_product');
+        table.index(['store_id'], 'idx_store_product_store');
+        table.index(['product_id'], 'idx_store_product_product');
+    });
+
+    // CHECK (stock >= 0) - Postgres
+    await knex.raw(`
+        ALTER TABLE store_product
+        ADD CONSTRAINT chk_store_product_stock_nonnegative CHECK (stock >= 0);
+    `);
 
     //19. Sales - Product table
     await knex.schema.createTable("sales_product", table => {
@@ -72,10 +95,27 @@ exports.up = async function(knex) {
     //22. Provider - Product table
     await knex.schema.createTable("provider_product", table => {
         table.increments('id').primary();
-        table.integer('provider_id').unsigned().references('id').inTable('provider');
-        table.integer('product_id').unsigned().references('id').inTable('product');
+
+        table
+            .integer('provider_id')
+            .unsigned()
+            .notNullable()
+            .references('id')
+            .inTable('provider')
+            .onDelete('CASCADE');
+
+        table
+            .integer('product_id')
+            .unsigned()
+            .notNullable()
+            .references('id')
+            .inTable('product')
+            .onDelete('CASCADE');
+
         table.timestamps(true, true);
-    })        
+        table.unique(['provider_id', 'product_id'], 'uniq_provider_product_provider_product');
+    });
+     
 };
 
 /**

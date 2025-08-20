@@ -1,23 +1,18 @@
 const CategoryModel = require('../models/category-model');
 
 const CategoryService = {
-  
+
   getAllCategories: async () => {
     return await CategoryModel.getCategories();
   },
 
   getCategoryById: async (id) => {
-    if (!id) throw new Error('Category ID is required');
-
-    const category = await CategoryModel.getCategoryById(id);
-    if (!category) throw new Error('Category not found');
-
-    return category;
+    if (!id) return null;
+    return await CategoryModel.getCategoryById(id); // null si no existe
   },
 
   createCategory: async (data) => {
     const { name, description, image } = data;
-
     if (!name) throw new Error('Category name is required');
 
     return await CategoryModel.createCategory({
@@ -31,28 +26,22 @@ const CategoryService = {
 
   updateCategory: async (id, data) => {
     const { name, description, image } = data;
-
+    if (!id) return null;
     if (!name) throw new Error('Category name is required');
 
-    const updated = await CategoryModel.updateCategory(id, {
+    // Devuelve el registro actualizado o null si no existe
+    return await CategoryModel.updateCategory(id, {
       name,
-      description,
+      description: description || '',
       image,
       updated_at: new Date()
     });
-
-    if (!updated) throw new Error('Category not found');
-
-    return updated;
   },
 
   deleteCategory: async (id) => {
-    if (!id) throw new Error('Category ID is required');
-
-    const deletedCount = await CategoryModel.deleteCategory(id);
-    if (deletedCount === 0) throw new Error('Category not found');
-
-    return { message: 'Category deleted successfully' };
+    if (!id) return 0;
+    // Devuelve cantidad de filas eliminadas (0 si no existe)
+    return await CategoryModel.deleteCategory(id);
   }
 };
 

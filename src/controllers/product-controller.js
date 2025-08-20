@@ -1,10 +1,13 @@
 const ProductService = require('../services/product-service');
+const { attachImageUrl, attachImageUrlMany, replaceImageKey } = require('../utils/image-helpers');
 
 const ProductController = {
   getAllProducts: async (req, res) => {
     try {
+      const signed = String(req.query.signed).toLowerCase() === 'true';
       const products = await ProductService.getAllProductsWithRelations();
-      res.status(200).json(products);
+      const out = await attachImageUrlMany(products, 'image', { signed });
+      res.status(200).json(out);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Error retrieving products with relations' });
@@ -13,8 +16,10 @@ const ProductController = {
 
   getProductById: async (req, res) => {
     try {
+      const signed = String(req.query.signed).toLowerCase() === 'true';
       const product = await ProductService.getProductById(req.params.id);
-      res.status(200).json(product);
+      const out = await attachImageUrl(product, 'image', { signed });
+      res.status(200).json(out);
     } catch (error) {
       console.error(error.message);
       res.status(404).send("Product not found");
@@ -22,18 +27,20 @@ const ProductController = {
   },
 
   createProduct: async (req, res) => {
-    const { SKU, name, description, image, brand, category_id, store_id, stock, expiration_date } = req.body;
+    const { SKU, name, description, image_key, image, brand, category_id, store_id, stock, expiration_date } = req.body;
 
     if (!SKU || !name || !category_id || !store_id || stock == null) {
       return res.status(400).json({ error: 'SKU, name, category_id, store_id and stock are required' });
     }
 
     try {
-      const product = await ProductService.createProduct(
-        { SKU, name, description, image, brand, category_id },
-        { store_id, stock, expiration_date }
-      );
-      res.status(201).json({ message: 'Product created successfully', product });
+      // guarda SOLO la key (image_key tiene prioridad; si no, usa image)
+      const productData = { SKU, name, description, brand, category_id, image: image_key ?? image ?? null };
+      const storeData = { store_id, stock, expiration_date };
+
+      const created = await ProductService.createProduct(productData, storeData);
+      const out = await attachImageUrl(created, 'image', { signed: false });
+      res.status(201).json({ message: 'Product created successfully', product: out });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message || 'Error creating product' });
@@ -42,19 +49,32 @@ const ProductController = {
 
   updateProduct: async (req, res) => {
     const { id } = req.params;
-    const { SKU, name, description, image, brand, category_id } = req.body;
+    const { SKU, name, description, image_key, image, brand, category_id, removeImage = false } = req.body;
 
     if (!SKU || !name || !category_id) {
       return res.status(400).json({ error: 'SKU, name and category_id are required' });
     }
 
     try {
+      const prev = await ProductService.getProductById(id);
+
+      let nextImage = prev?.image ?? null;
+      if (removeImage) {
+        if (prev?.image) await replaceImageKey(prev.image, null); // borra la anterior
+        nextImage = null;
+      } else if (image_key != null || image != null) {
+        nextImage = await replaceImageKey(prev?.image, image_key ?? image);
+      }
+
       const updated = await ProductService.updateProduct(id, {
-        SKU, name, description, image, brand, category_id
+        SKU, name, description, brand, category_id, image: nextImage
       });
 
       if (updated) {
-        res.status(200).json({ message: 'Product updated successfully' });
+        // devolvemos el producto actualizado con image_url
+        const fresh = await ProductService.getProductById(id);
+        const out = await attachImageUrl(fresh, 'image', { signed: false });
+        res.status(200).json({ message: 'Product updated successfully', product: out });
       } else {
         res.status(404).json({ error: 'Product not found' });
       }
@@ -68,6 +88,9 @@ const ProductController = {
     const { id } = req.params;
 
     try {
+      // intenta borrar la imagen si existe y no está en uso
+      const prev = await ProductService.getProductById(id).catch(() => null);
+
       const result = await ProductService.deleteProduct(id);
 
       if (result === 'in_use') {
@@ -75,6 +98,10 @@ const ProductController = {
       }
 
       if (result) {
+        // best-effort: si lo borraste, intenta eliminar la imagen
+        if (prev?.image) {
+          try { const { deleteObject } = require('../services/image-service'); await deleteObject(prev.image); } catch (_) {}
+        }
         res.status(200).json({ message: 'Product deleted successfully' });
       } else {
         res.status(404).json({ error: 'Product not found' });
@@ -87,8 +114,10 @@ const ProductController = {
 
   getProductsByCategory: async (req, res) => {
     try {
+      const signed = String(req.query.signed).toLowerCase() === 'true';
       const products = await ProductService.getProductsByCategory(req.params.category_id);
-      res.status(200).json(products);
+      const out = await attachImageUrlMany(products, 'image', { signed });
+      res.status(200).json(out);
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Server error, couldn't get Products");
@@ -97,8 +126,10 @@ const ProductController = {
 
   getProductsByStore: async (req, res) => {
     try {
+      const signed = String(req.query.signed).toLowerCase() === 'true';
       const products = await ProductService.getProductsByStore(req.params.storeId);
-      res.status(200).json(products);
+      const out = await attachImageUrlMany(products, 'image', { signed });
+      res.status(200).json(out);
     } catch (error) {
       console.error(error.message);
       res.status(404).json({ message: error.message });
@@ -107,8 +138,10 @@ const ProductController = {
 
   getProductsByCategoryAndStore: async (req, res) => {
     try {
+      const signed = String(req.query.signed).toLowerCase() === 'true';
       const products = await ProductService.getProductsByCategoryAndStore(req.params.categoryId, req.params.storeId);
-      res.json(products);
+      const out = await attachImageUrlMany(products, 'image', { signed });
+      res.json(out);
     } catch (error) {
       res.status(500).json({ error: 'Error fetching products' });
     }

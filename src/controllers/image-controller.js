@@ -1,88 +1,102 @@
-const ImageService = require('../services/image-service');
-const ProductService = require('../services/product-service');
+const {
+  buildKey,
+  getSignedPutUrl,
+  getPresignedPost,
+  getSignedReadUrl,
+  publicUrlFromKey,
+  keyFromUrl,
+  deleteObject,
+} = require("../services/image-service");
+const { PRESIGNED_URL_EXPIRES_IN, S3_UPLOAD_MAX_MB } = require("../config/s3");
 
 const ImageController = {
-  getPresignedUrl: async (req, res, next) => {
-    const { contentType, entityType = 'general' } = req.body; // Obtener de body o query
-
-    if (!contentType) {
-      return res.status(400).json({ message: "contentType es requerido." });
-    }
-
-    // Validación básica de tipos permitidos
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-    if (!allowedTypes.includes(contentType.toLowerCase())) {
-      return res.status(400).json({ message: `Tipo de archivo no permitido: ${contentType}` });
-    }
-
+  presignPut: async (req, res, next) => {
     try {
-      const { signedUrl, publicUrl, key } = await ImageService.generatePresignedPutUrl(contentType, entityType);
+      const { folder = "products", fileName, contentType, expiresIn } = req.body || {};
+      if (!fileName) return res.status(400).json({ error: "fileName is required" });
+      if (!contentType) return res.status(400).json({ error: "contentType is required" });
 
-      res.status(200).json({
-        uploadUrl: signedUrl,
-        accessUrl: publicUrl,
-        imageKey: key // Devuelve la clave por si la necesitas (ej: para borrar si falla confirmación)
+      const key = buildKey({ folder, fileName });
+      const url = await getSignedPutUrl({
+        key,
+        contentType,
+        expiresIn: Number(expiresIn || PRESIGNED_URL_EXPIRES_IN),
       });
 
-    } catch (error) {
-      console.error("Error en controller getPresignedUrl:", error.message);
-      next(error); // Pasa al manejador de errores global
+      res.json({
+        method: "PUT",
+        key,
+        url,
+        expiresIn: Number(expiresIn || PRESIGNED_URL_EXPIRES_IN),
+        maxMB: S3_UPLOAD_MAX_MB,
+      });
+    } catch (err) {
+      next(err);
     }
   },
 
-  confirmImageUpload: async (req, res, next) => {
-    const { entityId, entityType, imageUrl, imageKey } = req.body;
-
-    if (!entityId || !entityType || !imageUrl) {
-      return res.status(400).json({ message: "Faltan datos requeridos: entityId, entityType, imageUrl." });
-    }
-
+  presignPost: async (req, res, next) => {
     try {
-      let updateSuccessful = false;
+      const { folder = "products", fileName, contentType, expiresIn, maxMB } = req.body || {};
+      if (!fileName) return res.status(400).json({ error: "fileName is required" });
+      if (!contentType) return res.status(400).json({ error: "contentType is required" });
 
-      switch (String(entityType).toLowerCase()) {
-        case 'user':
-          console.log(`Placeholder: Actualizando avatar para user ${entityId} con URL: ${imageUrl}`);
-          // await UserService.updateUserAvatar(entityId, imageUrl);
-          updateSuccessful = true;
-          break;
-        case 'product':
-          console.log(`Placeholder: Actualizando imagen para product ${entityId} con URL: ${imageUrl}`);
-          // await ProductService.updateProductImage(entityId, imageUrl);
-          updateSuccessful = true;
-          break;
-        case 'category':
-          console.log(`Placeholder: Actualizando imagen para category ${entityId} con URL: ${imageUrl}`);
-          // await CategoryService.updateCategoryImage(entityId, imageUrl);
-          updateSuccessful = true;
-          break;
-        case 'store':
-          console.log(`Placeholder: Actualizando logo para store ${entityId} con URL: ${imageUrl}`);
-          // await StoreService.updateStoreLogo(entityId, imageUrl);
-          updateSuccessful = true;
-          break;
-        default:
-          return res.status(400).json({ message: `Tipo de entidad no válido: ${entityType}` });
+      const key = buildKey({ folder, fileName });
+      const data = await getPresignedPost({
+        key,
+        contentType,
+        expiresIn: Number(expiresIn || PRESIGNED_URL_EXPIRES_IN),
+        maxMB: Number(maxMB || S3_UPLOAD_MAX_MB),
+      });
+
+      res.json({
+        method: "POST",
+        key,
+        url: data.url,
+        fields: data.fields,
+        expiresIn: Number(expiresIn || PRESIGNED_URL_EXPIRES_IN),
+        maxMB: Number(maxMB || S3_UPLOAD_MAX_MB),
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  getUrlFromKey: async (req, res, next) => {
+    try {
+      const { key, signed = "false", expiresIn } = req.query;
+      if (!key) return res.status(400).json({ error: "key is required" });
+  
+      if (/^https?:\/\//i.test(key)) {
+        return res.json({ key, url: key, signed: false });
       }
 
-      if (!updateSuccessful) {
-        if (imageKey) {
-          console.warn(`Fallo BD; eliminando imagen huérfana: ${imageKey}`);
-          await ImageService.deleteImageFromS3(imageKey);
-        }
-        return res.status(404).json({ message: `No se encontró la entidad ${entityType} con ID ${entityId}.` });
+      if (String(signed).toLowerCase() === "true") {
+        const url = await getSignedReadUrl(key, Number(expiresIn || PRESIGNED_URL_EXPIRES_IN));
+        return res.json({ key, url, signed: true, expiresIn: Number(expiresIn || PRESIGNED_URL_EXPIRES_IN) });
       }
+      
+      return res.json({ key, url: publicUrlFromKey(key), signed: false });
+    
+    } catch (err) {
+      next(err);
+    }
+  },
 
-      console.log(`Imagen confirmada y URL guardada para ${entityType} ${entityId}`);
-      res.status(200).json({ message: "URL de imagen guardada correctamente.", accessUrl: imageUrl });
+  urlToKey: (req, res) => {
+    const { url } = req.body || {};
+    if (!url) return res.status(400).json({ error: "url is required" });
+    return res.json({ key: keyFromUrl(url) });
+  },
 
-    } catch (error) {
-      console.error(`Error en controller confirmImageUpload para ${entityType} ${entityId}:`, error.message);
-      if (imageKey) {
-        console.warn(`Error BD; intentando eliminar imagen huérfana: ${imageKey}`);
-        ImageService.deleteImageFromS3(imageKey).catch(err => console.error("Error S3:", err.message));
-      }
-      next(error);
+  delete: async (req, res, next) => {
+    try {
+      const { key } = req.body || {};
+      if (!key) return res.status(400).json({ error: "key is required" });
+      await deleteObject(key);
+      res.json({ ok: true, deleted: key });
+    } catch (err) {
+      next(err);
     }
   },
 };

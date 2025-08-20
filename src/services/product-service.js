@@ -18,7 +18,7 @@ const ProductService = {
 
   getProductsByCategory: async (category_id) => {
     if (!category_id) throw new Error('Wrong category ID');
-    return await ProductModel.getProductsByCategory(category_id);
+    return await ProductModel.getProductsByCategoryWithRelations(category_id);
   },
 
   getProductsByStore: async (storeId) => {
@@ -33,7 +33,8 @@ const ProductService = {
     return products;
   },
 
-  assignRelations: async (productId, storeIds, providerIds) => await ProductModel.assignRelations(productId, storeIds, providerIds)
+  assignRelations: async (productId, storeIds, providerIds) =>
+    await ProductModel.assignRelations(productId, storeIds, providerIds)
 };
 
 module.exports = ProductService;
