@@ -1,4 +1,5 @@
 const {
+  CopyObjectCommand,
   PutObjectCommand,
   GetObjectCommand,
   DeleteObjectCommand,
@@ -102,6 +103,13 @@ function keyFromUrl(url) {
 async function deleteObject(key) {
   const cmd = new DeleteObjectCommand({ Bucket: S3_BUCKET, Key: key });
   await s3.send(cmd);
+}
+
+async function moveObject(oldKey, newKey) {
+  if (!oldKey || oldKey === newKey) return newKey;
+  await s3.send(new CopyObjectCommand({ Bucket, CopySource: `${Bucket}/${oldKey}`, Key: newKey }));
+  await s3.send(new DeleteObjectCommand({ Bucket, Key: oldKey }));
+  return newKey;
 }
 
 module.exports = {
