@@ -63,7 +63,7 @@ const UserModel = {
                 created_at: db.fn.now(),
                 updated_at: db.fn.now()
             })
-            .returning(['id', 'username', 'full_name', 'email', 'date_of_birth', 'phone']);
+            .returning(['id', 'username', 'full_name', 'email', 'date_of_birth', 'phone','avatar']);
         return user;
     },
 

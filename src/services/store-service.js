@@ -1,3 +1,4 @@
+// src/services/store-service.js  (reemplaza)
 const StoreModel = require('../models/store-model');
 
 const StoreService = {
@@ -6,28 +7,23 @@ const StoreService = {
   },
 
   getStoreById: async (id) => {
-    if (!id) {
-      throw new Error('Store ID is required');
-    }
-    const store = await StoreModel.getStoreById(id);
-    if (!store) {
-      throw new Error('Store not found');
-    }
-    return store;
+    if (!id) return null;
+    return await StoreModel.getStoreById(id);
   },
 
   createStore: async (data) => {
-    return StoreModel.createStore(data)
+    return StoreModel.createStore(data);
   },
 
   updateStore: async (id, data) => {
+    if (!id) return 0;
     return await StoreModel.updateStore(id, data);
   },
 
   deleteStore: async (id) => {
+    if (!id) return 0;
     return await StoreModel.deleteStore(id);
   }
-
 };
 
 module.exports = StoreService;

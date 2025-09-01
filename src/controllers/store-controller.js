@@ -1,10 +1,11 @@
 const StoreService = require('../services/store-service');
-const { attachImageUrl, attachImageUrlMany, replaceImageKey } = require('../utils/image-helpers');
+const { attachImageUrl, attachImageUrlMany } = require('../utils/image-helpers');
+const { deleteObject } = require('../services/image-service');
 
 const StoreController = {
 
   // GET /api/stores?signed=true
-  getAllStores: async (req, res) => {
+  async getAllStores(req, res) {
     try {
       const signed = String(req.query.signed).toLowerCase() === 'true';
       const stores = await StoreService.getAllStores();
@@ -17,106 +18,102 @@ const StoreController = {
   },
 
   // GET /api/stores/:id?signed=true
-  getStoreById: async (req, res) => {
+  async getStoreById(req, res) {
     try {
       const signed = String(req.query.signed).toLowerCase() === 'true';
       const store = await StoreService.getStoreById(req.params.id);
-      if (!store) return res.status(404).send("Store not found");
+      if (!store) return res.status(404).send('Store not found');
       const out = await attachImageUrl(store, 'logo', { signed });
       res.status(200).json(out);
     } catch (error) {
-      console.error(error.message);
-      res.status(404).send("Store not found");
+      console.error(error);
+      res.status(404).send('Store not found');
     }
   },
 
   // POST /api/stores
-  // Acepta { ..., logo_key } o { ..., image_key } o { ..., logo }
-  createStore: async (req, res) => {
-    const { name, address, city, logo, image_key, logo_key, history, phone } = req.body;
-
-    if (!name || !address || !city || !phone) {
-      return res.status(400).json({ error: 'Required fields: name, address, city, phone' });
-    }
-
+  async createStore(req, res, next) {
     try {
-      const newStore = await StoreService.createStore({
+      const { name, address, city, history, phone, logo } = req.body || {};
+
+      const payload = {
         name,
         address,
         city,
-        logo: logo_key ?? image_key ?? logo ?? null, // guardamos SOLO la key
         history,
-        phone
-      });
-      const out = await attachImageUrl(newStore, 'logo', { signed: false });
-      res.status(201).json({ message: 'Store created successfully', store: out });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Error creating store' });
+        phone,
+        logo: logo || null, // Acepta la clave de S3, una URL externa, o lo deja nulo
+      };
+
+      const created = await StoreService.createStore(payload);
+      // Devolvemos el objeto completo creado, con la URL del logo resuelta.
+      const out = await attachImageUrl(created, 'logo');
+      return res.status(201).json(out);
+
+    } catch (err) {
+      next(err);
     }
   },
 
   // PUT /api/stores/:id  (+ removeImage opcional)
-  updateStore: async (req, res) => {
-    const { id } = req.params;
-    const { name, address, city, logo, image_key, logo_key, history, phone, removeImage = false } = req.body;
-
-    if (!name || !address || !city || !phone) {
-      return res.status(400).json({ error: 'Required fields: name, address, city, phone' });
-    }
-
+  async updateStore(req, res, next) {
     try {
-      const prev = await StoreService.getStoreById(id);
-      if (!prev) return res.status(404).json({ error: 'Store not found' });
+      const id = Number(req.params.id);
 
-      let nextLogo = prev.logo ?? null;
-      if (removeImage) {
-        if (prev.logo) await replaceImageKey(prev.logo, null);
-        nextLogo = null;
-      } else if (logo != null || image_key != null || logo_key != null) {
-        nextLogo = await replaceImageKey(prev.logo, logo_key ?? image_key ?? logo);
+      const { name, address, city, history, phone, logo } = req.body || {};
+
+      // Primero, obtenemos la tienda actual para saber si tenía un logo antiguo.
+      const previousStore = await StoreService.getStoreById(id);
+      if (!previousStore) {
+        return res.status(404).json({ error: 'Store not found' });
       }
 
-      const updated = await StoreService.updateStore(id, {
-        name,
-        address,
-        city,
-        logo: nextLogo,
-        history,
-        phone
-      });
+      const payload = { name, address, city, history, phone, logo };
 
-      if (!updated) return res.status(404).json({ error: 'Store not found' });
+      const oldLogoKey = previousStore.logo;
+      const newLogoKey = payload.logo;
 
-      const fresh = await StoreService.getStoreById(id);
-      const out = await attachImageUrl(fresh, 'logo', { signed: false });
-      res.status(200).json({ message: 'Store updated successfully', store: out });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Error updating store' });
+      if (oldLogoKey && oldLogoKey !== newLogoKey) {
+        deleteObject(oldLogoKey).catch(console.error);
+      }
+      
+      const updatedCount = await StoreService.updateStore(id, payload);
+      if (!updatedCount) {
+        return res.status(404).json({ error: 'Store not found or no changes made' });
+      }
+
+      return res.json({ message: 'Store updated', id });
+
+    } catch (err) {
+      next(err);
     }
   },
 
-  deleteStore: async (req, res) => {
+  async deleteStore(req, res) {
     const { id } = req.params;
     try {
-      const prev = await StoreService.getStoreById(id).catch(() => null);
+      const storeToDelete = await StoreService.getStoreById(id);
+      if (!storeToDelete) {
+        return res.status(404).json({ error: 'Store not found' });
+      }
+
       const result = await StoreService.deleteStore(id);
 
       if (result === 'in_use') {
         return res.status(400).json({ error: 'Cannot delete store: it has related records' });
       }
-      if (!result) return res.status(404).json({ error: 'Store not found' });
 
-      if (prev?.logo) {
-        try { const { deleteObject } = require('../services/image-service'); await deleteObject(prev.logo); } catch {}
+      // ✨ LÓGICA MEJORADA: Si la tienda tenía un logo, lo borramos de S3.
+      if (storeToDelete.logo) {
+        await deleteObject(storeToDelete.logo).catch(console.error);
       }
+
       return res.status(200).json({ message: 'Store deleted successfully' });
+
     } catch (error) {
-      console.error('🔥 Delete Error:', error);
-      res.status(500).json({ error: 'Error deleting store' });
+      next(error);
     }
-  }
+  },
 };
 
 module.exports = StoreController;
