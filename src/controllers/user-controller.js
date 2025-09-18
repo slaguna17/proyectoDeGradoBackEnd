@@ -136,7 +136,6 @@ const UserController = {
     }
   },
 
-  // ==== lo demás queda igual ====
   login: async (req, res) => {
     try {
       const {email, password} = req.body;

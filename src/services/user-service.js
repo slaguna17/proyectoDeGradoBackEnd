@@ -79,8 +79,9 @@ const UserService = {
                 id: user.id,
                 username: user.username,
                 full_name: user.full_name,
-                email: user.email
-            }
+                email: user.email,
+                avatar: user.avatar ?? null
+            },
         };
     },
 
