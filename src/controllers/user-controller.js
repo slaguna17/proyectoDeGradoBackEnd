@@ -33,6 +33,18 @@ const UserController = {
     }
   },
 
+  getMe: async (req, res) => {
+    try {
+      const signed = req.query.signed === 'true';
+      const user = await UserService.getById(req.user.id);
+      const withUrl = await attachImageUrl(user, 'avatar', { signed });
+      res.status(200).json(withUrl);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send({ message: `Server error: ${error.message}` });
+    }
+  },
+
   // POST /api/users
   // Acepta avatar como: { avatar_key } o { image_key } o { avatar }
   createUser: async (req, res) => {
@@ -136,16 +148,26 @@ const UserController = {
     }
   },
 
+  // arriba ya importas: const { attachImageUrl } = require('../utils/image-helpers');
+
   login: async (req, res) => {
     try {
-      const {email, password} = req.body;
-      const result = await UserService.login(email, password);
+      const { email, password } = req.body;
+      const result = await UserService.login(email, password); // avatar = KEY
+
+      // Opcionalmente permite ?signed=true en el query para devolver URL firmada
+      const signed = req.query.signed === 'true';
+
+      // Adjunta URL en el campo 'avatar'
+      result.user = await attachImageUrl(result.user, 'avatar', { signed });
+
       res.status(200).json(result);
     } catch (error) {
       console.error(error.message);
       res.status(500).send({ message: `Server error: ${error.message}` });
     }
   },
+
 
   getUserInfo: async (req, res) =>{
     try {
