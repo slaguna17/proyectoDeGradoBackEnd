@@ -15,5 +15,7 @@ router.get('/:id', ProductController.getProductById);
 
 // Assigning
 router.post('/assign/:id', ProductController.assignRelations);
+router.post('/store-products/upsert', ProductController.upsertStoreProduct);
+router.delete('/stores/:storeId/products/:productId', ProductController.removeStoreProduct);
 
 module.exports = router;
