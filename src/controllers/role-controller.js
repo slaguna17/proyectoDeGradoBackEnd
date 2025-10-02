@@ -88,7 +88,7 @@ const RoleController = {
         const { id } = req.params;
         try {
             const permits = await RoleService.getPermitsByRole(id);
-            res.json({ role_id: id, permits });
+            res.json(permits);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Error fetching permits for role' });

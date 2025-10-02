@@ -127,7 +127,6 @@ const ProductModel = {
     return true;
   },
 
-  // --- NUEVA FUNCIÓN AÑADIDA ---
   upsertStoreProduct: async ({ storeId, productId, stock, expirationDate }) => {
     return db('store_product')
       .insert({
@@ -140,7 +139,6 @@ const ProductModel = {
       .merge();
   },
 
-  // --- NUEVA FUNCIÓN AÑADIDA ---
   removeStoreProduct: async ({ storeId, productId }) => {
     return db('store_product')
       .where({ store_id: storeId, product_id: productId })

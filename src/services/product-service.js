@@ -21,16 +21,14 @@ const ProductService = {
     return products;
   },
   getProductsByCategoryAndStore: async (categoryId, storeId) => {
-  const products = await ProductModel.getProductsByCategoryAndStore(categoryId, storeId);
-  return products;
-},
+    const products = await ProductModel.getProductsByCategoryAndStore(categoryId, storeId);
+    return products;
+  },
   assignRelations: async (productId, storeIds, providerIds) =>
     await ProductModel.assignRelations(productId, storeIds, providerIds),
 
-  // --- NUEVA FUNCIÓN AÑADIDA ---
   upsertStoreProduct: async (data) => await ProductModel.upsertStoreProduct(data),
 
-  // --- NUEVA FUNCIÓN AÑADIDA ---
   removeStoreProduct: async (data) => await ProductModel.removeStoreProduct(data),
 };
 

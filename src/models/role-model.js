@@ -45,27 +45,23 @@ const RoleModel = {
     },
 
     assignPermitsToRole: async (roleId, permitIds) => {
-        try {
-            // Consulta los permisos ya asignados
-            const existing = await db('role_permit')
-            .where({ role_id: roleId })
-            .pluck('permit_id');
+        // Usamos una transacción para asegurar que ambas operaciones (borrar e insertar)
+        // se completen exitosamente o ninguna lo haga.
+        return db.transaction(async (trx) => {
+            // 1. Borra todos los permisos existentes para este rol.
+            await trx('role_permit')
+                .where({ role_id: roleId })
+                .del();
 
-            // Filtra solo los que no estén asignados
-            const newPermits = permitIds.filter(pid => !existing.includes(pid));
-
-            if (newPermits.length === 0) return { message: 'No new permits to assign' };
-
-            const inserts = newPermits.map(permitId => ({
-                role_id: roleId,
-                permit_id: permitId
-            }));
-
-            return await db('role_permit').insert(inserts);
-        } catch (error) {
-            console.error('🔥 SQL ERROR - assignPermitsToRole:', error);
-            throw error;
-        }
+            // 2. Si la nueva lista de permisos no está vacía, insértalos.
+            if (permitIds && permitIds.length > 0) {
+                const inserts = permitIds.map(permitId => ({
+                    role_id: roleId,
+                    permit_id: permitId
+                }));
+                await trx('role_permit').insert(inserts);
+            }
+        });
     },
 
     removeAllPermitsFromRole: async (roleId) => {
