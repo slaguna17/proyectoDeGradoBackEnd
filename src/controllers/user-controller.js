@@ -1,6 +1,7 @@
 const UserService = require('../services/user-service');
 const crypto = require('crypto');
 const { attachImageUrl, attachImageUrlMany, replaceImageKey } = require('../utils/image-helpers');
+const db = require('../config/db')
 
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
 
