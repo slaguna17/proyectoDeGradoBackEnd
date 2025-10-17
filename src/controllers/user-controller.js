@@ -1,13 +1,11 @@
 const UserService = require('../services/user-service');
 const crypto = require('crypto');
 const { attachImageUrl, attachImageUrlMany, replaceImageKey } = require('../utils/image-helpers');
-const db = require('../config/db')
-
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
+const db = require('../config/db');
+const { buildMenu } = require('../utils/menu-builder');
 
 const UserController = {
-  // GET /api/users?signed=true
-  getUsers: async (req,res) => {
+  getUsers: async (req, res) => {
     try {
       const signed = String(req.query.signed).toLowerCase() === 'true';
       const users = await UserService.getUsers();
@@ -19,7 +17,6 @@ const UserController = {
     }
   },
 
-  // GET /api/users/:id?signed=true
   getUserById: async (req, res) => {
     const { id } = req.params;
     try {
@@ -37,17 +34,21 @@ const UserController = {
   getMe: async (req, res) => {
     try {
       const signed = req.query.signed === 'true';
-      const user = await UserService.getById(req.user.id);
-      const withUrl = await attachImageUrl(user, 'avatar', { signed });
-      res.status(200).json(withUrl);
+      const me = await UserService.getUserById(req.user.userId || req.user.id);
+      const withUrl = await attachImageUrl(me, 'avatar', { signed });
+
+      const roles = await UserService.getRolesByUserId(req.user.userId || req.user.id);
+      const isAdmin = roles.some(r => r.isAdmin === true) || !!req.user.isAdmin;
+      const permits = await UserService.getPermitsByUserId(req.user.userId || req.user.id);
+
+      const menu = buildMenu({ isAdmin, permits });
+      res.status(200).json({ user: withUrl, roles, permits, isAdmin, menu });
     } catch (error) {
       console.error(error.message);
       res.status(500).send({ message: `Server error: ${error.message}` });
     }
   },
 
-  // POST /api/users
-  // Acepta avatar como: { avatar_key } o { image_key } o { avatar }
   createUser: async (req, res) => {
     try {
       const {
@@ -63,14 +64,13 @@ const UserController = {
         date_of_birth,
         phone,
         status,
-        avatar: avatar_key ?? image_key ?? avatar ?? null  // guardamos SOLO la key
-        ,
+        avatar: avatar_key ?? image_key ?? avatar ?? null,
         roleId
       });
 
       const out = await attachImageUrl(user, 'avatar', { signed: false });
       res.status(201).json({
-        message: 'Usuario creado exitosamente',
+        message: 'User created successfully',
         userId: user.id,
         username: user.username,
         user: out
@@ -81,20 +81,9 @@ const UserController = {
     }
   },
 
-  // PUT /api/users/:id  (+ removeImage opcional)
   updateUser: async (req, res) => {
     const { id } = req.params;
-
-    // Campos normales que ya permitías
-    const updatableFields = [
-      'full_name',
-      'email',
-      'phone',
-      'date_of_birth',
-      'status'
-    ];
-
-    // Construimos updateData con esos campos
+    const updatableFields = ['full_name','email','phone','date_of_birth','status'];
     const updateData = {};
     updatableFields.forEach(field => {
       if (req.body[field] !== undefined) updateData[field] = req.body[field];
@@ -104,7 +93,6 @@ const UserController = {
       const prev = await UserService.getUserById(id);
       if (!prev) return res.status(404).json({ message: 'User not found' });
 
-      // Manejo de avatar
       const { avatar, image_key, avatar_key, removeImage = false } = req.body;
       let nextAvatar = prev.avatar ?? null;
 
@@ -114,8 +102,6 @@ const UserController = {
       } else if (avatar != null || image_key != null || avatar_key != null) {
         nextAvatar = await replaceImageKey(prev.avatar, avatar_key ?? image_key ?? avatar);
       }
-
-      // Solo incluimos avatar si cambió o si se pidió remover
       if (removeImage || avatar != null || image_key != null || avatar_key != null) {
         updateData.avatar = nextAvatar;
       }
@@ -149,26 +135,20 @@ const UserController = {
     }
   },
 
-  // arriba ya importas: const { attachImageUrl } = require('../utils/image-helpers');
-
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
-      const result = await UserService.login(email, password); // avatar = KEY
-
-      // Opcionalmente permite ?signed=true en el query para devolver URL firmada
+      const result = await UserService.login(email, password);
       const signed = req.query.signed === 'true';
-
-      // Adjunta URL en el campo 'avatar'
       result.user = await attachImageUrl(result.user, 'avatar', { signed });
 
-      res.status(200).json(result);
+      const menu = buildMenu({ isAdmin: result.isAdmin, permits: result.permits });
+      res.status(200).json({ ...result, menu });
     } catch (error) {
       console.error(error.message);
       res.status(500).send({ message: `Server error: ${error.message}` });
     }
   },
-
 
   getUserInfo: async (req, res) =>{
     try {
@@ -231,11 +211,11 @@ const UserController = {
       res.status(200).json({ message: "Password changed successfully" });
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: "Error reseteando contraseña" });
+      res.status(500).json({ error: "Error resetting password" });
     }
   },
 
-  getRoles: async (req,res) => {
+  getRoles: async (_req,res) => {
     try {
       const roles = await UserService.getRoles();
       res.status(200).json(roles);
@@ -245,7 +225,7 @@ const UserController = {
     }
   },
 
-  getAllEmployees: async (req, res) => {
+  getAllEmployees: async (_req, res) => {
     try {
       const employees = await UserService.getAllEmployees();
       res.status(200).json(employees);
@@ -265,67 +245,6 @@ const UserController = {
       res.status(500).json({ error: 'Error obtaining employees' });
     }
   },
-
-  createEmployee: async (req, res) => {
-    try {
-      const {
-        username, password, full_name, email, date_of_birth,
-        phone, status, avatar, image_key, avatar_key, roleId, storeId, scheduleId
-      } = req.body;
-
-      const user = await UserService.createEmployee({
-        username, password, full_name, email, date_of_birth,
-        phone, status,
-        avatar: avatar_key ?? image_key ?? avatar ?? null,
-        roleId, storeId, scheduleId
-      });
-
-      res.status(201).json({ message: 'Empleado creado exitosamente', userId: user.id });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Error al crear el empleado' });
-    }
-  },
-
-  searchEmployees: async (req, res) => {
-    try {
-      const query = req.query.query || '';
-      const employees = await UserService.searchUsersByRole(query);
-      res.status(200).json(employees);
-    } catch (error) {
-      console.error(error.message);
-      res.status(500).send("Server error");
-    }
-  },
-
-  assignSchedule: async (req, res) => {
-    try {
-      const user_id = req.params.id;
-      const { schedule_id, store_id } = req.body;
-      if (!user_id || !schedule_id || !store_id) {
-        return res.status(400).json({ error: "Missing data for assignment" });
-      }
-      await UserService.assignUserToScheduleStore(user_id, schedule_id, store_id);
-      res.status(200).json({ message: 'Asignación exitosa' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Error en asignación de horario' });
-    }
-  },
-
-  updateUserRole: async (req, res) => {
-    try {
-      const user_id = req.params.id;
-      const { role_id } = req.body;
-      const role = await db('role').where({ id: role_id }).first();
-      if (!role || role.isAdmin) return res.status(400).json({ error: "Cannot assign admin roles" });
-      await UserService.updateUserRole(user_id, role_id);
-      res.status(200).json({ message: 'Rol actualizado' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Error actualizando rol' });
-    }
-  }
 };
 
 module.exports = UserController;

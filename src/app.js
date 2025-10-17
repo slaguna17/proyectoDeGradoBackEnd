@@ -1,9 +1,8 @@
-// src/app.js
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 
-// Importar rutas
+// Route imports
 const userRoutes = require("./routes/user-routes");
 const storeRoutes = require("./routes/store-routes");
 const categoryRoutes = require("./routes/category-routes");
@@ -17,19 +16,20 @@ const permitRoutes = require("./routes/permit-routes");
 const cashboxRoutes = require("./routes/cashbox-routes");
 const purchaseRoutes = require("./routes/purchase-routes");
 const salesRoutes = require("./routes/sales-routes");
+const menuRoutes = require("./routes/menu-routes");
 
 // Configs
 dotenv.config();
 const app = express();
 
-// CORS desde .env (CSV): CORS_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+// CORS from .env
 const origins = (process.env.CORS_ALLOWED_ORIGINS || "")
   .split(",")
   .map(s => s.trim())
   .filter(Boolean);
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://10.0.2.2:3000', /* tu app móvil / web */],
+  origin: ['http://localhost:5173', 'http://10.0.2.2:3000'],
   methods: ['GET','POST','PUT','DELETE','OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
@@ -38,7 +38,7 @@ app.use(cors({
 app.use(express.json({ limit: process.env.JSON_LIMIT || "1mb" }));
 app.use(express.urlencoded({ extended: true }));
 
-// Rutas
+// Routes
 app.use("/api/users", userRoutes);
 app.use("/api/stores", storeRoutes);
 app.use("/api/categories", categoryRoutes);
@@ -52,6 +52,7 @@ app.use("/api/permits", permitRoutes);
 app.use("/api/cashbox", cashboxRoutes);
 app.use("/api/purchase", purchaseRoutes);
 app.use("/api/sales", salesRoutes);
+app.use('/api/menu', menuRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => res.json({ ok: true }));
