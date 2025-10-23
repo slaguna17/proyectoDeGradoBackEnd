@@ -1,21 +1,75 @@
 const db = require('../config/db');
+const dayjs = require('dayjs');
 
 const PurchaseModel = {
-  registerPurchase: async ({ store_id, user_id, provider_id, products, notes, purchase_date }) => {
-    return await db.transaction(async trx => {
+  registerPurchase: async (purchaseData) => {
+    const { store_id, user_id, provider_id, notes, products, payment_method } = purchaseData;
+
+    // Check products
+    if (!products || products.length === 0) {
+      throw new Error('La compra debe tener al menos un producto.');
+    }
+
+    // Begin transaction to ensure data integrity
+    return db.transaction(async trx => {
+      const today = dayjs().format('YYYY-MM-DD');
+      const cashSession = await trx('cash_session')
+        .where({ store_id, opened_on: today, status: 'open' })
+        .first();
+
+      if (!cashSession) {
+        // Purchase can't be registered if there is not an opened cashbox
+        const err = new Error('There is not an opened cashbox session to register the purchase.');
+        err.status = 409;
+        throw err;
+      }
+      
       const total = products.reduce((sum, p) => sum + p.unit_price * p.quantity, 0);
 
       const [purchase] = await trx('purchase')
-        .insert({ store_id, user_id, provider_id, total, notes, purchase_date, created_at: trx.fn.now(), updated_at: trx.fn.now() })
+        .insert({
+          store_id,
+          user_id,
+          provider_id,
+          total,
+          notes,
+          payment_method,
+          status: 'received',
+          purchase_date: trx.fn.now()
+        })
         .returning('*');
 
-      const purchaseDetails = products.map(p => ({ purchase_id: purchase.id, product_id: p.product_id, quantity: p.quantity, unit_price: p.unit_price }));
+      // Update Inventory
+      for (const product of products) {
+        await trx('purchase_product').insert({
+          purchase_id: purchase.id,
+          product_id: product.product_id,
+          quantity: product.quantity,
+          unit_price: product.unit_price
+        });
 
-      await trx('purchase_product').insert(purchaseDetails);
+        // Increase stock
+        await trx('store_product')
+          .where({ store_id, product_id: product.product_id })
+          .increment('stock', product.quantity);
+      }
+      
+      await trx('cash_movement').insert({
+        store_id,
+        cash_session_id: cashSession.id,
+        user_id,
+        direction: 'OUT',
+        amount: total,
+        category: 'Compras',
+        notes: `Egreso por Compra #${purchase.id} (${payment_method})`,
+        origin_type: 'PURCHASE',
+        origin_id: purchase.id
+      });
 
-      await trx('purchase_box').insert({ store_id, user_id, total, purchases_count: 1, purchase_date, created_at: trx.fn.now(), updated_at: trx.fn.now() });
+      const purchaseDetails = await trx('purchase_product')
+        .where('purchase_id', purchase.id);
 
-      return purchase;
+      return { ...purchase, products: purchaseDetails };
     });
   },
 

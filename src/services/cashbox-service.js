@@ -2,12 +2,12 @@
 const CashboxModel = require('../models/cashbox-model');
 
 const CashboxService = {
-  // Abrir
+  // Open
   openCashbox: async (store_id, opening_amount) => {
     return await CashboxModel.openCashbox(store_id, opening_amount);
   },
 
-  // Cerrar (acepta opcionales: closing_amount y cash_count[])
+  // Close
   closeCashbox: async ({ store_id, user_id, date, closing_amount, cash_count }) => {
     if (!store_id || !user_id || !date) {
       throw new Error('store_id, user_id and date are required');
@@ -15,7 +15,7 @@ const CashboxService = {
     return await CashboxModel.closeCashbox({ store_id, user_id, date, closing_amount, cash_count });
   },
 
-  // Movimiento manual
+  // Money Movement
   createMovement: async ({ store_id, user_id, direction, amount, category, notes, date }) => {
     if (!store_id || !user_id || !direction || amount == null) {
       const e = new Error('store_id, user_id, direction and amount are required');
@@ -47,28 +47,27 @@ const CashboxService = {
       direction,
       amount,
       category,
-      notes
+      notes,
+      origin_type: 'MANUAL',
+      origin_id: null
     });
   },
 
-  // Sesión abierta de HOY (con totales)
+  // Open cash session today
   getCurrent: async (store_id) => {
     const session = await CashboxModel.findOpenByStoreAndDate({ store_id, date: new Date() });
     if (!session) return null;
     return await CashboxModel.computeTotalsForSessionId(session.id);
   },
 
-  // Detalle por id (con totales)
   getSessionDetails: async (id) => {
     return await CashboxModel.computeTotalsForSessionId(id);
   },
 
-  // Movimientos de una sesión
   getSessionMovements: async (id) => {
     return await CashboxModel.listMovementsBySession(id);
   },
 
-  // Histórico por rango
   listSessions: async ({ store_id, from, to }) => {
     const sessions = await CashboxModel.listSessions({ store_id, from, to });
     const result = [];

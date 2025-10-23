@@ -1,5 +1,5 @@
-//Initial entities (9 TABLES)
-//USER, PERMIT, ROLE, CATEGORY, SCHEDULE, STORE, PROVIDER, SALES_BOX, PURCHASE_BOX 
+//Initial entities (7 TABLES)
+//USER, PERMIT, ROLE, CATEGORY, SCHEDULE, STORE, PROVIDER
 exports.up = async function(knex) {
       
     //1. user
@@ -80,46 +80,6 @@ exports.up = async function(knex) {
         table.timestamps(true, true);
     })
 
-    //8. sales box
-    await knex.schema.createTable('sales_box', table => {
-        table.increments('id').primary();
-
-        table.integer('store_id').unsigned().notNullable()
-            .references('id').inTable('store')
-            .onDelete('CASCADE');
-
-        table.integer('user_id').unsigned().notNullable()
-            .references('id').inTable('user')
-            .onDelete('CASCADE');
-
-        table.decimal('total', 10, 2).notNullable().defaultTo(0);
-        table.integer('sales_count').notNullable().defaultTo(0);
-
-        table.date('date').notNullable().defaultTo(knex.fn.now());
-
-        table.timestamps(true, true);
-    })
-    
-    //9. purchase box
-    await knex.schema.createTable('purchase_box', table => {
-        table.increments('id').primary();
-
-        table.integer('store_id').unsigned().notNullable()
-            .references('id').inTable('store')
-            .onDelete('CASCADE');
-
-        table.integer('user_id').unsigned().notNullable()
-            .references('id').inTable('user')
-            .onDelete('CASCADE');
-
-        table.decimal('total', 10, 2).notNullable().defaultTo(0);
-        table.integer('purchases_count').notNullable().defaultTo(0);
-
-        table.date('purchase_date').notNullable().defaultTo(knex.fn.now());
-
-        table.timestamps(true, true);
-    });
-
 };
 
 
@@ -131,6 +91,4 @@ exports.down = async function(knex) {
     await knex.schema.dropTableIfExists('store');
     await knex.schema.dropTableIfExists('provider');
     await knex.schema.dropTableIfExists('category');
-    await knex.schema.dropTableIfExists('sales_box');
-    await knex.schema.dropTableIfExists('purchase_box');
 };

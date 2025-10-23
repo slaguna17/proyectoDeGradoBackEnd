@@ -6,7 +6,9 @@ const SalesController = {
             const result = await SalesService.registerSale(req.body);
             res.status(201).json({ message: 'Sale registered successfully', sale: result });
         } catch (error) {
-            res.status(500).json({ error: 'Error registering sale' });
+            console.error(error);
+            const status = error.status || 500;
+            res.status(status).json({ error: error.message || 'Error registering sale' });
         }
     },
 

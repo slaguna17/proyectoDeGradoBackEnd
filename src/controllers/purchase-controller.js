@@ -7,7 +7,8 @@ const PurchaseController = {
             res.status(201).json({ message: 'Purchase registered successfully', purchase: result });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Error registering purchase' });
+            const status = error.status || 500;
+            res.status(status).json({ error: error.message || 'Error registering purchase' });
         }
     },
 

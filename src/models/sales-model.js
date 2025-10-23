@@ -1,47 +1,78 @@
 const db = require('../config/db');
+const dayjs = require('dayjs');
 
 const SalesModel = {
-  registerSale: async ({ store_id, user_id, products, payment_method }) => {
-    return await db.transaction(async trx => {
-      const sale_total = products.reduce((sum, p) => sum + p.unit_price * p.quantity, 0);
+  registerSale: async (saleData) => {
+    const { user_id, store_id, payment_method, notes, products } = saleData;
 
-      const [salesBox] = await trx('sales_box')
-        .insert({
-          store_id,
-          user_id,
-          total: sale_total,
-          sales_count: 1,
-          date: trx.fn.now(),
-          created_at: trx.fn.now(),
-          updated_at: trx.fn.now()
-        })
-        .returning('*');
+    // Check products
+    if (!products || products.length === 0) {
+      throw new Error('A sale must have at least one product.');
+    }
+
+    //Begin transaction to ensure data integrity
+    return db.transaction(async trx => {
+      const today = dayjs().format('YYYY-MM-DD');
+      const cashSession = await trx('cash_session')
+        .where({ store_id, opened_on: today, status: 'open' })
+        .first();
+
+      if (!cashSession) {
+        // Sale can't be registered if there is not an opened cashbox
+        const err = new Error('There is not an opened cashbox session to register the sale.');
+        err.status = 409;
+        throw err;
+      }
+      
+      const total = products.reduce((sum, p) => sum + p.unit_price * p.quantity, 0);
 
       const [sale] = await trx('sales')
         .insert({
           store_id,
           user_id,
-          sales_box_id: salesBox.id,
-          total: sale_total,
+          total,
           sale_date: trx.fn.now(),
           payment_method,
           status: 'completed',
-          notes: '',
-          created_at: trx.fn.now(),
-          updated_at: trx.fn.now()
+          notes: notes || '',
         })
         .returning('*');
 
-      const saleDetails = products.map(p => ({
-        sales_id: sale.id,
-        product_id: p.product_id,
-        quantity: p.quantity,
-        unit_price: p.unit_price
-      }));
+      // Manage inventory
+      for (const product of products) {
+        await trx('sales_product').insert({
+          sales_id: sale.id,
+          product_id: product.product_id,
+          quantity: product.quantity,
+          unit_price: product.unit_price
+        });
 
-      await trx('sales_product').insert(saleDetails);
+        // Decrease stock in selected store
+        const updatedRows = await trx('store_product')
+          .where({ store_id, product_id: product.product_id })
+          .decrement('stock', product.quantity);
+        
+        if (updatedRows === 0) {
+          throw new Error(`El producto con ID ${product.product_id} no existe en el inventario de esta tienda.`);
+        }
+      }
 
-      return sale;
+      await trx('cash_movement').insert({
+        store_id,
+        cash_session_id: cashSession.id,
+        user_id,
+        direction: 'IN',
+        amount: total,
+        category: 'Ventas',
+        notes: `Ingreso por Venta #${sale.id} (${payment_method})`,
+        origin_type: 'SALE',
+        origin_id: sale.id
+      });
+
+      const saleDetails = await trx('sales_product')
+        .where('sales_id', sale.id);
+
+      return { ...sale, products: saleDetails };
     });
   },
 

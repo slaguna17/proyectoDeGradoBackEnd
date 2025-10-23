@@ -1,5 +1,5 @@
 //Intermediary entities (7 TABLES)
-//role_permit, user_role, user_schedule_store, store_product, sales_product, purchase_product, provider_store, provider_product
+//role_permit, user_schedule_store, user_role, store_product, sales_product, purchase_product, provider_store, provider_product
 exports.up = async function(knex) {
 
     //15. Role-Permit table
