@@ -51,8 +51,14 @@ const ProductModel = {
     return products;
   },
   getProductById: async (id) => {
-    const [product] = await hydrateRelations([await db('product').where({ id }).first()]);
-    return product;
+    const product = await db('product').where({ id }).first();
+    
+    if (!product) {
+      return undefined;
+    }
+
+    const [hydratedProduct] = await hydrateRelations([product]);
+    return hydratedProduct;
   },
   createProduct: async (productData, storeData) => {
     return await db.transaction(async (trx) => {

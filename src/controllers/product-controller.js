@@ -26,26 +26,28 @@ const ProductController = {
     }
   },
   createProduct: async (req, res) => {
-    const { SKU, name, description, image_key, image, brand, category_id, store_id, stock, expiration_date } = req.body;
-    if (!SKU || !name || !category_id || !store_id || stock == null) {
-      return res.status(400).json({ error: 'SKU, name, category_id, store_id and stock are required' });
+    const { SKU, name, description, image_key, image, brand, category_id, store_id, stock, expiration_date, sale_price, purchase_price } = req.body;
+    if (!SKU || !name || !category_id || !store_id || stock == null || sale_price == null || purchase_price == null) {
+      console.log("Missing requiered fields")
+      return res.status(400).json({ error: 'SKU, name, category_id, store_id and stock and sale/purchase prices are required'});
     }
     try {
-      const productData = { SKU, name, description, brand, category_id, image: image_key ?? image ?? null };
+      const productData = { SKU, name, description, brand, category_id, image: image_key ?? image ?? null, sale_price, purchase_price };
       const storeData = { store_id, stock, expiration_date };
       const created = await ProductService.createProduct(productData, storeData);
       const out = await attachImageUrl(created, 'image', { signed: false });
-      res.status(201).json({ message: 'Product created successfully', product: out });
+      res.status(201).json(out);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message || 'Error creating product' });
     }
   },
+
   updateProduct: async (req, res) => {
     const { id } = req.params;
-    const { SKU, name, description, image_key, image, brand, category_id, removeImage = false } = req.body;
-    if (!SKU || !name || !category_id) {
-      return res.status(400).json({ error: 'SKU, name and category_id are required' });
+    const { SKU, name, description, image_key, image, brand, category_id, removeImage = false, sale_price, purchase_price } = req.body;
+    if (!SKU || !name || !category_id || sale_price == null || purchase_price == null) {
+      return res.status(400).json({ error: 'SKU, name, sale_price y purchase_price and category_id are required' });
     }
     try {
       const prev = await ProductService.getProductById(id);
@@ -57,12 +59,12 @@ const ProductController = {
         nextImage = await replaceImageKey(prev?.image, image_key ?? image);
       }
       const updated = await ProductService.updateProduct(id, {
-        SKU, name, description, brand, category_id, image: nextImage
+        SKU, name, description, brand, category_id, image: nextImage, sale_price, purchase_price
       });
       if (updated) {
         const fresh = await ProductService.getProductById(id);
         const out = await attachImageUrl(fresh, 'image', { signed: false });
-        res.status(200).json({ message: 'Product updated successfully', product: out });
+        res.status(204).send();
       } else {
         res.status(404).json({ error: 'Product not found' });
       }

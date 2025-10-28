@@ -10,7 +10,8 @@ exports.seed = async function (knex) {
       description: 'Botella de gaseosa de 2 litros',
       image: 'https://fsa.bo/productos/01658-01.jpg',
       brand: 'Coca Cola',
-      price: 20,
+      sale_price: 20,
+      purchase_price: 14,
       category_id: 2, // Bebidas
       created_at: knex.fn.now(),
       updated_at: knex.fn.now()
@@ -21,7 +22,8 @@ exports.seed = async function (knex) {
       description: 'Bolsa de papas fritas',
       image: 'https://m.media-amazon.com/images/I/8141nrQe0aL.jpg',
       brand: 'Lays',
-      price: 5,
+      sale_price: 5,
+      purchase_price: 2,
       category_id: 3, // Snacks
       created_at: knex.fn.now(),
       updated_at: knex.fn.now()
@@ -32,7 +34,8 @@ exports.seed = async function (knex) {
       description: 'Leche entera en envase Tetra Pak',
       image: 'https://pilandina.com.bo/wp-content/uploads/2019/06/Leche-caja-1.webp',
       brand: 'Pil',
-      price: 8,
+      sale_price: 8,
+      purchase_price: 6,
       category_id: 1, // Lácteos
       created_at: knex.fn.now(),
       updated_at: knex.fn.now()

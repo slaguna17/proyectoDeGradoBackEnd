@@ -11,7 +11,8 @@ exports.up = async function(knex) {
     table.string('description');
     table.string('image');
     table.string('brand').notNullable();
-    table.decimal('price', 10, 2).notNullable().defaultTo(0.00);
+    table.decimal('sale_price', 10, 2).notNullable().defaultTo(0.00);
+    table.decimal('purchase_price', 10, 2).notNullable().defaultTo(0.00);
     table
       .integer('category_id')
       .unsigned()
