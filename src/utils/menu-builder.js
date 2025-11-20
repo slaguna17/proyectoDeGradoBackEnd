@@ -5,6 +5,7 @@ const FULL_MENU = [
   { id: 'employees',   label: 'Empleados',    route: '/employees',  icon: 'Users' },
   { id: 'schedules',   label: 'Turnos',       route: '/schedules',  icon: 'Calendar' },
   { id: 'sales',       label: 'Ventas',       route: '/sales',      icon: 'ShoppingCart' },
+  { id: 'whatsapp_sales',   label: 'Pedidos IA',  route: '/whatsapp_sales',  icon: 'Whatsapp' },
   { id: 'purchases',   label: 'Compras',      route: '/purchases',  icon: 'Truck' },
   { id: 'cash',        label: 'Caja',         route: '/cash',       icon: 'Wallet' },
   { id: 'stores',      label: 'Tiendas',      route: '/stores',     icon: 'Building' },

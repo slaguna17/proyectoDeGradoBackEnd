@@ -17,6 +17,7 @@ const cashboxRoutes = require("./routes/cashbox-routes");
 const purchaseRoutes = require("./routes/purchase-routes");
 const salesRoutes = require("./routes/sales-routes");
 const menuRoutes = require("./routes/menu-routes");
+const shoppingCartRoutes = require("./routes/shopping-cart-routes");
 
 // Configs
 dotenv.config();
@@ -53,6 +54,7 @@ app.use("/api/cashbox", cashboxRoutes);
 app.use("/api/purchase", purchaseRoutes);
 app.use("/api/sales", salesRoutes);
 app.use('/api/menu', menuRoutes);
+app.use('/api/shoppingCart', shoppingCartRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => res.json({ ok: true }));

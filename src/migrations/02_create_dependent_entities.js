@@ -1,5 +1,5 @@
-// Dependent entities (7 TABLES)
-// PRODUCT, FORECAST, SALES, PURCHASE, CASH_SESSION, CASH_MOVEMENT, CASH_COUNT
+// Dependent entities (9 TABLES)
+// PRODUCT, FORECAST, SALES, PURCHASE, CASH_SESSION, CASH_MOVEMENT, CASH_COUNT, SHOPPING_CART, CART_ITEM
 
 exports.up = async function(knex) {
 
@@ -135,6 +135,33 @@ exports.up = async function(knex) {
     table.index(['cash_session_id']);
   });
 
+  // 15. shopping_cart (Provided by Whatsapp agent)
+  await knex.schema.createTable('shopping_cart', table => {
+    table.increments('id').primary();
+    table.integer('store_id').unsigned().references('id').inTable('store').onDelete('CASCADE');
+    
+    // Customer information
+    table.string('customer_phone').notNullable(); 
+    table.string('customer_name').nullable();
+    
+    table.string('status').defaultTo('pending');
+    table.decimal('total_estimated', 10, 2).defaultTo(0);
+    
+    table.timestamps(true, true);
+  });
+
+  // 16. cart_item (Items inside the shopping_cart)
+  await knex.schema.createTable('cart_item', table => {
+    table.increments('id').primary();
+    table.integer('shopping_cart_id').unsigned().references('id').inTable('shopping_cart').onDelete('CASCADE');
+    table.integer('product_id').unsigned().references('id').inTable('product').onDelete('CASCADE');
+    
+    table.integer('quantity').notNullable().defaultTo(1);
+    table.decimal('unit_price', 10, 2).notNullable(); 
+    
+    table.timestamps(true, true);
+  });
+
   // --------- INDEXES / CONSTRAINTS ----------
   await knex.raw(`
     CREATE UNIQUE INDEX IF NOT EXISTS cash_session_one_open_per_store_per_day
@@ -149,6 +176,9 @@ exports.up = async function(knex) {
 exports.down = async function(knex) {
   await knex.raw(`DROP INDEX IF EXISTS cash_session_one_open_per_store_per_day;`);
 
+  await knex.schema.dropTableIfExists('cart_item');
+  await knex.schema.dropTableIfExists('shopping_cart');
+  
   await knex.schema.dropTableIfExists('cash_count');
   await knex.schema.dropTableIfExists('cash_movement');
 
