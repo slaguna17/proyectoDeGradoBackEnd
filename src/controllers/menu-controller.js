@@ -2,7 +2,6 @@ const UserService = require('../services/user-service');
 const { buildMenu } = require('../utils/menu-builder');
 
 const MenuController = {
-  // GET /api/menu
   getMenu: async (req, res) => {
     try {
       const userId = req.user.userId || req.user.id;

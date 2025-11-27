@@ -18,7 +18,6 @@ const RoleService = {
             }
             return role;
         } catch (error) {
-            // console.error(`Error en RoleService.getRoleById (id: ${id}):`, error); // Ya se loggea en el modelo
             if (error.message.includes('no encontrado')) throw error;
             throw new Error("Error al obtener el rol.");
         }

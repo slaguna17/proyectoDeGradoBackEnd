@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const getAuthToken = (req) => {
   const h = req.headers.authorization || "";
-  // admite "Bearer xxx" o "bearer xxx"
+  // Admits "Bearer xxx" or "bearer xxx"
   if (/^bearer\s+/i.test(h)) return h.split(" ")[1];
   return null;
 };

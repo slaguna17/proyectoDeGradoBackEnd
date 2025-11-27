@@ -1,7 +1,6 @@
 const InventoryService = require('../services/inventory-service');
 
 const InventoryController = {
-
   getStock: async (req, res) => {
     const { storeId, productId } = req.params;
     try {

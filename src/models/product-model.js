@@ -50,6 +50,7 @@ const ProductModel = {
     await hydrateRelations(products);
     return products;
   },
+
   getProductById: async (id) => {
     const product = await db('product').where({ id }).first();
     
@@ -60,6 +61,7 @@ const ProductModel = {
     const [hydratedProduct] = await hydrateRelations([product]);
     return hydratedProduct;
   },
+
   createProduct: async (productData, storeData) => {
     return await db.transaction(async (trx) => {
       const storeExists = await trx('store').where('id', storeData.store_id).first();
@@ -80,11 +82,13 @@ const ProductModel = {
       return newProduct;
     });
   },
+
   updateProduct: async (id, data) => {
     return db('product')
       .where({ id })
       .update({ ...data, updated_at: db.fn.now() });
   },
+
   deleteProduct: async (id) => {
     const usedInSales = await db('sales_product').where({ product_id: id }).first();
     const usedInPurchases = await db('purchase_product').where({ product_id: id }).first();
@@ -93,18 +97,21 @@ const ProductModel = {
     await db('provider_product').where({ product_id: id }).del();
     return db('product').where({ id }).del();
   },
+
   getProductsByCategoryWithRelations: async (category_id) => {
     const products = await db('product').where({ category_id }).select('*');
     await hydrateRelations(products);
     return products;
   },
+
   getProductsByStore: async (storeId) => {
     const products = await db('product as p')
       .join('store_product as sp', 'sp.product_id', 'p.id')
       .where('sp.store_id', storeId)
       .select('p.*');
     return hydrateRelations(products);
-},
+  },
+
   getProductsByCategoryAndStore: async (categoryId, storeId) => {
     const products = await db('product as p')
       .join('store_product as sp', 'sp.product_id', 'p.id')
@@ -112,7 +119,8 @@ const ProductModel = {
       .andWhere('p.category_id', categoryId)
       .select('p.*');
     return hydrateRelations(products);
-},
+  },
+
   assignRelations: async (productId, storeEntries = [], providerIds = []) => {
     if (storeEntries && storeEntries.length > 0) {
       const normalized = storeEntries.map(entry => ({

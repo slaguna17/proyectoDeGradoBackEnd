@@ -29,7 +29,6 @@ const ProviderService = {
     return await ProviderModel.deleteProvider(id);
   }
 
-
 };
 
 module.exports = ProviderService;

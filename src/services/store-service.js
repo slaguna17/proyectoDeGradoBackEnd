@@ -1,4 +1,3 @@
-// src/services/store-service.js  (reemplaza)
 const StoreModel = require('../models/store-model');
 
 const StoreService = {

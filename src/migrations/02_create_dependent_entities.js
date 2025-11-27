@@ -1,5 +1,5 @@
-// Dependent entities (9 TABLES)
-// PRODUCT, FORECAST, SALES, PURCHASE, CASH_SESSION, CASH_MOVEMENT, CASH_COUNT, SHOPPING_CART, CART_ITEM
+// Dependent entities (7 TABLES)
+// PRODUCT, SALES, PURCHASE, CASH_SESSION, CASH_MOVEMENT, SHOPPING_CART, CART_ITEM
 
 exports.up = async function(knex) {
 
@@ -25,21 +25,7 @@ exports.up = async function(knex) {
     table.index(['category_id'], 'idx_product_category_id');
   });
 
-
-  // 9. forecast
-  await knex.schema.createTable("forecast", table => {
-    table.increments('id').primary();
-    table.integer('product_id').unsigned().references('id').inTable('product');
-    table.timestamp('date_generated');
-    table.string('suggested_action');
-    table.string('method');
-    table.string('accuracy');
-    table.timestamp('date_updated');
-    table.string('trust');
-    table.timestamps(true, true);
-  });
-
-  // 10. sales
+  // 9. sales
   await knex.schema.createTable("sales", table => {
     table.increments('id').primary();
     table.integer('user_id').unsigned().references('id').inTable('user');
@@ -52,7 +38,7 @@ exports.up = async function(knex) {
     table.timestamps(true, true);
   });
 
-  // 11. purchase
+  // 10. purchase
   await knex.schema.createTable("purchase", table => {
     table.increments('id').primary();
     table.integer('user_id').unsigned().references('id').inTable('user');
@@ -66,7 +52,7 @@ exports.up = async function(knex) {
     table.timestamps(true, true);
   });
 
-  // 12. CASH_SESSION
+  // 11. CASH_SESSION
   await knex.schema.createTable('cash_session', table => {
     table.increments('id').primary();
 
@@ -90,7 +76,7 @@ exports.up = async function(knex) {
     table.timestamps(true, true);
   });
 
-  // 13. cash_movement
+  // 12. cash_movement
   await knex.schema.createTable('cash_movement', table => {
     table.increments('id').primary();
 
@@ -118,24 +104,7 @@ exports.up = async function(knex) {
     table.index(['created_at']);
   });
 
-  // 14. cash_count
-  await knex.schema.createTable('cash_count', table => {
-    table.increments('id').primary();
-
-    table.integer('cash_session_id').unsigned().notNullable()
-      .references('id').inTable('cash_session').onDelete('CASCADE');
-
-    table.string('currency').notNullable().defaultTo('BOB');
-    table.decimal('denomination', 10, 2).notNullable(); // 0.50, 1, 5, 10, 20, 50, 100, 200
-    table.integer('quantity').notNullable().defaultTo(0);
-
-    table.timestamp('created_at').notNullable().defaultTo(knex.fn.now());
-    table.timestamp('updated_at').notNullable().defaultTo(knex.fn.now());
-
-    table.index(['cash_session_id']);
-  });
-
-  // 15. shopping_cart (Provided by Whatsapp agent)
+  // 13. shopping_cart (Provided by Whatsapp agent)
   await knex.schema.createTable('shopping_cart', table => {
     table.increments('id').primary();
     table.integer('store_id').unsigned().references('id').inTable('store').onDelete('CASCADE');
@@ -150,7 +119,7 @@ exports.up = async function(knex) {
     table.timestamps(true, true);
   });
 
-  // 16. cart_item (Items inside the shopping_cart)
+  // 14. cart_item (Items inside the shopping_cart)
   await knex.schema.createTable('cart_item', table => {
     table.increments('id').primary();
     table.integer('shopping_cart_id').unsigned().references('id').inTable('shopping_cart').onDelete('CASCADE');
@@ -175,13 +144,9 @@ exports.up = async function(knex) {
 
 exports.down = async function(knex) {
   await knex.raw(`DROP INDEX IF EXISTS cash_session_one_open_per_store_per_day;`);
-
   await knex.schema.dropTableIfExists('cart_item');
   await knex.schema.dropTableIfExists('shopping_cart');
-  
-  await knex.schema.dropTableIfExists('cash_count');
   await knex.schema.dropTableIfExists('cash_movement');
-
   await knex.schema.dropTableIfExists('cash_session');
   await knex.schema.dropTableIfExists('purchase');
   await knex.schema.dropTableIfExists('sales');

@@ -4,26 +4,26 @@ const ImageController = require('../controllers/image-controller');
 
 const router = express.Router();
 
-// Rate-limit defensivo (evita abuso si el endpoint queda público)
+// Rate-limit
 const limiter = rateLimit({
-  windowMs: 60 * 1000, // 1 minuto
-  max: 60,             // 60 req/min por IP
+  windowMs: 60 * 1000, // 1 minute
+  max: 60,             // 60 req/min per IP
 });
 router.use(limiter);
 
-// Presign directo a la ruta final (entity/id/kind)
+// Presign directly to final path (entity/id/kind)
 router.post('/presign/entity-put', ImageController.presignEntityPutOpen);
 
-// Presign genérico con folder + fileName (restringido a roots permitidos)
+// Generic Presign with folder + fileName (restricted to selected roots)
 router.post('/presign/put', ImageController.presignPutOpen);
 
-// Resolver URL de lectura por key (firmada u open)
+// Resolve reading URL for key (signed or open) 
 router.get('/url', ImageController.getUrlFromKey);
 
-// Convertir URL a key
+// Convert URL to key
 router.post('/url-to-key', ImageController.urlToKey);
 
-// Borrar objeto por key
+// Delete by key
 router.delete('/', ImageController.delete);
 
 module.exports = router;

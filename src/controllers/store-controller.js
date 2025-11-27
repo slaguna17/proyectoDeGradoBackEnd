@@ -4,7 +4,6 @@ const { deleteObject } = require('../services/image-service');
 
 const StoreController = {
 
-  // GET /api/stores?signed=true
   async getAllStores(req, res) {
     try {
       const signed = String(req.query.signed).toLowerCase() === 'true';
@@ -17,7 +16,6 @@ const StoreController = {
     }
   },
 
-  // GET /api/stores/:id?signed=true
   async getStoreById(req, res) {
     try {
       const signed = String(req.query.signed).toLowerCase() === 'true';
@@ -31,7 +29,6 @@ const StoreController = {
     }
   },
 
-  // POST /api/stores
   async createStore(req, res, next) {
     try {
       const { name, address, city, history, phone, logo } = req.body || {};
@@ -42,11 +39,12 @@ const StoreController = {
         city,
         history,
         phone,
-        logo: logo || null, // Acepta la clave de S3, una URL externa, o lo deja nulo
+        logo: logo || null,
       };
 
       const created = await StoreService.createStore(payload);
-      // Devolvemos el objeto completo creado, con la URL del logo resuelta.
+
+      // Return constructed object with logo URL resolved 
       const out = await attachImageUrl(created, 'logo');
       return res.status(201).json(out);
 
@@ -55,21 +53,17 @@ const StoreController = {
     }
   },
 
-  // PUT /api/stores/:id  (+ removeImage opcional)
   async updateStore(req, res, next) {
     try {
       const id = Number(req.params.id);
-
       const { name, address, city, history, phone, logo } = req.body || {};
-
-      // Primero, obtenemos la tienda actual para saber si tenía un logo antiguo.
       const previousStore = await StoreService.getStoreById(id);
+
       if (!previousStore) {
         return res.status(404).json({ error: 'Store not found' });
       }
 
       const payload = { name, address, city, history, phone, logo };
-
       const oldLogoKey = previousStore.logo;
       const newLogoKey = payload.logo;
 
@@ -103,7 +97,6 @@ const StoreController = {
         return res.status(400).json({ error: 'Cannot delete store: it has related records' });
       }
 
-      // ✨ LÓGICA MEJORADA: Si la tienda tenía un logo, lo borramos de S3.
       if (storeToDelete.logo) {
         await deleteObject(storeToDelete.logo).catch(console.error);
       }

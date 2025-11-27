@@ -2,7 +2,6 @@ const ShoppingCartModel = require('../models/shopping-cart-model');
 
 const ShoppingCartService = {
   createCart: async (data, items) => {
-    // Validación básica
     if (!data.store_id || !data.customer_phone) {
       throw new Error('Missing store_id or customer_phone');
     }

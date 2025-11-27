@@ -1,20 +1,12 @@
-const {
-  buildKey,
-  getSignedPutUrl,
-  getSignedReadUrl,
-  publicUrlFromKey,
-  keyFromUrl,
-  deleteObject,
-} = require('../services/image-service');
-
+const {buildKey, getSignedPutUrl, getSignedReadUrl, publicUrlFromKey, keyFromUrl, deleteObject} = require('../services/image-service');
 const { PRESIGNED_URL_EXPIRES_IN, S3_UPLOAD_MAX_MB } = require('../config/s3');
 
-// Defensas mínimas si el endpoint es público
+// Constants
 const ALLOWED_ENTITIES = new Set(['users', 'stores', 'categories', 'products']);
 const ALLOWED_KINDS    = new Set(['avatar', 'logo', 'main']);
 const ALLOWED_ROOTS    = new Set(['users', 'stores', 'categories', 'products']);
 
-// Mapea MIME -> extensión final
+// Maps MIME -> extensión final
 function extFromMime(mime = '') {
   const m = String(mime).toLowerCase();
   if (m.endsWith('webp')) return '.webp';
@@ -23,7 +15,7 @@ function extFromMime(mime = '') {
   return '.webp';
 }
 
-// Asegura que la carpeta que te pasan empiece en una root permitida
+// Check root
 function ensureAllowedRoot(folder = '') {
   const clean = String(folder).replace(/^\/*|\/*$/g, '');
   const root = clean.split('/')[0] || '';
@@ -36,10 +28,6 @@ function ensureAllowedRoot(folder = '') {
 }
 
 const ImageController = {
-  /**
-   * Presign directo a ruta final: /{entity}/{id}/{kind}.{ext}
-   * Body: { entity: "stores"|"users"|"categories"|"products", entityId: number, kind: "logo"|"avatar"|"main", contentType: "image/*", expiresIn? }
-   */
   presignEntityPutOpen: async (req, res, next) => {
     try {
       const { entity, entityId, kind = 'main', contentType, expiresIn } = req.body || {};
@@ -81,10 +69,6 @@ const ImageController = {
     }
   },
 
-  /**
-   * Presign genérico: { folder, fileName, contentType }
-   * Restringimos que folder comience en una root conocida (users|stores|categories|products)
-   */
   presignPutOpen: async (req, res, next) => {
     try {
       let { folder, fileName, contentType, expiresIn } = req.body || {};
@@ -113,13 +97,13 @@ const ImageController = {
     }
   },
 
-  // -------- Resolver URL de lectura (GET) --------
+  // -------- Resolve URL (GET) --------
   getUrlFromKey: async (req, res, next) => {
     try {
       const { key, signed = 'false', expiresIn } = req.query;
       if (!key) return res.status(400).json({ error: 'key is required' });
 
-      // Si ya te pasan una URL completa, devuélvela tal cual
+      // If it is a full URL, return it full
       if (/^https?:\/\//i.test(key)) {
         return res.json({ key, url: key, signed: false });
       }
@@ -133,14 +117,13 @@ const ImageController = {
     } catch (err) { next(err); }
   },
 
-  // -------- Convertir URL -> key --------
+  // -------- Convert URL -> key --------
   urlToKey: (req, res) => {
     const { url } = req.body || {};
     if (!url) return res.status(400).json({ error: 'url is required' });
     return res.json({ key: keyFromUrl(url) });
   },
 
-  // -------- Borrar objeto --------
   delete: async (req, res, next) => {
     try {
       const { key } = req.body || {};

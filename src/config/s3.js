@@ -3,11 +3,11 @@ const { S3Client } = require("@aws-sdk/client-s3");
 const AWS_REGION = process.env.AWS_REGION || "us-east-1";
 const S3_BUCKET  = process.env.S3_BUCKET;
 
-// Fallback si aún usas AWS_KEY
+// Fallback
 const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID
 const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
 
-// Opcionales
+// Optionals
 const CLOUDFRONT_DOMAIN = process.env.CLOUDFRONT_DOMAIN || "";
 const PRESIGNED_URL_EXPIRES_IN = Number(process.env.PRESIGNED_URL_EXPIRES_IN || 300);
 const S3_UPLOAD_MAX_MB = Number(process.env.S3_UPLOAD_MAX_MB || 8);

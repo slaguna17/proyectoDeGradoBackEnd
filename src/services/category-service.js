@@ -8,7 +8,7 @@ const CategoryService = {
 
   getCategoryById: async (id) => {
     if (!id) return null;
-    return await CategoryModel.getCategoryById(id); // null si no existe
+    return await CategoryModel.getCategoryById(id);
   },
 
   createCategory: async (data) => {
@@ -29,7 +29,6 @@ const CategoryService = {
     if (!id) return null;
     if (!name) throw new Error('Category name is required');
 
-    // Devuelve el registro actualizado o null si no existe
     return await CategoryModel.updateCategory(id, {
       name,
       description: description || '',
@@ -40,7 +39,6 @@ const CategoryService = {
 
   deleteCategory: async (id) => {
     if (!id) return 0;
-    // Devuelve cantidad de filas eliminadas (0 si no existe)
     return await CategoryModel.deleteCategory(id);
   }
 };

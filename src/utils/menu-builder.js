@@ -10,7 +10,6 @@ const FULL_MENU = [
   { id: 'cash',        label: 'Caja',         route: '/cash',       icon: 'Wallet' },
   { id: 'stores',      label: 'Tiendas',      route: '/stores',     icon: 'Building' },
   { id: 'providers',   label: 'Proveedores',  route: '/providers',  icon: 'Handshake' },
-  // { id: 'reports',     label: 'Reportes',     route: '/reports',    icon: 'BarChart' },
   // { id: 'settings',    label: 'Ajustes',      route: '/settings',   icon: 'Settings' },
 ];
 

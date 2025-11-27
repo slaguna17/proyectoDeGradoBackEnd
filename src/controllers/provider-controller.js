@@ -1,7 +1,6 @@
 const ProviderService = require('../services/provider-service');
 
 const ProviderController = {
-
     getAllProviders: async (req, res) => {
         try {
             const providers = await ProviderService.getAllProviders();

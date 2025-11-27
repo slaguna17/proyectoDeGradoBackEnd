@@ -1,4 +1,3 @@
-// src/routes/cashbox-routes.js
 const express = require('express');
 const router = express.Router();
 const CashboxController = require('../controllers/cashbox-controller');

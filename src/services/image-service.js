@@ -4,7 +4,7 @@ const { createPresignedPost } = require("@aws-sdk/s3-presigned-post");
 
 const { s3, S3_BUCKET, basePublicUrl, PRESIGNED_URL_EXPIRES_IN, S3_UPLOAD_MAX_MB, } = require("../config/s3");
 
-// ---------- helpers de sanitización ----------
+// ---------- Helpers ----------
 function sanitizeFolder(input = "") {
   const clean = String(input)
     .replace(/^\/*|\/*$/g, "")
@@ -41,7 +41,7 @@ function extFromContentType(ct = "") {
   return ".webp";
 }
 
-// Para avatar/logo/main por entidad
+// For Avatar/logo for each entity
 function buildFinalKeyForEntity({ entity, entityId, kind = "main", contentType }) {
   // entity: "users" | "stores" | "categories" | "products"
   // kind:   "avatar" | "logo" | "main"
@@ -49,31 +49,30 @@ function buildFinalKeyForEntity({ entity, entityId, kind = "main", contentType }
   return `${sanitizeFolder(entity)}/${Number(entityId)}/${sanitizeFileName(kind + ext)}`;
 }
 
-// ---------- existencia opcional ----------
+// ---------- Optional existance ----------
 async function headObject(key) {
   const cmd = new HeadObjectCommand({ Bucket: S3_BUCKET, Key: key });
   return s3.send(cmd);
 }
 
-// ---------- URL firmada para lectura (GET) ----------
+// ----------Signed URL for reading (GET) ----------
 async function getSignedReadUrl(key, expiresIn = PRESIGNED_URL_EXPIRES_IN) {
   const cmd = new GetObjectCommand({ Bucket: S3_BUCKET, Key: key });
   return getSignedUrl(s3, cmd, { expiresIn });
 }
 
-// ---------- URL firmada para subida directa (PUT) ----------
+// ---------- Signed URl for direct upload (PUT) ----------
 async function getSignedPutUrl({ key, contentType, expiresIn = PRESIGNED_URL_EXPIRES_IN }) {
   if (!contentType) throw new Error("contentType is required");
   const cmd = new PutObjectCommand({
     Bucket: S3_BUCKET,
     Key: key,
     ContentType: contentType,
-    // ACL público NO recomendado: usa privado + GET firmado o CloudFront
   });
   return getSignedUrl(s3, cmd, { expiresIn });
 }
 
-// ---------- POST presign (alternativa a PUT, permite limitar tamaño en servidor) ----------
+// ---------- POST presign ----------
 async function getPresignedPost({ key, contentType, maxMB = S3_UPLOAD_MAX_MB, expiresIn = PRESIGNED_URL_EXPIRES_IN }) {
   if (!contentType) throw new Error("contentType is required");
   return createPresignedPost(s3, {
@@ -88,7 +87,7 @@ async function getPresignedPost({ key, contentType, maxMB = S3_UPLOAD_MAX_MB, ex
   });
 }
 
-// ---------- conversiones key <-> url ----------
+// ---------- Key to URL ----------
 function publicUrlFromKey(key) {
   return `${basePublicUrl()}/${encodeURI(key)}`;
 }
@@ -98,11 +97,10 @@ function keyFromUrl(url) {
     const u = new URL(url);
     return decodeURI(u.pathname.replace(/^\/+/, ""));
   } catch {
-    return url; // si no era URL válida, ya era una key
+    return url;
   }
 }
 
-// ---------- borrar / mover ----------
 async function deleteObject(key) {
   const cmd = new DeleteObjectCommand({ Bucket: S3_BUCKET, Key: key });
   await s3.send(cmd);
@@ -121,7 +119,6 @@ async function moveObject(oldKey, newKey) {
   return newKey;
 }
 
-// ---------- helper para adjuntar URL de lectura a objetos ----------
 async function attachImageUrl(obj, field = "image", signed = false) {
   const key = obj?.[field];
   if (!key) return obj;
@@ -130,12 +127,12 @@ async function attachImageUrl(obj, field = "image", signed = false) {
 }
 
 module.exports = {
-  // sanitización y keys
+  // Sanitation and keys
   buildKey,
   buildFinalKeyForEntity,
   extFromContentType,
 
-  // S3 ops
+  // S3 operations
   headObject,
   getSignedReadUrl,
   getSignedPutUrl,

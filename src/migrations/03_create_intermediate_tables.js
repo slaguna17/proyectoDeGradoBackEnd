@@ -19,7 +19,7 @@ exports.up = async function(knex) {
         table.timestamps(true, true);
     })
 
-    //17. user_role table
+    //17. User_role table
     await knex.schema.createTable("user_role", table => {
         table.increments('id').primary();
         table.integer('user_id').unsigned().references('id').inTable('user').onDelete('CASCADE');
@@ -56,7 +56,6 @@ exports.up = async function(knex) {
         table.index(['product_id'], 'idx_store_product_product');
     });
 
-    // CHECK (stock >= 0) - Postgres
     await knex.raw(`
         ALTER TABLE store_product
         ADD CONSTRAINT chk_store_product_stock_nonnegative CHECK (stock >= 0);

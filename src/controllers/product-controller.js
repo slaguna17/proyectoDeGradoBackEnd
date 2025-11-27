@@ -2,7 +2,6 @@ const ProductService = require('../services/product-service');
 const { attachImageUrl, attachImageUrlMany, replaceImageKey } = require('../utils/image-helpers');
 
 const ProductController = {
-  // --- TUS FUNCIONES ORIGINALES ---
   getAllProducts: async (req, res) => {
     try {
       const signed = String(req.query.signed).toLowerCase() === 'true';
@@ -14,6 +13,7 @@ const ProductController = {
       res.status(500).json({ error: 'Error retrieving products with relations' });
     }
   },
+
   getProductById: async (req, res) => {
     try {
       const signed = String(req.query.signed).toLowerCase() === 'true';
@@ -25,6 +25,7 @@ const ProductController = {
       res.status(404).send("Product not found");
     }
   },
+
   createProduct: async (req, res) => {
     const { SKU, name, description, image_key, image, brand, category_id, store_id, stock, expiration_date, sale_price, purchase_price } = req.body;
     if (!SKU || !name || !category_id || !store_id || stock == null || sale_price == null || purchase_price == null) {
@@ -73,6 +74,7 @@ const ProductController = {
       res.status(500).json({ error: 'Error updating product' });
     }
   },
+
   deleteProduct: async (req, res) => {
     const { id } = req.params;
     try {
@@ -94,6 +96,7 @@ const ProductController = {
       res.status(500).json({ error: 'Error deleting product' });
     }
   },
+
   getProductsByCategory: async (req, res) => {
     try {
       const signed = String(req.query.signed).toLowerCase() === 'true';
@@ -116,6 +119,7 @@ const ProductController = {
       res.status(404).json({ message: error.message });
     }
   },
+
   getProductsByCategoryAndStore: async (req, res) => {
     try {
       const signed = String(req.query.signed).toLowerCase() === 'true';
@@ -126,6 +130,7 @@ const ProductController = {
       res.status(500).json({ error: 'Error fetching products' });
     }
   },
+
   assignRelations: async (req, res) => {
     const { id } = req.params;
     const { storeIds, providerIds } = req.body;
@@ -141,7 +146,6 @@ const ProductController = {
     }
   },
 
-  // --- NUEVA FUNCIÓN AÑADIDA ---
   upsertStoreProduct: async (req, res) => {
     try {
       const { storeId, productId, stock, expirationDate } = req.body;
@@ -156,7 +160,6 @@ const ProductController = {
     }
   },
 
-  // --- NUEVA FUNCIÓN AÑADIDA ---
   removeStoreProduct: async (req, res) => {
     try {
       const storeId = parseInt(req.params.storeId, 10);

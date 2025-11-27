@@ -1,10 +1,6 @@
 const FinancialService = require('../services/financial-service');
 
 const FinancialController = {
-  /**
-   * GET /api/financials/movements/store/:storeId
-   * Obtiene todos los movimientos financieros de una tienda.
-   */
   getAllMovementsByStore: async (req, res) => {
     try {
       const { storeId } = req.params;
@@ -16,10 +12,6 @@ const FinancialController = {
     }
   },
 
-  /**
-   * GET /api/financials/income/store/:storeId
-   * Obtiene todos los ingresos de una tienda.
-   */
   getIncomeByStore: async (req, res) => {
     try {
       const { storeId } = req.params;
@@ -31,10 +23,6 @@ const FinancialController = {
     }
   },
 
-  /**
-   * GET /api/financials/expenses/store/:storeId
-   * Obtiene todos los egresos de una tienda.
-   */
   getExpensesByStore: async (req, res) => {
     try {
       const { storeId } = req.params;

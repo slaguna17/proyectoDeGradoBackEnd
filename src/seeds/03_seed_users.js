@@ -9,7 +9,6 @@ exports.seed = async function(knex) {
   await knex('user').insert([
     //Admin
     {
-      id: 1,
       username: 'slaguna',
       password: adminPassword,
       full_name: 'Sergio Laguna',
@@ -19,9 +18,8 @@ exports.seed = async function(knex) {
       status: 'ACTIVE',
       last_access: new Date().toISOString()
     },
-    // Regular
+    // Regular User
     {
-      id: 2,
       username: 'jperez',
       password: employeePassword,
       full_name: 'Juan Perez',

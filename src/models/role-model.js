@@ -1,4 +1,3 @@
-// src/models/role-model.js
 const db = require('../config/db');
 
 const RoleModel = {
@@ -45,15 +44,12 @@ const RoleModel = {
     },
 
     assignPermitsToRole: async (roleId, permitIds) => {
-        // Usamos una transacción para asegurar que ambas operaciones (borrar e insertar)
-        // se completen exitosamente o ninguna lo haga.
+        // Transaction for both delete and insert to be completed in a safe way, otherwise, it does nothing
         return db.transaction(async (trx) => {
-            // 1. Borra todos los permisos existentes para este rol.
             await trx('role_permit')
                 .where({ role_id: roleId })
                 .del();
 
-            // 2. Si la nueva lista de permisos no está vacía, insértalos.
             if (permitIds && permitIds.length > 0) {
                 const inserts = permitIds.map(permitId => ({
                     role_id: roleId,

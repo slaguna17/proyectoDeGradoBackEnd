@@ -2,8 +2,6 @@ const CategoryService = require('../services/category-service');
 const { attachImageUrl, attachImageUrlMany, replaceImageKey } = require('../utils/image-helpers');
 
 const CategoryController = {
-
-  // GET /api/categories?signed=true
   getAllCategories: async (req, res) => {
     try {
       const signed = String(req.query.signed).toLowerCase() === 'true';
@@ -16,7 +14,6 @@ const CategoryController = {
     }
   },
 
-  // GET /api/categories/:id?signed=true
   getCategoryById: async (req, res) => {
     try {
       const signed = String(req.query.signed).toLowerCase() === 'true';
@@ -30,8 +27,6 @@ const CategoryController = {
     }
   },
 
-  // POST /api/categories
-  // Acepta { name, description, image_key } o { ... , image }
   createCategory: async (req, res) => {
     const { name, description, image_key, image } = req.body;
     if (!name) return res.status(400).json({ error: 'Category name is required' });
@@ -40,7 +35,7 @@ const CategoryController = {
       const created = await CategoryService.createCategory({
         name,
         description,
-        image: image_key ?? image ?? null, // guardamos SOLO la key
+        image: image_key ?? image ?? null, // save only the key
       });
       const out = await attachImageUrl(created, 'image', { signed: false });
       res.status(201).json({ message: 'Category created successfully', category: out });
@@ -50,8 +45,6 @@ const CategoryController = {
     }
   },
 
-  // PUT /api/categories/:id
-  // Acepta { name, description, image_key } y opcional { removeImage: true }
   updateCategory: async (req, res) => {
     const { name, description, image_key, image, removeImage = false } = req.body;
     if (!name) return res.status(400).json({ error: 'Category name is required' });
@@ -87,7 +80,6 @@ const CategoryController = {
     }
   },
 
-  // DELETE /api/categories/:id
   deleteCategory: async (req, res) => {
     try {
       const id = req.params.id;

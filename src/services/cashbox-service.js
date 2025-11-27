@@ -1,13 +1,10 @@
-// src/services/cashbox-service.js
 const CashboxModel = require('../models/cashbox-model');
 
 const CashboxService = {
-  // Open
   openCashbox: async (store_id, opening_amount) => {
     return await CashboxModel.openCashbox(store_id, opening_amount);
   },
 
-  // Close
   closeCashbox: async ({ store_id, user_id, date, closing_amount, cash_count }) => {
     if (!store_id || !user_id || !date) {
       throw new Error('store_id, user_id and date are required');
@@ -15,7 +12,6 @@ const CashboxService = {
     return await CashboxModel.closeCashbox({ store_id, user_id, date, closing_amount, cash_count });
   },
 
-  // Money Movement
   createMovement: async ({ store_id, user_id, direction, amount, category, notes, date }) => {
     if (!store_id || !user_id || !direction || amount == null) {
       const e = new Error('store_id, user_id, direction and amount are required');
@@ -53,7 +49,6 @@ const CashboxService = {
     });
   },
 
-  // Open cash session today
   getCurrent: async (store_id) => {
     const session = await CashboxModel.findOpenByStoreAndDate({ store_id, date: new Date() });
     if (!session) return null;

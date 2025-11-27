@@ -10,7 +10,7 @@ const SalesModel = {
       throw new Error('A sale must have at least one product.');
     }
 
-    //Begin transaction to ensure data integrity
+    // Begin transaction to ensure data integrity
     return db.transaction(async trx => {
       const today = dayjs().format('YYYY-MM-DD');
       const cashSession = await trx('cash_session')

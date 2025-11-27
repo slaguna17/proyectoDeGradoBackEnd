@@ -83,7 +83,7 @@ const RoleController = {
         }
     },
 
-    //PERMITS
+    // PERMITS
     getPermitsByRole: async (req, res) => {
         const { id } = req.params;
         try {

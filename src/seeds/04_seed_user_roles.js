@@ -5,7 +5,7 @@ exports.seed = async function(knex) {
     //Admin
     { user_id: 1, role_id: 1 },
     
-    //Regular
+    //Regular user
     { user_id: 2, role_id: 2 }
   ]);
 };

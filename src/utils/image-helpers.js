@@ -13,7 +13,6 @@ async function attachImageUrl(row, field = "image", { signed = false, expiresIn 
     return row;
   }
 
-  // 👇 Nuevo: si ya es URL completa (fuera de S3), úsala tal cual
   if (isAbsoluteUrl(key)) {
     row[`${field}_url`] = key;
     return row;

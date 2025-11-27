@@ -1,8 +1,6 @@
-// src/controllers/cashbox-controller.js
 const CashboxService = require('../services/cashbox-service');
 
 const CashboxController = {
-  // POST /api/cashbox/open
   openCashbox: async (req, res) => {
     const { store_id, opening_amount } = req.body;
     if (!store_id || opening_amount == null) {
@@ -20,7 +18,6 @@ const CashboxController = {
     }
   },
 
-  // POST /api/cashbox/close
   closeCashbox: async (req, res) => {
     try {
       const summary = await CashboxService.closeCashbox(req.body);
@@ -31,7 +28,6 @@ const CashboxController = {
     }
   },
 
-  // POST /api/cashbox/movements
   createMovement: async (req, res) => {
     try {
       const movement = await CashboxService.createMovement(req.body);
@@ -43,7 +39,6 @@ const CashboxController = {
     }
   },
 
-  // GET /api/cashbox/current/:storeId
   current: async (req, res) => {
     try {
       const data = await CashboxService.getCurrent(Number(req.params.storeId));
@@ -55,7 +50,6 @@ const CashboxController = {
     }
   },
 
-  // GET /api/cashbox/sessions?store_id=&from=&to=
   listSessions: async (req, res) => {
     try {
       const { store_id, from, to } = req.query;
@@ -68,7 +62,6 @@ const CashboxController = {
     }
   },
 
-  // GET /api/cashbox/sessions/:id
   getSession: async (req, res) => {
     try {
       const data = await CashboxService.getSessionDetails(Number(req.params.id));
@@ -80,7 +73,6 @@ const CashboxController = {
     }
   },
 
-  // GET /api/cashbox/sessions/:id/movements
   getSessionMovements: async (req, res) => {
     try {
       const movements = await CashboxService.getSessionMovements(Number(req.params.id));
