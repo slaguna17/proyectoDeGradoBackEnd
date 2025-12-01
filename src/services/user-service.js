@@ -66,10 +66,20 @@ const UserService = {
 
   login: async (email, password) => {
     const user = await UserModel.findByEmail(email);
-    if (!user) throw new Error('Credenciales inválidas');
+    if (!user) {
+      const err = new Error('Invalid credentials');
+      err.code = 'INVALID_CREDENTIALS';
+      err.statusCode = 401;
+      throw err;
+    }
 
     const ok = await bcrypt.compare(password, user.password);
-    if (!ok) throw new Error('Credenciales inválidas');
+    if (!ok) {
+      const err = new Error('Invalid credentials');
+      err.code = 'INVALID_CREDENTIALS';
+      err.statusCode = 401;
+      throw err;
+    }
 
     const roles = await db('role')
       .join('user_role', 'role.id', '=', 'user_role.role_id')

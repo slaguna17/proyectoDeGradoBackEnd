@@ -143,10 +143,21 @@ const UserController = {
       result.user = await attachImageUrl(result.user, 'avatar', { signed });
 
       const menu = buildMenu({ isAdmin: result.isAdmin, permits: result.permits });
-      res.status(200).json({ ...result, menu });
+      return res.status(200).json({ ...result, menu });
     } catch (error) {
       console.error(error.message);
-      res.status(500).send({ message: `Server error: ${error.message}` });
+
+      if (error.code === 'INVALID_CREDENTIALS') {
+        return res.status(error.statusCode || 401).json({
+          message: 'Invalid credentials',
+          code: 'INVALID_CREDENTIALS',
+        });
+      }
+
+      return res.status(500).json({
+        message: 'Internal server error',
+        code: 'INTERNAL_SERVER_ERROR',
+      });
     }
   },
 
