@@ -78,8 +78,8 @@ const UserModel = {
         return await db('user')
             .where({ id })
             .update({
-            ...data,
-            updated_at: db.fn.now()
+                ...data,
+                updated_at: db.fn.now()
             });
     },
 
@@ -139,13 +139,14 @@ const UserModel = {
                 'user.full_name',
                 'user.email',
                 'user.avatar',
+                'user.phone',
                 'store.id as store_id',
                 'store.name as store_name',
                 'schedule.id as schedule_id',
                 'schedule.name as schedule_name',
                 db.raw('array_agg(role.name) as roles')
             )
-            .groupBy('user.id', 'store.id', 'schedule.id');
+            .groupBy('user.id', 'user.phone', 'store.id', 'schedule.id');
     },
 
     getEmployeesByStore: async (storeId) => {
@@ -163,13 +164,14 @@ const UserModel = {
                 'user.full_name',
                 'user.email',
                 'user.avatar',
+                'user.phone',
                 'store.id as store_id',
                 'store.name as store_name',
                 'schedule.id as schedule_id',
                 'schedule.name as schedule_name',
                 db.raw('array_agg(role.name) as roles')
             )
-            .groupBy('user.id', 'store.id', 'schedule.id');
+            .groupBy('user.id', 'user.phone', 'store.id', 'schedule.id');
     },
 
    getUsersByRoleAndQuery: async (query) => {
@@ -181,14 +183,59 @@ const UserModel = {
             .distinct('user.id', 'user.username', 'user.full_name', 'user.email', 'user.avatar', 'user.created_at');
     },
 
+    getEmployeeById: async (userId) => {
+        return db('user')
+            .join('user_role', 'user.id', 'user_role.user_id')
+            .join('role', 'user_role.role_id', 'role.id')
+            .where('user.id', userId)
+            .andWhere('role.isAdmin', false)
+            .select(
+                'user.id',
+                'user.username',
+                'user.full_name',
+                'user.email',
+                'user.phone',
+                'user.avatar'
+            )
+            .first();
+    },
+
+    storeExists: async (storeId) => {
+        const store = await db('store').where({ id: storeId }).first();
+        return !!store;
+    },
+
+    scheduleExists: async (scheduleId) => {
+        const schedule = await db('schedule').where({ id: scheduleId }).first();
+        return !!schedule;
+    },
+
     assignScheduleStore: async (userId, scheduleId, storeId) => {
-        await db('user_schedule_store').where({ user_id: userId }).del();
-        return db('user_schedule_store').insert({
-            user_id: userId,
-            schedule_id: scheduleId,
-            store_id: storeId,
-            created_at: db.fn.now(),
-            updated_at: db.fn.now()
+        return db.transaction(async trx => {
+            await trx('user_schedule_store')
+                .where({ user_id: userId })
+                .del();
+
+            await trx('user_schedule_store').insert({
+                user_id: userId,
+                schedule_id: scheduleId,
+                store_id: storeId,
+                created_at: trx.fn.now(),
+                updated_at: trx.fn.now()
+            });
+
+            return trx('user_schedule_store')
+                .join('store', 'user_schedule_store.store_id', 'store.id')
+                .join('schedule', 'user_schedule_store.schedule_id', 'schedule.id')
+                .where('user_schedule_store.user_id', userId)
+                .select(
+                    'user_schedule_store.user_id',
+                    'store.id as store_id',
+                    'store.name as store_name',
+                    'schedule.id as schedule_id',
+                    'schedule.name as schedule_name'
+                )
+                .first();
         });
     },
 

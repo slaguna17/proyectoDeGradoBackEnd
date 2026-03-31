@@ -22,7 +22,7 @@ router.get('/', UserController.getUsers);
 router.post('/register', UserController.createUser);
 router.put('/updateUser/:id', UserController.updateUser);
 router.delete('/deleteUser/:id', UserController.deleteUser);
-router.put('/:id/assign-schedule', UserController.assignSchedule || ((_req,res)=>res.status(404).json({message:'Not implemented'})));
+router.put('/:id/assign-schedule', UserController.assignSchedule);
 router.put('/:id/update-role', UserController.updateUserRole || ((_req,res)=>res.status(404).json({message:'Not implemented'})));
 router.get('/:id', UserController.getUserById);
 

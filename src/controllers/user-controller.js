@@ -256,6 +256,31 @@ const UserController = {
       res.status(500).json({ error: 'Error obtaining employees' });
     }
   },
+
+  assignSchedule: async (req, res) => {
+    const { id } = req.params;
+    const { storeId, scheduleId } = req.body;
+
+    try {
+      const assignment = await UserService.assignSchedule(
+        Number(id),
+        Number(storeId),
+        Number(scheduleId)
+      );
+
+      return res.status(200).json({
+        message: 'Employee assigned successfully',
+        assignment
+      });
+    } catch (error) {
+      console.error('assignSchedule error:', error);
+
+      return res.status(error.status || 500).json({
+        error: error.message || 'Error assigning employee',
+        code: error.code || 'ASSIGN_SCHEDULE_ERROR'
+      });
+    }
+  },
 };
 
 module.exports = UserController;

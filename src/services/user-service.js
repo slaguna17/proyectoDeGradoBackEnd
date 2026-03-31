@@ -127,6 +127,41 @@ const UserService = {
   getAllEmployees: async () => UserModel.getAllEmployees(),
 
   getEmployeesByStore: async (storeId) => UserModel.getEmployeesByStore(storeId),
+
+  assignSchedule: async (userId, storeId, scheduleId) => {
+    if (!storeId || !scheduleId) {
+      const err = new Error('Store and schedule are required.');
+      err.status = 400;
+      err.code = 'STORE_AND_SCHEDULE_REQUIRED';
+      throw err;
+    }
+
+    const employee = await UserModel.getEmployeeById(userId);
+    if (!employee) {
+      const err = new Error('Employee not found.');
+      err.status = 404;
+      err.code = 'EMPLOYEE_NOT_FOUND';
+      throw err;
+    }
+
+    const storeExists = await UserModel.storeExists(storeId);
+    if (!storeExists) {
+      const err = new Error('Store not found.');
+      err.status = 404;
+      err.code = 'STORE_NOT_FOUND';
+      throw err;
+    }
+
+    const scheduleExists = await UserModel.scheduleExists(scheduleId);
+    if (!scheduleExists) {
+      const err = new Error('Schedule not found.');
+      err.status = 404;
+      err.code = 'SCHEDULE_NOT_FOUND';
+      throw err;
+    }
+
+    return UserModel.assignScheduleStore(userId, scheduleId, storeId);
+  },
   
 };
 
