@@ -1,5 +1,5 @@
 exports.seed = async function (knex) {
-  // Limpia la tabla pivote (si tienes FK, este orden debe ser seguro)
+  
   await knex('store_product').del();
 
   const store1 = await knex('store')
