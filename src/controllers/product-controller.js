@@ -27,16 +27,55 @@ const ProductController = {
   },
 
   createProduct: async (req, res) => {
-    const { SKU, name, description, image_key, image, brand, category_id, store_id, stock, expiration_date, sale_price, purchase_price } = req.body;
+    const {
+      SKU,
+      name,
+      description,
+      image_key,
+      image,
+      brand,
+      category_id,
+      store_id,
+      stock,
+      expiration_date,
+      sale_price,
+      purchase_price,
+      providerIds = []
+    } = req.body;
+
     if (!SKU || !name || !category_id || !store_id || stock == null || sale_price == null || purchase_price == null) {
-      console.log("Missing requiered fields")
-      return res.status(400).json({ error: 'SKU, name, category_id, store_id and stock and sale/purchase prices are required'});
+      return res.status(400).json({
+        error: 'SKU, name, category_id, store_id, stock, sale_price and purchase_price are required'
+      });
     }
+
     try {
-      const productData = { SKU, name, description, brand, category_id, image: image_key ?? image ?? null, sale_price, purchase_price };
-      const storeData = { store_id, stock, expiration_date };
+      const productData = {
+        SKU,
+        name,
+        description,
+        brand,
+        category_id,
+        image: image_key ?? image ?? null,
+        sale_price,
+        purchase_price
+      };
+
+      const storeData = {
+        store_id,
+        stock,
+        expiration_date
+      };
+
       const created = await ProductService.createProduct(productData, storeData);
-      const out = await attachImageUrl(created, 'image', { signed: false });
+
+      if (Array.isArray(providerIds) && providerIds.length > 0) {
+        await ProductService.assignRelations(created.id, [], providerIds);
+      }
+
+      const fresh = await ProductService.getProductById(created.id);
+      const out = await attachImageUrl(fresh, 'image', { signed: false });
+
       res.status(201).json(out);
     } catch (error) {
       console.error(error);
@@ -133,12 +172,25 @@ const ProductController = {
 
   assignRelations: async (req, res) => {
     const { id } = req.params;
-    const { storeIds, providerIds } = req.body;
-    if ((!storeIds || storeIds.length === 0) && (!providerIds || providerIds.length === 0)) {
-      return res.status(400).json({ error: 'At least one of storeIds or providerIds is required' });
+
+    const storeEntries = Array.isArray(req.body.storeEntries)
+      ? req.body.storeEntries
+      : Array.isArray(req.body.storeIds)
+        ? req.body.storeIds
+        : [];
+
+    const providerIds = Array.isArray(req.body.providerIds)
+      ? req.body.providerIds
+      : [];
+
+    if (storeEntries.length === 0 && providerIds.length === 0) {
+      return res.status(400).json({
+        error: 'At least one of storeEntries or providerIds is required'
+      });
     }
+
     try {
-      await ProductService.assignRelations(id, storeIds, providerIds);
+      await ProductService.assignRelations(id, storeEntries, providerIds);
       res.status(200).json({ message: 'Relations assigned successfully' });
     } catch (error) {
       console.error(error);
@@ -148,12 +200,32 @@ const ProductController = {
 
   upsertStoreProduct: async (req, res) => {
     try {
-      const { storeId, productId, stock, expirationDate } = req.body;
-      if (storeId == null || productId == null || stock == null) {
-        return res.status(400).json({ message: 'storeId, productId and stock are required' });
+      const { storeId, productId, stock } = req.body;
+
+      const hasExpirationDate =
+        Object.prototype.hasOwnProperty.call(req.body, 'expiration_date') ||
+        Object.prototype.hasOwnProperty.call(req.body, 'expirationDate');
+
+      const expiration_date = req.body.expiration_date ?? req.body.expirationDate ?? null;
+
+      if (storeId == null || productId == null || stock == null || isNaN(Number(stock))) {
+        return res.status(400).json({
+          message: 'storeId, productId and stock are required'
+        });
       }
-      await ProductService.upsertStoreProduct({ storeId, productId, stock, expirationDate });
-      return res.status(200).json({ message: 'OK' });
+
+      const result = await ProductService.upsertStoreProduct({
+        storeId: Number(storeId),
+        productId: Number(productId),
+        stock: Number(stock),
+        expiration_date,
+        hasExpirationDate
+      });
+
+      return res.status(200).json({
+        message: 'Store product upserted successfully',
+        data: result
+      });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: `Server error: ${error.message}` });

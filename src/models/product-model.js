@@ -141,16 +141,44 @@ const ProductModel = {
     return true;
   },
 
-  upsertStoreProduct: async ({ storeId, productId, stock, expirationDate }) => {
-    return db('store_product')
-      .insert({
+  upsertStoreProduct: async ({
+    storeId,
+    productId,
+    stock,
+    expiration_date = null,
+    hasExpirationDate = false
+  }) => {
+    const existing = await db('store_product')
+      .where({ store_id: storeId, product_id: productId })
+      .first();
+
+    if (existing) {
+      const updateData = {
+        stock,
+        updated_at: db.fn.now()
+      };
+
+      if (hasExpirationDate) {
+        updateData.expiration_date = expiration_date;
+      }
+
+      await db('store_product')
+        .where({ store_id: storeId, product_id: productId })
+        .update(updateData);
+    } else {
+      await db('store_product').insert({
         store_id: storeId,
         product_id: productId,
-        stock: stock,
-        expiration_date: expirationDate || null,
-      })
-      .onConflict(['store_id', 'product_id'])
-      .merge();
+        stock,
+        expiration_date: hasExpirationDate ? expiration_date : null,
+        created_at: db.fn.now(),
+        updated_at: db.fn.now()
+      });
+    }
+
+    return await db('store_product')
+      .where({ store_id: storeId, product_id: productId })
+      .first();
   },
 
   removeStoreProduct: async ({ storeId, productId }) => {

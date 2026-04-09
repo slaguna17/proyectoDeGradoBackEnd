@@ -31,9 +31,9 @@ const ProductService = {
     const products = await ProductModel.getProductsByCategoryAndStore(categoryId, storeId);
     return products;
   },
-  
-  assignRelations: async (productId, storeIds, providerIds) =>
-    await ProductModel.assignRelations(productId, storeIds, providerIds),
+
+  assignRelations: async (productId, storeEntries, providerIds) =>
+    await ProductModel.assignRelations(productId, storeEntries, providerIds),
 
   upsertStoreProduct: async (data) => await ProductModel.upsertStoreProduct(data),
 
