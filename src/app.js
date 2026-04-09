@@ -18,6 +18,7 @@ const purchaseRoutes = require("./routes/purchase-routes");
 const salesRoutes = require("./routes/sales-routes");
 const menuRoutes = require("./routes/menu-routes");
 const shoppingCartRoutes = require("./routes/shopping-cart-routes");
+const reportRoutes = require("./routes/report-routes");
 
 // Configs
 dotenv.config();
@@ -31,7 +32,7 @@ const origins = (process.env.CORS_ALLOWED_ORIGINS || "")
 
 app.use(cors({
   origin: ['http://localhost:5173', 'http://10.0.2.2:3000'],
-  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
@@ -55,6 +56,7 @@ app.use("/api/purchase", purchaseRoutes);
 app.use("/api/sales", salesRoutes);
 app.use('/api/menu', menuRoutes);
 app.use('/api/shoppingCart', shoppingCartRoutes);
+app.use('/api/reports', reportRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => res.json({ ok: true }));

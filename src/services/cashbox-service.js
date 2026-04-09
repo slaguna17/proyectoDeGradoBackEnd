@@ -38,7 +38,7 @@ const CashboxService = {
 
     return await CashboxModel.createMovement({
       store_id,
-      cash_summary_id: session.id,
+      cash_session_id: session.id,
       user_id,
       direction,
       amount,

@@ -1,5 +1,13 @@
 const db = require('../config/db');
 const dayjs = require('dayjs');
+const normalizeText = (value) => {
+  if (value == null) return null;
+  const normalized = String(value).trim().toLowerCase();
+  return normalized || null;
+};
+
+const normalizePaymentMethod = (value) => normalizeText(value);
+const normalizeStatus = (value, fallback) => normalizeText(value) || fallback;
 
 const SalesModel = {
   registerSale: async (saleData) => {
@@ -11,6 +19,9 @@ const SalesModel = {
       err.code = 'EMPTY_SALE_PRODUCTS';
       throw err;
     }
+
+    const normalizedPaymentMethod = normalizePaymentMethod(payment_method);
+    const normalizedStatus = normalizeStatus(saleData.status, 'completed');
 
     return db.transaction(async trx => {
       const today = dayjs().format('YYYY-MM-DD');
@@ -26,10 +37,6 @@ const SalesModel = {
         throw err;
       }
 
-      /*
-       * Agrupar productos repetidos por si el frontend enviara el mismo producto
-       * más de una vez en el arreglo products.
-       */
       const groupedProductsMap = new Map();
 
       for (const product of products) {
@@ -61,9 +68,6 @@ const SalesModel = {
 
       const groupedProducts = Array.from(groupedProductsMap.values());
 
-      /*
-       * VALIDAR STOCK ANTES de insertar la venta y ANTES de descontar inventario.
-       */
       for (const product of groupedProducts) {
         const inventoryRow = await trx('store_product as sp')
           .join('product as p', 'sp.product_id', 'p.id')
@@ -121,8 +125,8 @@ const SalesModel = {
           user_id,
           total,
           sale_date: trx.fn.now(),
-          payment_method,
-          status: 'completed',
+          payment_method: normalizedPaymentMethod,
+          status: normalizedStatus,
           notes: notes || ''
         })
         .returning('*');
@@ -150,7 +154,7 @@ const SalesModel = {
         direction: 'IN',
         amount: total,
         category: 'Ventas',
-        notes: `Ingreso por Venta #${sale.id} (${payment_method})`,
+        notes: `Ingreso por Venta #${sale.id} (${normalizedPaymentMethod})`,
         origin_type: 'SALE',
         origin_id: sale.id
       });
@@ -159,6 +163,43 @@ const SalesModel = {
         .where('sales_id', sale.id);
 
       return { ...sale, products: saleDetails };
+    });
+  },
+
+  updateSale: async (id, { products, payment_method, status }) => {
+    return await db.transaction(async trx => {
+      await trx('sales_product').where({ sales_id: id }).del();
+
+      const currentSale = await trx('sales').where({ id }).first();
+      if (!currentSale) return null;
+
+      const updateData = {
+        updated_at: trx.fn.now()
+      };
+
+      if (payment_method !== undefined) {
+        updateData.payment_method = normalizePaymentMethod(payment_method);
+      }
+
+      if (status !== undefined) {
+        updateData.status = normalizeStatus(status, currentSale.status || 'completed');
+      }
+
+      const [updated] = await trx('sales')
+        .where({ id })
+        .update(updateData)
+        .returning('*');
+
+      const newDetails = products.map(p => ({
+        sales_id: id,
+        product_id: p.product_id,
+        quantity: p.quantity,
+        unit_price: p.unit_price
+      }));
+
+      await trx('sales_product').insert(newDetails);
+
+      return updated;
     });
   },
 
@@ -183,28 +224,6 @@ const SalesModel = {
 
   getSalesByUser: async (userId) => {
     return await db('sales').where({ user_id: userId });
-  },
-
-  updateSale: async (id, { products, payment_method }) => {
-    return await db.transaction(async trx => {
-      await trx('sales_product').where({ sales_id: id }).del();
-
-      const [updated] = await trx('sales')
-        .where({ id })
-        .update({ payment_method, updated_at: trx.fn.now() })
-        .returning('*');
-
-      const newDetails = products.map(p => ({
-        sales_id: id,
-        product_id: p.product_id,
-        quantity: p.quantity,
-        unit_price: p.unit_price
-      }));
-
-      await trx('sales_product').insert(newDetails);
-
-      return updated;
-    });
   },
 
   deleteSale: async (id) => {

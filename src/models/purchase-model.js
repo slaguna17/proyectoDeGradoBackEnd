@@ -1,16 +1,26 @@
 const db = require('../config/db');
 const dayjs = require('dayjs');
 
+const normalizeText = (value) => {
+  if (value == null) return null;
+  const normalized = String(value).trim().toLowerCase();
+  return normalized || null;
+};
+
+const normalizePaymentMethod = (value) => normalizeText(value);
+const normalizeStatus = (value, fallback) => normalizeText(value) || fallback;
+
 const PurchaseModel = {
   registerPurchase: async (purchaseData) => {
     const { store_id, user_id, provider_id, notes, products, payment_method } = purchaseData;
 
-    // Check products
     if (!products || products.length === 0) {
       throw new Error('La compra debe tener al menos un producto.');
     }
 
-    // Begin transaction to ensure data integrity
+    const normalizedPaymentMethod = normalizePaymentMethod(payment_method);
+    const normalizedStatus = normalizeStatus(purchaseData.status, 'received');
+
     return db.transaction(async trx => {
       const today = dayjs().format('YYYY-MM-DD');
       const cashSession = await trx('cash_session')
@@ -18,12 +28,11 @@ const PurchaseModel = {
         .first();
 
       if (!cashSession) {
-        // Purchase can't be registered if there is not an opened cashbox
         const err = new Error('There is not an opened cashbox session to register the purchase.');
         err.status = 409;
         throw err;
       }
-      
+
       const total = products.reduce((sum, p) => sum + p.unit_price * p.quantity, 0);
 
       const [purchase] = await trx('purchase')
@@ -33,13 +42,12 @@ const PurchaseModel = {
           provider_id,
           total,
           notes,
-          payment_method,
-          status: 'received',
+          payment_method: normalizedPaymentMethod,
+          status: normalizedStatus,
           purchase_date: trx.fn.now()
         })
         .returning('*');
 
-      // Update Inventory
       for (const product of products) {
         await trx('purchase_product').insert({
           purchase_id: purchase.id,
@@ -48,12 +56,11 @@ const PurchaseModel = {
           unit_price: product.unit_price
         });
 
-        // Increase stock
         await trx('store_product')
           .where({ store_id, product_id: product.product_id })
           .increment('stock', product.quantity);
       }
-      
+
       await trx('cash_movement').insert({
         store_id,
         cash_session_id: cashSession.id,
@@ -61,7 +68,7 @@ const PurchaseModel = {
         direction: 'OUT',
         amount: total,
         category: 'Compras',
-        notes: `Egreso por Compra #${purchase.id} (${payment_method})`,
+        notes: `Egreso por Compra #${purchase.id} (${normalizedPaymentMethod})`,
         origin_type: 'PURCHASE',
         origin_id: purchase.id
       });
@@ -70,6 +77,48 @@ const PurchaseModel = {
         .where('purchase_id', purchase.id);
 
       return { ...purchase, products: purchaseDetails };
+    });
+  },
+
+  updatePurchase: async (id, { products, notes, provider_id, payment_method, status }) => {
+    return await db.transaction(async trx => {
+      await trx('purchase_product').where({ purchase_id: id }).del();
+
+      const currentPurchase = await trx('purchase').where({ id }).first();
+      if (!currentPurchase) return null;
+
+      const total = products.reduce((sum, p) => sum + p.unit_price * p.quantity, 0);
+
+      const updateData = {
+        notes,
+        provider_id,
+        total,
+        updated_at: trx.fn.now()
+      };
+
+      if (payment_method !== undefined) {
+        updateData.payment_method = normalizePaymentMethod(payment_method);
+      }
+
+      if (status !== undefined) {
+        updateData.status = normalizeStatus(status, currentPurchase.status || 'received');
+      }
+
+      const [updated] = await trx('purchase')
+        .where({ id })
+        .update(updateData)
+        .returning('*');
+
+      const newDetails = products.map(p => ({
+        purchase_id: id,
+        product_id: p.product_id,
+        quantity: p.quantity,
+        unit_price: p.unit_price
+      }));
+
+      await trx('purchase_product').insert(newDetails);
+
+      return updated;
     });
   },
 
@@ -96,24 +145,6 @@ const PurchaseModel = {
 
   getPurchasesByProvider: async (providerId) => {
     return await db('purchase').where({ provider_id: providerId });
-  },
-
-  updatePurchase: async (id, { products, notes, provider_id }) => {
-    return await db.transaction(async trx => {
-      await trx('purchase_product').where({ purchase_id: id }).del();
-
-      const total = products.reduce((sum, p) => sum + p.unit_price * p.quantity, 0);
-
-      const [updated] = await trx('purchase')
-        .where({ id })
-        .update({ notes, provider_id, total, updated_at: trx.fn.now() })
-        .returning('*');
-
-      const newDetails = products.map(p => ({ purchase_id: id, product_id: p.product_id, quantity: p.quantity, unit_price: p.unit_price }));
-      await trx('purchase_product').insert(newDetails);
-
-      return updated;
-    });
   },
 
   deletePurchase: async (id) => {
