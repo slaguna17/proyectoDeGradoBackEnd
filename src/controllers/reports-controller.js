@@ -1,5 +1,13 @@
 const ReportsService = require('../services/reports-service');
 
+const handleReportError = (res, error, fallbackMessage) => {
+  const status = error.status || 500;
+  return res.status(status).json({
+    error: status === 500 ? fallbackMessage : error.message,
+    code: error.code || 'REPORT_ERROR'
+  });
+};
+
 const ReportsController = {
   getSalesSummary: async (req, res) => {
     try {
@@ -7,7 +15,7 @@ const ReportsController = {
       return res.status(200).json(result);
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: 'Error fetching sales summary report' });
+      return handleReportError(res, error, 'Error fetching sales summary report');
     }
   },
 
@@ -17,7 +25,7 @@ const ReportsController = {
       return res.status(200).json(result);
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: 'Error fetching sales details report' });
+      return handleReportError(res, error, 'Error fetching sales details report');
     }
   },
 
@@ -27,7 +35,7 @@ const ReportsController = {
       return res.status(200).json(result);
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: 'Error fetching sales top products report' });
+      return handleReportError(res, error, 'Error fetching sales top products report');
     }
   },
 
@@ -37,7 +45,7 @@ const ReportsController = {
       return res.status(200).json(result);
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: 'Error fetching purchases summary report' });
+      return handleReportError(res, error, 'Error fetching purchases summary report');
     }
   },
 
@@ -47,7 +55,7 @@ const ReportsController = {
       return res.status(200).json(result);
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: 'Error fetching purchases details report' });
+      return handleReportError(res, error, 'Error fetching purchases details report');
     }
   },
 
@@ -57,7 +65,7 @@ const ReportsController = {
       return res.status(200).json(result);
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: 'Error fetching purchases top products report' });
+      return handleReportError(res, error, 'Error fetching purchases top products report');
     }
   },
 
@@ -67,7 +75,7 @@ const ReportsController = {
       return res.status(200).json(result);
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: 'Error fetching purchases by provider report' });
+      return handleReportError(res, error, 'Error fetching purchases by provider report');
     }
   }
 };

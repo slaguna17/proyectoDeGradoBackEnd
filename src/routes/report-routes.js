@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const ReportsController = require('../controllers/reports-controller');
+const AuthMiddleware = require('../middleware/auth-middleware');
+
+router.use(AuthMiddleware.verifyToken);
 
 // Sales reports
 router.get('/sales/summary', ReportsController.getSalesSummary);

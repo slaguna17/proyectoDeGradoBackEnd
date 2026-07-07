@@ -1,5 +1,14 @@
 const SalesService = require('../services/sales-service');
 
+const handleSalesError = (res, error, fallbackMessage, fallbackCode) => {
+    const status = error.status || 500;
+    return res.status(status).json({
+        error: status === 500 ? fallbackMessage : error.message,
+        code: error.code || fallbackCode,
+        details: error.details || null
+    });
+};
+
 const SalesController = {
     registerSale: async (req, res) => {
         try {
@@ -66,7 +75,8 @@ const SalesController = {
             const result = await SalesService.updateSale(req.params.id, req.body);
             return res.json({ message: 'Sale updated successfully', sale: result });
         } catch (error) {
-            return res.status(500).json({ error: 'Error updating sale' });
+            console.error('updateSale error:', error);
+            return handleSalesError(res, error, 'Error updating sale', 'UPDATE_SALE_ERROR');
         }
     },
 
@@ -75,7 +85,8 @@ const SalesController = {
             await SalesService.deleteSale(req.params.id);
             return res.json({ message: 'Sale deleted successfully' });
         } catch (error) {
-            return res.status(500).json({ error: 'Error deleting sale' });
+            console.error('deleteSale error:', error);
+            return handleSalesError(res, error, 'Error deleting sale', 'DELETE_SALE_ERROR');
         }
     }
 };

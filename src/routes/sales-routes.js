@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const SalesController = require('../controllers/sales-controller');
+const AuthMiddleware = require('../middleware/auth-middleware');
+
+router.use(AuthMiddleware.verifyToken);
 
 router.post('/createSale', SalesController.registerSale);
 router.get('/', SalesController.getAllSales);

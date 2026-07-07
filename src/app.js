@@ -29,9 +29,12 @@ const origins = (process.env.CORS_ALLOWED_ORIGINS || "")
   .split(",")
   .map(s => s.trim())
   .filter(Boolean);
+const allowedOrigins = origins.length > 0
+  ? origins
+  : ['http://localhost:5173', 'http://10.0.2.2:3000'];
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://10.0.2.2:3000'],
+  origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));

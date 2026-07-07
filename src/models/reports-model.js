@@ -1,19 +1,47 @@
 const db = require('../config/db');
 
-const toNumber = (value) => {
-  if (value === undefined || value === null || value === '') return null;
-  const parsed = Number(value);
-  return Number.isNaN(parsed) ? null : parsed;
+const createValidationError = (message, code) => {
+  const err = new Error(message);
+  err.status = 400;
+  err.code = code;
+  return err;
+};
+
+const toOptionalInteger = (filters, key) => {
+  if (!Object.prototype.hasOwnProperty.call(filters, key) || filters[key] == null) {
+    return null;
+  }
+
+  const value = filters[key];
+  const stringValue = String(value).trim();
+  const parsed = Number(stringValue);
+
+  if (
+    Array.isArray(value) ||
+    stringValue === '' ||
+    !Number.isSafeInteger(parsed) ||
+    parsed <= 0
+  ) {
+    throw createValidationError(`${key} must be a valid integer.`, 'INVALID_REPORT_FILTER');
+  }
+
+  return parsed;
+};
+
+const normalizeTextFilter = (value) => {
+  if (value == null) return null;
+  const normalized = String(value).trim().toLowerCase();
+  return normalized || null;
 };
 
 const normalizeFilters = (filters = {}) => ({
-  store_id: toNumber(filters.store_id),
-  user_id: toNumber(filters.user_id),
-  provider_id: toNumber(filters.provider_id),
+  store_id: toOptionalInteger(filters, 'store_id'),
+  user_id: toOptionalInteger(filters, 'user_id'),
+  provider_id: toOptionalInteger(filters, 'provider_id'),
   from: filters.from || null,
   to: filters.to || null,
-  payment_method: filters.payment_method || null,
-  status: filters.status || null
+  payment_method: normalizeTextFilter(filters.payment_method),
+  status: normalizeTextFilter(filters.status)
 });
 
 const applyDateRange = (query, dateColumn, from, to) => {
@@ -35,11 +63,11 @@ const applyTransactionFilters = (query, alias, dateColumn, filters, includeProvi
   }
 
   if (filters.payment_method) {
-    query.where(`${alias}.payment_method`, filters.payment_method);
+    query.whereRaw(`LOWER(${alias}.payment_method) = ?`, [filters.payment_method]);
   }
 
   if (filters.status) {
-    query.where(`${alias}.status`, filters.status);
+    query.whereRaw(`LOWER(${alias}.status) = ?`, [filters.status]);
   }
 
   if (includeProvider && filters.provider_id != null) {
