@@ -30,12 +30,12 @@ const RoleController = {
     },
 
     createRole: async (req, res) => {
-        const { name, description, isAdmin } = req.body;
-
-        if (!name || typeof isAdmin !== 'boolean') {
-            return res.status(400).json({ error: 'Name and isAdmin fields are required' });
-        }
         try {
+            const { name, description, isAdmin } = req.body || {};
+            if (!name || typeof isAdmin !== 'boolean') {
+                return res.status(400).json({ error: 'Name and isAdmin fields are required' });
+            }
+
             const newRole = await RoleService.createRole({ name, description, isAdmin });
             res.status(201).json({ message: 'Role created successfully', role: newRole });
         } catch (error) {
@@ -46,13 +46,12 @@ const RoleController = {
 
     updateRole: async (req, res) => {
         const { id } = req.params;
-        const { name, description, isAdmin } = req.body;
-
-        if (!name || typeof isAdmin !== 'boolean') {
-            return res.status(400).json({ error: 'Missing required fields (name, isAdmin)' });
-        }
-
         try {
+            const { name, description, isAdmin } = req.body || {};
+            if (!name || typeof isAdmin !== 'boolean') {
+                return res.status(400).json({ error: 'Missing required fields (name, isAdmin)' });
+            }
+
             const updated = await RoleService.updateRole(id, { name, description, isAdmin });
 
             if (updated) {
@@ -97,16 +96,16 @@ const RoleController = {
 
     assignPermitsToRole: async (req, res) => {
         const { id } = req.params;
-        const { permitIds } = req.body;
-
-        console.log('📥 Params ID:', id);
-        console.log('📥 permitIds:', permitIds);
-
-        if (!Array.isArray(permitIds) || permitIds.length === 0) {
-            return res.status(400).json({ error: 'Debe enviar un array con los IDs de permisos' });
-        }
-
         try {
+            const { permitIds } = req.body || {};
+
+            console.log('📥 Params ID:', id);
+            console.log('📥 permitIds:', permitIds);
+
+            if (!Array.isArray(permitIds) || permitIds.length === 0) {
+                return res.status(400).json({ error: 'Debe enviar un array con los IDs de permisos' });
+            }
+
             await RoleService.assignPermitsToRole(id, permitIds);
             res.status(200).json({ message: 'Permisos asignados correctamente' });
         } catch (error) {

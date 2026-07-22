@@ -1,10 +1,11 @@
 const jwt = require("jsonwebtoken");
 
 const getAuthToken = (req) => {
-  const h = req.headers.authorization || "";
-  // Admits "Bearer xxx" or "bearer xxx"
-  if (/^bearer\s+/i.test(h)) return h.split(" ")[1];
-  return null;
+  const authorization = req.headers.authorization;
+  if (typeof authorization !== "string") return null;
+
+  const match = authorization.match(/^\s*Bearer\s+(\S+)\s*$/i);
+  return match ? match[1] : null;
 };
 
 const AuthMiddleware = {

@@ -25,19 +25,18 @@ const InventoryController = {
 
   updateStock: async (req, res) => {
     const { storeId, productId } = req.params;
-    const { stock } = req.body;
-
-    const hasExpirationDate =
-      Object.prototype.hasOwnProperty.call(req.body, 'expiration_date') ||
-      Object.prototype.hasOwnProperty.call(req.body, 'expirationDate');
-
-    const expiration_date = req.body.expiration_date ?? req.body.expirationDate ?? null;
-
-    if (stock == null || isNaN(Number(stock))) {
-      return res.status(400).json({ error: 'Invalid stock value' });
-    }
-
     try {
+      const body = req.body || {};
+      const { stock } = body;
+      const hasExpirationDate =
+        Object.prototype.hasOwnProperty.call(body, 'expiration_date') ||
+        Object.prototype.hasOwnProperty.call(body, 'expirationDate');
+      const expiration_date = body.expiration_date ?? body.expirationDate ?? null;
+
+      if (stock == null || isNaN(Number(stock))) {
+        return res.status(400).json({ error: 'Invalid stock value' });
+      }
+
       const result = await InventoryService.updateStock(storeId, productId, {
         stock: Number(stock),
         expiration_date,

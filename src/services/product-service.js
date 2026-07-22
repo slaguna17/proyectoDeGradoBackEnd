@@ -3,6 +3,10 @@ const ProductModel = require('../models/product-model');
 const ProductService = {
   getAllProductsWithRelations: async () => await ProductModel.getAllProductsWithRelations(),
 
+  getLowStockProducts: async (storeId) => await ProductModel.getLowStockProducts(storeId),
+
+  getStockAlertsSummary: async (storeId) => await ProductModel.getStockAlertsSummary(storeId),
+
   getProductById: async (id) => {
     if (!id) throw new Error('Product ID is required');
     const product = await ProductModel.getProductById(id);

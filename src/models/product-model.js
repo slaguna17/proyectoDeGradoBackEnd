@@ -51,6 +51,71 @@ const ProductModel = {
     return products;
   },
 
+  getLowStockProducts: async (storeId) => {
+    const query = db('product as p')
+      .join('store_product as sp', 'sp.product_id', 'p.id')
+      .leftJoin('store as s', 'sp.store_id', 's.id')
+      .where(function() {
+        this.where('sp.stock', '<=', 0)
+          .orWhere(function() {
+            this.where('sp.stock', '>', 0).andWhere('sp.stock', '<=', db.ref('p.min_stock'));
+          });
+      })
+      .select(
+        'p.id',
+        'p.name',
+        'sp.stock',
+        'p.min_stock as minStock',
+        'sp.store_id as storeId',
+        's.name as storeName'
+      )
+      .orderBy('p.name', 'asc');
+
+    if (storeId) {
+      query.where('sp.store_id', storeId);
+    }
+
+    const rows = await query;
+
+    return rows.map(row => {
+      const product = {
+        id: row.id,
+        name: row.name,
+        stock: row.stock,
+        minStock: row.minStock,
+        status: row.stock <= 0 ? 'OUT_OF_STOCK' : 'LOW_STOCK',
+        storeId: row.storeId,
+        storeName: row.storeName
+      };
+
+      return product;
+    });
+  },
+
+  getStockAlertsSummary: async (storeId) => {
+    const query = db('product as p')
+      .join('store_product as sp', 'sp.product_id', 'p.id');
+
+    if (storeId) {
+      query.where('sp.store_id', storeId);
+    }
+
+    const [summary] = await query
+      .count({
+        outOfStockCount: db.raw('CASE WHEN ?? <= 0 THEN 1 END', ['sp.stock']),
+        lowStockCount: db.raw('CASE WHEN ?? > 0 AND ?? <= ?? THEN 1 END', ['sp.stock', 'sp.stock', 'p.min_stock'])
+      });
+
+    const lowStockCount = Number(summary.lowStockCount || 0);
+    const outOfStockCount = Number(summary.outOfStockCount || 0);
+
+    return {
+      lowStockCount,
+      outOfStockCount,
+      hasAlerts: lowStockCount > 0 || outOfStockCount > 0
+    };
+  },
+
   getProductById: async (id) => {
     const product = await db('product').where({ id }).first();
     

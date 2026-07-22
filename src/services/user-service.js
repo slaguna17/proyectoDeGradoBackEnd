@@ -3,7 +3,18 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require('../config/db');
 
-const SECRET = process.env.SECRET_KEY || process.env.JWT_SECRET || 'dev-secret';
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1d';
+
+const getJwtSecret = () => {
+  const secret = process.env.JWT_SECRET || process.env.SECRET_KEY;
+  if (!secret) {
+    const err = new Error('JWT secret not configured');
+    err.code = 'JWT_SECRET_NOT_CONFIGURED';
+    err.statusCode = 500;
+    throw err;
+  }
+  return secret;
+};
 
 const UserService = {
   getUsers: async () => UserModel.getUsers(),
@@ -95,8 +106,8 @@ const UserService = {
 
     const token = jwt.sign(
       { userId: user.id, isAdmin },
-      SECRET,
-      { expiresIn: "1d" }
+      getJwtSecret(),
+      { expiresIn: JWT_EXPIRES_IN }
     );
 
     return {

@@ -83,7 +83,7 @@ const StoreController = {
     }
   },
 
-  async deleteStore(req, res) {
+  async deleteStore(req, res, next) {
     const { id } = req.params;
     try {
       const storeToDelete = await StoreService.getStoreById(id);

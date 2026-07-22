@@ -83,17 +83,18 @@ const UserController = {
 
   updateUser: async (req, res) => {
     const { id } = req.params;
-    const updatableFields = ['full_name','email','phone','date_of_birth','status'];
-    const updateData = {};
-    updatableFields.forEach(field => {
-      if (req.body[field] !== undefined) updateData[field] = req.body[field];
-    });
-
     try {
+      const body = req.body || {};
+      const updatableFields = ['full_name','email','phone','date_of_birth','status'];
+      const updateData = {};
+      updatableFields.forEach(field => {
+        if (body[field] !== undefined) updateData[field] = body[field];
+      });
+
       const prev = await UserService.getUserById(id);
       if (!prev) return res.status(404).json({ message: 'User not found' });
 
-      const { avatar, image_key, avatar_key, removeImage = false } = req.body;
+      const { avatar, image_key, avatar_key, removeImage = false } = body;
       let nextAvatar = prev.avatar ?? null;
 
       if (removeImage) {
@@ -172,11 +173,12 @@ const UserController = {
 
   changePassword: async (req, res) => {
     const { id } = req.params;
-    const { newPassword } = req.body;
-    if (!newPassword || newPassword.length < 6) {
-      return res.status(400).json({ error: 'Password must have minimum 6 characters' });
-    }
     try {
+      const { newPassword } = req.body || {};
+      if (!newPassword || newPassword.length < 6) {
+        return res.status(400).json({ error: 'Password must have minimum 6 characters' });
+      }
+
       const updated = await UserService.changePassword(id, newPassword);
       if (updated) res.status(200).json({ message: 'Successfully changed password' });
       else res.status(404).json({ error: 'User not found' });
@@ -259,9 +261,8 @@ const UserController = {
 
   assignSchedule: async (req, res) => {
     const { id } = req.params;
-    const { storeId, scheduleId } = req.body;
-
     try {
+      const { storeId, scheduleId } = req.body || {};
       const assignment = await UserService.assignSchedule(
         Number(id),
         Number(storeId),

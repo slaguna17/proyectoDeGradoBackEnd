@@ -23,13 +23,12 @@ const ScheduleController = {
     },
 
     createSchedule: async (req, res) => {
-        const { name, start_time, end_time } = req.body;
-
-        if (!name || !start_time || !end_time) {
-            return res.status(400).json({ error: 'All fields are required: name, start_time, end_time' });
-        }
-
         try {
+            const { name, start_time, end_time } = req.body || {};
+            if (!name || !start_time || !end_time) {
+                return res.status(400).json({ error: 'All fields are required: name, start_time, end_time' });
+            }
+
             const newSchedule = await ScheduleService.createSchedule({ name, start_time, end_time });
             res.status(201).json({ message: 'Schedule created successfully', schedule: newSchedule });
         } catch (error) {
@@ -40,13 +39,12 @@ const ScheduleController = {
 
     updateSchedule: async (req, res) => {
         const { id } = req.params;
-        const { name, start_time, end_time } = req.body;
-
-        if (!name || !start_time || !end_time) {
-            return res.status(400).json({ error: 'All fields are required: name, start_time, end_time' });
-        }
-
         try {
+            const { name, start_time, end_time } = req.body || {};
+            if (!name || !start_time || !end_time) {
+                return res.status(400).json({ error: 'All fields are required: name, start_time, end_time' });
+            }
+
             const updated = await ScheduleService.updateSchedule(id, { name, start_time, end_time });
 
             if (updated) {

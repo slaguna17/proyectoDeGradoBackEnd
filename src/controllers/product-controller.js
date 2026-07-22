@@ -1,6 +1,42 @@
 const ProductService = require('../services/product-service');
 const { attachImageUrl, attachImageUrlMany, replaceImageKey } = require('../utils/image-helpers');
 
+function parseOptionalStoreId(query) {
+  const rawStoreId = query.storeId ?? query.store_id;
+  if (rawStoreId == null) return { storeId: undefined };
+
+  if (typeof rawStoreId === 'boolean' || String(rawStoreId).trim() === '') {
+    return { error: 'storeId must be a positive integer' };
+  }
+
+  const storeId = Number(rawStoreId);
+  if (!Number.isInteger(storeId) || storeId <= 0) {
+    return { error: 'storeId must be a positive integer' };
+  }
+
+  return { storeId };
+}
+
+function parseOptionalMinStock(body) {
+  const hasMinStock =
+    Object.prototype.hasOwnProperty.call(body, 'min_stock') ||
+    Object.prototype.hasOwnProperty.call(body, 'minStock');
+
+  if (!hasMinStock) return { hasMinStock: false };
+
+  const rawMinStock = body.min_stock ?? body.minStock;
+  if (typeof rawMinStock === 'boolean' || String(rawMinStock).trim() === '') {
+    return { error: 'min_stock must be an integer greater than or equal to 0' };
+  }
+
+  const minStock = Number(rawMinStock);
+  if (!Number.isInteger(minStock) || minStock < 0) {
+    return { error: 'min_stock must be an integer greater than or equal to 0' };
+  }
+
+  return { hasMinStock: true, minStock };
+}
+
 const ProductController = {
   getAllProducts: async (req, res) => {
     try {
@@ -26,30 +62,62 @@ const ProductController = {
     }
   },
 
-  createProduct: async (req, res) => {
-    const {
-      SKU,
-      name,
-      description,
-      image_key,
-      image,
-      brand,
-      category_id,
-      store_id,
-      stock,
-      expiration_date,
-      sale_price,
-      purchase_price,
-      providerIds = []
-    } = req.body;
-
-    if (!SKU || !name || !category_id || !store_id || stock == null || sale_price == null || purchase_price == null) {
-      return res.status(400).json({
-        error: 'SKU, name, category_id, store_id, stock, sale_price and purchase_price are required'
-      });
-    }
+  getLowStockProducts: async (req, res) => {
+    const { storeId, error } = parseOptionalStoreId(req.query);
+    if (error) return res.status(400).json({ error });
 
     try {
+      const products = await ProductService.getLowStockProducts(storeId);
+      res.status(200).json({ count: products.length, products });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Error retrieving low stock products' });
+    }
+  },
+
+  getStockAlertsSummary: async (req, res) => {
+    const { storeId, error } = parseOptionalStoreId(req.query);
+    if (error) return res.status(400).json({ error });
+
+    try {
+      const summary = await ProductService.getStockAlertsSummary(storeId);
+      res.status(200).json(summary);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Error retrieving stock alerts summary' });
+    }
+  },
+
+  createProduct: async (req, res) => {
+    try {
+      const body = req.body || {};
+      const {
+        SKU,
+        name,
+        description,
+        image_key,
+        image,
+        brand,
+        category_id,
+        store_id,
+        stock,
+        expiration_date,
+        sale_price,
+        purchase_price,
+        providerIds = []
+      } = body;
+
+      const minStockResult = parseOptionalMinStock(body);
+      if (minStockResult.error) {
+        return res.status(400).json({ error: minStockResult.error });
+      }
+
+      if (!SKU || !name || !category_id || !store_id || stock == null || sale_price == null || purchase_price == null) {
+        return res.status(400).json({
+          error: 'SKU, name, category_id, store_id, stock, sale_price and purchase_price are required'
+        });
+      }
+
       const productData = {
         SKU,
         name,
@@ -60,6 +128,10 @@ const ProductController = {
         sale_price,
         purchase_price
       };
+
+      if (minStockResult.hasMinStock) {
+        productData.min_stock = minStockResult.minStock;
+      }
 
       const storeData = {
         store_id,
@@ -85,11 +157,18 @@ const ProductController = {
 
   updateProduct: async (req, res) => {
     const { id } = req.params;
-    const { SKU, name, description, image_key, image, brand, category_id, removeImage = false, sale_price, purchase_price } = req.body;
-    if (!SKU || !name || !category_id || sale_price == null || purchase_price == null) {
-      return res.status(400).json({ error: 'SKU, name, sale_price y purchase_price and category_id are required' });
-    }
     try {
+      const body = req.body || {};
+      const { SKU, name, description, image_key, image, brand, category_id, removeImage = false, sale_price, purchase_price } = body;
+      const minStockResult = parseOptionalMinStock(body);
+      if (minStockResult.error) {
+        return res.status(400).json({ error: minStockResult.error });
+      }
+
+      if (!SKU || !name || !category_id || sale_price == null || purchase_price == null) {
+        return res.status(400).json({ error: 'SKU, name, sale_price y purchase_price and category_id are required' });
+      }
+
       const prev = await ProductService.getProductById(id);
       let nextImage = prev?.image ?? null;
       if (removeImage) {
@@ -98,9 +177,15 @@ const ProductController = {
       } else if (image_key != null || image != null) {
         nextImage = await replaceImageKey(prev?.image, image_key ?? image);
       }
-      const updated = await ProductService.updateProduct(id, {
+      const productData = {
         SKU, name, description, brand, category_id, image: nextImage, sale_price, purchase_price
-      });
+      };
+
+      if (minStockResult.hasMinStock) {
+        productData.min_stock = minStockResult.minStock;
+      }
+
+      const updated = await ProductService.updateProduct(id, productData);
       if (updated) {
         const fresh = await ProductService.getProductById(id);
         const out = await attachImageUrl(fresh, 'image', { signed: false });
@@ -172,24 +257,24 @@ const ProductController = {
 
   assignRelations: async (req, res) => {
     const { id } = req.params;
+    try {
+      const body = req.body || {};
+      const storeEntries = Array.isArray(body.storeEntries)
+        ? body.storeEntries
+        : Array.isArray(body.storeIds)
+          ? body.storeIds
+          : [];
 
-    const storeEntries = Array.isArray(req.body.storeEntries)
-      ? req.body.storeEntries
-      : Array.isArray(req.body.storeIds)
-        ? req.body.storeIds
+      const providerIds = Array.isArray(body.providerIds)
+        ? body.providerIds
         : [];
 
-    const providerIds = Array.isArray(req.body.providerIds)
-      ? req.body.providerIds
-      : [];
+      if (storeEntries.length === 0 && providerIds.length === 0) {
+        return res.status(400).json({
+          error: 'At least one of storeEntries or providerIds is required'
+        });
+      }
 
-    if (storeEntries.length === 0 && providerIds.length === 0) {
-      return res.status(400).json({
-        error: 'At least one of storeEntries or providerIds is required'
-      });
-    }
-
-    try {
       await ProductService.assignRelations(id, storeEntries, providerIds);
       res.status(200).json({ message: 'Relations assigned successfully' });
     } catch (error) {

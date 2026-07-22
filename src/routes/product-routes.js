@@ -8,6 +8,8 @@ router.get('/stores/:storeId', ProductController.getProductsByStore);
 
 // CRUD
 router.get('/', ProductController.getAllProducts);
+router.get('/low-stock', ProductController.getLowStockProducts);
+router.get('/stock-alerts/summary', ProductController.getStockAlertsSummary);
 router.post('/createProduct', ProductController.createProduct);
 router.put('/updateProduct/:id', ProductController.updateProduct);
 router.delete('/deleteProduct/:id', ProductController.deleteProduct);

@@ -48,9 +48,9 @@ const CashboxModel = {
   },
 
   // --- Money Count ---
-  saveCashCount: async (cash_session_id, items) => {
+  saveCashCount: async (cash_session_id, items, executor = db) => {
     if (!Array.isArray(items) || !items.length) return;
-    await db('cash_count').where({ cash_session_id }).del();
+    await executor('cash_count').where({ cash_session_id }).del();
 
     const rows = items.map((it) => ({
       cash_session_id, 
@@ -59,25 +59,25 @@ const CashboxModel = {
       quantity: it.quantity,
     }));
 
-    await db.batchInsert('cash_count', rows, 50);
+    await executor.batchInsert('cash_count', rows, 50);
   },
 
   getCashCount: async (cash_session_id) => { 
     return db('cash_count').where({ cash_session_id }).orderBy('denomination', 'asc');
   },
 
-  computeTotalsForSessionId: async (session_id) => {
-    const session = await db('cash_session').where({ id: session_id }).first(); 
+  computeTotalsForSessionId: async (session_id, executor = db) => {
+    const session = await executor('cash_session').where({ id: session_id }).first();
     if (!session) return null;
 
     // Sum all incomes for the session
-    const { sum: totalIn } = await db('cash_movement')
+    const { sum: totalIn } = await executor('cash_movement')
       .where({ cash_session_id: session.id, direction: 'IN' })
       .sum({ sum: 'amount' })
       .first();
 
     // Sum all expenses for the session
-    const { sum: totalOut } = await db('cash_movement')
+    const { sum: totalOut } = await executor('cash_movement')
       .where({ cash_session_id: session.id, direction: 'OUT' })
       .sum({ sum: 'amount' })
       .first();
@@ -113,12 +113,12 @@ const CashboxModel = {
         throw new Error('No se encontró una caja abierta para esta tienda y fecha');
       }
 
-      const totals = await CashboxModel.computeTotalsForSessionId(session.id);
+      const totals = await CashboxModel.computeTotalsForSessionId(session.id, trx);
       const expected = totals.expectedClosing;
       const finalClosing = closing_amount != null ? toNum(closing_amount) : expected;
 
       if (Array.isArray(cash_count) && cash_count.length) {
-        await CashboxModel.saveCashCount(session.id, cash_count);
+        await CashboxModel.saveCashCount(session.id, cash_count, trx);
       }
 
       const [updated] = await trx('cash_session')

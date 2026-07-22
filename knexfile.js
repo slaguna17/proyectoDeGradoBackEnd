@@ -28,9 +28,13 @@ const sharedConfig = {
 };
 
 module.exports = {
-  development: sharedConfig,
+  development: {
+    ...sharedConfig,
+    userParams: { environment: 'development' }
+  },
   test: {
     ...sharedConfig,
+    userParams: { environment: 'test' },
     connection: {
       ...sharedConfig.connection,
       database: process.env.DB_TEST_NAME || `${process.env.DB_NAME || 'tukiosco'}_test`
@@ -38,6 +42,7 @@ module.exports = {
   },
   production: {
     ...sharedConfig,
+    userParams: { environment: 'production' },
     pool: {
       min: Number(process.env.DB_POOL_MIN || 2),
       max: Number(process.env.DB_POOL_MAX || 20)

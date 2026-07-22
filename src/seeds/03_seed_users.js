@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 
 exports.seed = async function(knex) {
-  await knex('user').whereIn('id', [1, 2]).del();
+  await knex('user').del();
 
   const adminPassword = await bcrypt.hash('1', 10);
   const employeePassword = await bcrypt.hash('1', 10);

@@ -28,10 +28,10 @@ const CategoryController = {
   },
 
   createCategory: async (req, res) => {
-    const { name, description, image_key, image } = req.body;
-    if (!name) return res.status(400).json({ error: 'Category name is required' });
-
     try {
+      const { name, description, image_key, image } = req.body || {};
+      if (!name) return res.status(400).json({ error: 'Category name is required' });
+
       const created = await CategoryService.createCategory({
         name,
         description,
@@ -46,10 +46,10 @@ const CategoryController = {
   },
 
   updateCategory: async (req, res) => {
-    const { name, description, image_key, image, removeImage = false } = req.body;
-    if (!name) return res.status(400).json({ error: 'Category name is required' });
-
     try {
+      const { name, description, image_key, image, removeImage = false } = req.body || {};
+      if (!name) return res.status(400).json({ error: 'Category name is required' });
+
       const id = req.params.id;
       const prev = await CategoryService.getCategoryById(id);
       if (!prev) return res.status(404).json({ error: 'Category not found' });

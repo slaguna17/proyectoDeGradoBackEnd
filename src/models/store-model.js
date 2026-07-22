@@ -43,9 +43,9 @@ const StoreModel = {
             ['store_product', 'store_id'],
             ['sales', 'store_id'],
             ['purchase', 'store_id'],
-            ['sales_box', 'store_id'],
-            ['purchase_box', 'store_id'],
-            ['cash_summary', 'store_id']
+            ['provider_store', 'store_id'],
+            ['cash_session', 'store_id'],
+            ['shopping_cart', 'store_id']
         ];
 
         for (const [table, field] of tablesToCheck) {
