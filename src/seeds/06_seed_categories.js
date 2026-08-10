@@ -2,8 +2,7 @@ exports.seed = async function(knex) {
   await knex('category').del();
 
   await knex('category').insert([
-    { name: 'Lacteos', description: 'Productos lacteos', image: 'https://thefoodtech.com/wp-content/uploads/2021/08/lacteos-scaled.jpg' },
-    { name: 'Bebidas', description: 'Gaseosas, jugos y agua', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZkZPrTm3uG2KS5kzcs1oUIdHseNpVbJWtbw&s' },
-    { name: 'Papas', description: 'Papas fritas', image: 'https://m.media-amazon.com/images/I/81mABE1sNhL.jpg' }
+    { name: 'Chaquetas hombres', description: 'Chaquetas para hombres', image: "https://img.magnific.com/vector-premium/coleccion-varias-chaquetas-prendas-abrigo-hombre_1057439-891.jpg?semt=ais_hybrid&w=740&q=80" },
+    { name: 'Poleras unisex', description: 'Poleras para uso unisex', image: 'https://img.magnific.com/vector-gratis/coleccion-camisetas-diferentes-colores-2d_23-2147832288.jpg?semt=ais_hybrid&w=740&q=80' }
   ]);
 };

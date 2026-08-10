@@ -3,7 +3,7 @@ exports.seed = async function(knex) {
 
   const user = await knex('user').select('id').where({ email: 'slaguna@gmail.com' }).first();
   const schedule = await knex('schedule').select('id').where({ name: 'Mañana' }).first();
-  const store = await knex('store').select('id').where({ name: 'Juan del Sur' }).first();
+  const store = await knex('store').select('id').where({ name: 'Aura' }).first();
 
   if (!user || !schedule || !store) {
     throw new Error('Required user, schedule, or store was not found. Check the preceding seeds.');

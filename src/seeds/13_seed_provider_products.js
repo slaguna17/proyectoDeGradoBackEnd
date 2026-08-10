@@ -15,21 +15,18 @@ exports.seed = async function (knex) {
     throw new Error('No se encontraron los proveedores esperados. Verifica 09_seed_providers.js');
   }
 
-  const p1 = await knex('product').select('id').where({ SKU: 'SKU-001' }).first();
-  const p2 = await knex('product').select('id').where({ SKU: 'SKU-002' }).first();
-  const p3 = await knex('product').select('id').where({ SKU: 'SKU-003' }).first();
+  const jacket = await knex('product').select('id').where({ SKU: 'AURA-CHAQ-001' }).first();
+  const tShirt = await knex('product').select('id').where({ SKU: 'AURA-POL-001' }).first();
 
-  if (!p1 || !p2 || !p3) {
+  if (!jacket || !tShirt) {
     throw new Error('No se encontraron los productos esperados. Verifica 10_seed_products.js');
   }
 
   await knex('provider_product').insert([
     // Distribuidora Norte
-    { provider_id: provider1.id, product_id: p1.id },
-    { provider_id: provider1.id, product_id: p3.id },
+    { provider_id: provider1.id, product_id: tShirt.id },
 
     // Mayorista Central
-    { provider_id: provider2.id, product_id: p1.id },
-    { provider_id: provider2.id, product_id: p2.id }
+    { provider_id: provider2.id, product_id: jacket.id }
   ]);
 };

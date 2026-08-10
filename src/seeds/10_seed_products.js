@@ -4,48 +4,36 @@ exports.seed = async function (knex) {
 
   const categories = await knex('category')
     .select('id', 'name')
-    .whereIn('name', ['Lacteos', 'Bebidas', 'Papas']);
+    .whereIn('name', ['Chaquetas hombres', 'Poleras unisex']);
   const categoryIds = Object.fromEntries(categories.map(({ id, name }) => [name, id]));
 
-  if (!categoryIds.Lacteos || !categoryIds.Bebidas || !categoryIds.Papas) {
+  if (!categoryIds['Chaquetas hombres'] || !categoryIds['Poleras unisex']) {
     throw new Error('Required categories were not found. Check 06_seed_categories.js.');
   }
 
   // Inserts seed entries
   await knex('product').insert([
     {
-      SKU: 'SKU-001',
-      name: 'Coca Cola 2L',
-      description: 'Botella de gaseosa de 2 litros',
-      image: 'https://fsa.bo/productos/01658-01.jpg',
-      brand: 'Coca Cola',
-      sale_price: 20,
-      purchase_price: 14,
-      category_id: categoryIds.Bebidas,
+      SKU: 'AURA-CHAQ-001',
+      name: 'Chaqueta azul oscura hombre',
+      description: 'Chaqueta azul oscura para hombre',
+      image: 'https://www.thebs.com/es/chaqueta-casual-azul-barba-582596',
+      brand: 'Aura',
+      sale_price: 550,
+      purchase_price: 300,
+      category_id: categoryIds['Chaquetas hombres'],
       created_at: knex.fn.now(),
       updated_at: knex.fn.now()
     },
     {
-      SKU: 'SKU-002',
-      name: 'Papas Lays Clásicas',
-      description: 'Bolsa de papas fritas',
-      image: 'https://m.media-amazon.com/images/I/8141nrQe0aL.jpg',
-      brand: 'Lays',
-      sale_price: 5,
-      purchase_price: 2,
-      category_id: categoryIds.Papas,
-      created_at: knex.fn.now(),
-      updated_at: knex.fn.now()
-    },
-    {
-      SKU: 'SKU-003',
-      name: 'Leche Pil 1L',
-      description: 'Leche entera en envase Tetra Pak',
-      image: 'https://pilandina.com.bo/wp-content/uploads/2019/06/Leche-caja-1.webp',
-      brand: 'Pil',
-      sale_price: 8,
-      purchase_price: 6,
-      category_id: categoryIds.Lacteos,
+      SKU: 'AURA-POL-001',
+      name: 'Polera verde unisex',
+      description: 'Polera verde para uso unisex',
+      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuZNfvRnURnBROhd2FGZ--wibAA9aV8INdt77JLsWiRrIXd2PBkqaSjigZ&s=10',
+      brand: 'Aura',
+      sale_price: 150,
+      purchase_price: 35,
+      category_id: categoryIds['Poleras unisex'],
       created_at: knex.fn.now(),
       updated_at: knex.fn.now()
     }
