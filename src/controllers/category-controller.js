@@ -4,7 +4,7 @@ const { attachImageUrl, attachImageUrlMany, replaceImageKey } = require('../util
 const CategoryController = {
   getAllCategories: async (req, res) => {
     try {
-      const signed = String(req.query.signed).toLowerCase() === 'true';
+      const signed = req.query.signed !== 'false';
       const categories = await CategoryService.getAllCategories();
       const out = await attachImageUrlMany(categories, 'image', { signed });
       res.status(200).json(out);
@@ -16,7 +16,7 @@ const CategoryController = {
 
   getCategoryById: async (req, res) => {
     try {
-      const signed = String(req.query.signed).toLowerCase() === 'true';
+      const signed = req.query.signed !== 'false';
       const category = await CategoryService.getCategoryById(req.params.id);
       if (!category) return res.status(404).json({ error: 'Category not found' });
       const out = await attachImageUrl(category, 'image', { signed });
@@ -37,7 +37,7 @@ const CategoryController = {
         description,
         image: image_key ?? image ?? null, // save only the key
       });
-      const out = await attachImageUrl(created, 'image', { signed: false });
+      const out = await attachImageUrl(created, 'image', { signed: true });
       res.status(201).json({ message: 'Category created successfully', category: out });
     } catch (error) {
       console.error(error);
@@ -72,7 +72,7 @@ const CategoryController = {
       if (!updated) return res.status(404).json({ error: 'Category not found' });
 
       const fresh = await CategoryService.getCategoryById(id);
-      const out = await attachImageUrl(fresh, 'image', { signed: false });
+      const out = await attachImageUrl(fresh, 'image', { signed: true });
       res.status(200).json({ message: 'Category updated successfully', category: out });
     } catch (error) {
       console.error(error);

@@ -10,6 +10,7 @@ const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
 // Optionals
 const CLOUDFRONT_DOMAIN = process.env.CLOUDFRONT_DOMAIN || "";
 const PRESIGNED_URL_EXPIRES_IN = Number(process.env.PRESIGNED_URL_EXPIRES_IN || 300);
+const PRESIGNED_READ_EXPIRES_IN = Number(process.env.PRESIGNED_READ_EXPIRES_IN || 86400);
 const S3_UPLOAD_MAX_MB = Number(process.env.S3_UPLOAD_MAX_MB || 8);
 
 const s3 = new S3Client({
@@ -33,6 +34,7 @@ module.exports = {
   S3_BUCKET,
   CLOUDFRONT_DOMAIN,
   PRESIGNED_URL_EXPIRES_IN,
+  PRESIGNED_READ_EXPIRES_IN,
   S3_UPLOAD_MAX_MB,
   basePublicUrl,
 };

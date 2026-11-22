@@ -7,7 +7,7 @@ const { buildMenu } = require('../utils/menu-builder');
 const UserController = {
   getUsers: async (req, res) => {
     try {
-      const signed = String(req.query.signed).toLowerCase() === 'true';
+      const signed = req.query.signed !== 'false';
       const users = await UserService.getUsers();
       const out = await attachImageUrlMany(users, 'avatar', { signed });
       res.status(200).json(out);
@@ -20,7 +20,7 @@ const UserController = {
   getUserById: async (req, res) => {
     const { id } = req.params;
     try {
-      const signed = String(req.query.signed).toLowerCase() === 'true';
+      const signed = req.query.signed !== 'false';
       const user = await UserService.getUserById(id);
       if (!user) return res.status(404).json({ message: 'User not found' });
       const out = await attachImageUrl(user, 'avatar', { signed });
@@ -33,7 +33,7 @@ const UserController = {
 
   getMe: async (req, res) => {
     try {
-      const signed = req.query.signed === 'true';
+      const signed = req.query.signed !== 'false';
       const me = await UserService.getUserById(req.user.userId || req.user.id);
       const withUrl = await attachImageUrl(me, 'avatar', { signed });
 
@@ -68,7 +68,7 @@ const UserController = {
         roleId
       });
 
-      const out = await attachImageUrl(user, 'avatar', { signed: false });
+      const out = await attachImageUrl(user, 'avatar', { signed: true });
       res.status(201).json({
         message: 'User created successfully',
         userId: user.id,
@@ -111,7 +111,7 @@ const UserController = {
       if (!updated) return res.status(404).json({ message: 'User not found' });
 
       const fresh = await UserService.getUserById(id);
-      const out = await attachImageUrl(fresh, 'avatar', { signed: false });
+      const out = await attachImageUrl(fresh, 'avatar', { signed: true });
       res.status(200).json({ message: 'User updated successfully', user: out });
     } catch (error) {
       console.error(error);
@@ -140,7 +140,7 @@ const UserController = {
     try {
       const { email, password } = req.body;
       const result = await UserService.login(email, password);
-      const signed = req.query.signed === 'true';
+      const signed = req.query.signed !== 'false';
       result.user = await attachImageUrl(result.user, 'avatar', { signed });
 
       const menu = buildMenu({ isAdmin: result.isAdmin, permits: result.permits });

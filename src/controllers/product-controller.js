@@ -40,7 +40,7 @@ function parseOptionalMinStock(body) {
 const ProductController = {
   getAllProducts: async (req, res) => {
     try {
-      const signed = String(req.query.signed).toLowerCase() === 'true';
+      const signed = req.query.signed !== 'false';
       const products = await ProductService.getAllProductsWithRelations();
       const out = await attachImageUrlMany(products, 'image', { signed });
       res.status(200).json(out);
@@ -52,7 +52,7 @@ const ProductController = {
 
   getProductById: async (req, res) => {
     try {
-      const signed = String(req.query.signed).toLowerCase() === 'true';
+      const signed = req.query.signed !== 'false';
       const product = await ProductService.getProductById(req.params.id);
       const out = await attachImageUrl(product, 'image', { signed });
       res.status(200).json(out);
@@ -146,7 +146,7 @@ const ProductController = {
       }
 
       const fresh = await ProductService.getProductById(created.id);
-      const out = await attachImageUrl(fresh, 'image', { signed: false });
+      const out = await attachImageUrl(fresh, 'image', { signed: true });
 
       res.status(201).json(out);
     } catch (error) {
@@ -188,7 +188,7 @@ const ProductController = {
       const updated = await ProductService.updateProduct(id, productData);
       if (updated) {
         const fresh = await ProductService.getProductById(id);
-        const out = await attachImageUrl(fresh, 'image', { signed: false });
+        const out = await attachImageUrl(fresh, 'image', { signed: true });
         res.status(204).send();
       } else {
         res.status(404).json({ error: 'Product not found' });
@@ -223,7 +223,7 @@ const ProductController = {
 
   getProductsByCategory: async (req, res) => {
     try {
-      const signed = String(req.query.signed).toLowerCase() === 'true';
+      const signed = req.query.signed !== 'false';
       const products = await ProductService.getProductsByCategory(req.params.category_id);
       const out = await attachImageUrlMany(products, 'image', { signed });
       res.status(200).json(out);
@@ -234,7 +234,7 @@ const ProductController = {
   },
   getProductsByStore: async (req, res) => {
     try {
-      const signed = String(req.query.signed).toLowerCase() === 'true';
+      const signed = req.query.signed !== 'false';
       const products = await ProductService.getProductsByStore(req.params.storeId);
       const out = await attachImageUrlMany(products, 'image', { signed });
       res.status(200).json(out);
@@ -246,7 +246,7 @@ const ProductController = {
 
   getProductsByCategoryAndStore: async (req, res) => {
     try {
-      const signed = String(req.query.signed).toLowerCase() === 'true';
+      const signed = req.query.signed !== 'false';
       const products = await ProductService.getProductsByCategoryAndStore(req.params.categoryId, req.params.storeId);
       const out = await attachImageUrlMany(products, 'image', { signed });
       res.json(out);

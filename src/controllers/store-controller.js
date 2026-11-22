@@ -6,7 +6,7 @@ const StoreController = {
 
   async getAllStores(req, res) {
     try {
-      const signed = String(req.query.signed).toLowerCase() === 'true';
+      const signed = req.query.signed !== 'false';
       const stores = await StoreService.getAllStores();
       const out = await attachImageUrlMany(stores, 'logo', { signed });
       res.status(200).json(out);
@@ -18,7 +18,7 @@ const StoreController = {
 
   async getStoreById(req, res) {
     try {
-      const signed = String(req.query.signed).toLowerCase() === 'true';
+      const signed = req.query.signed !== 'false';
       const store = await StoreService.getStoreById(req.params.id);
       if (!store) return res.status(404).send('Store not found');
       const out = await attachImageUrl(store, 'logo', { signed });

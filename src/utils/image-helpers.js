@@ -4,7 +4,7 @@ function isAbsoluteUrl(v) {
   return typeof v === "string" && /^https?:\/\//i.test(v);
 }
 
-async function attachImageUrl(row, field = "image", { signed = false, expiresIn } = {}) {
+async function attachImageUrl(row, field = "image", { signed = true, expiresIn } = {}) {
   if (!row) return row;
   const key = row[field];
 
@@ -18,7 +18,7 @@ async function attachImageUrl(row, field = "image", { signed = false, expiresIn 
     return row;
   }
 
-  row[`${field}_url`] = signed
+  row[`${field}_url`] = (signed !== false)
     ? await getSignedReadUrl(key, expiresIn)
     : publicUrlFromKey(key);
 

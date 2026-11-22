@@ -2,7 +2,7 @@ const { CopyObjectCommand, PutObjectCommand, GetObjectCommand, DeleteObjectComma
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const { createPresignedPost } = require("@aws-sdk/s3-presigned-post");
 
-const { s3, S3_BUCKET, basePublicUrl, PRESIGNED_URL_EXPIRES_IN, S3_UPLOAD_MAX_MB, } = require("../config/s3");
+const { s3, S3_BUCKET, basePublicUrl, PRESIGNED_URL_EXPIRES_IN, PRESIGNED_READ_EXPIRES_IN, S3_UPLOAD_MAX_MB, } = require("../config/s3");
 
 // ---------- Helpers ----------
 function sanitizeFolder(input = "") {
@@ -56,7 +56,7 @@ async function headObject(key) {
 }
 
 // ----------Signed URL for reading (GET) ----------
-async function getSignedReadUrl(key, expiresIn = PRESIGNED_URL_EXPIRES_IN) {
+async function getSignedReadUrl(key, expiresIn = PRESIGNED_READ_EXPIRES_IN) {
   const cmd = new GetObjectCommand({ Bucket: S3_BUCKET, Key: key });
   return getSignedUrl(s3, cmd, { expiresIn });
 }
