@@ -3,32 +3,32 @@ exports.seed = async function (knex) {
 
   const store = await knex('store')
     .select('id')
-    .where({ name: 'Aura' })
+    .whereRaw('LOWER(name) = ?', ['aura'])
     .first();
 
   if (!store) {
-    throw new Error('No se encontro la tienda esperada. Verifica 07_seed_stores.js');
+    throw new Error('Store AURA was not found. Check 07_seed_stores.js.');
   }
 
-  const jacket = await knex('product').select('id').where({ SKU: 'AURA-CHAQ-001' }).first();
-  const tShirt = await knex('product').select('id').where({ SKU: 'AURA-POL-001' }).first();
+  const products = await knex('product').select('id', 'SKU');
 
-  if (!jacket || !tShirt) {
-    throw new Error('No se encontraron los productos esperados. Verifica 10_seed_products.js');
+  if (products.length === 0) {
+    throw new Error('No products found to stock for store AURA. Check 10_seed_products.js.');
   }
 
-  await knex('store_product').insert([
-    {
-      store_id: store.id,
-      product_id: jacket.id,
-      stock: 3,
-      expiration_date: null
-    },
-    {
-      store_id: store.id,
-      product_id: tShirt.id,
-      stock: 10,
-      expiration_date: null
-    }
-  ]);
+  // Realistic small boutique inventory (6 to 10 garments per model)
+  const stockLevels = {
+    'AURA-SUD-001': 8,   // Sudadera Nike (ej. tallas S: 2, M: 3, L: 3)
+    'AURA-VES-001': 6,   // Vestido a rayas (ej. tallas S: 2, M: 2, L: 2)
+    'AURA-SUE-001': 10   // Chompa Stitch (ej. tallas S: 3, M: 4, L: 3)
+  };
+
+  const storeProducts = products.map((prod) => ({
+    store_id: store.id,
+    product_id: prod.id,
+    stock: stockLevels[prod.SKU] || 8,
+    expiration_date: null
+  }));
+
+  await knex('store_product').insert(storeProducts);
 };

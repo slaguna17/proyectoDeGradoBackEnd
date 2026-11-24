@@ -224,18 +224,54 @@ const UserModel = {
                 updated_at: trx.fn.now()
             });
 
-            return trx('user_schedule_store')
-                .join('store', 'user_schedule_store.store_id', 'store.id')
-                .join('schedule', 'user_schedule_store.schedule_id', 'schedule.id')
-                .where('user_schedule_store.user_id', userId)
+            const employee = await trx('user')
+                .join('user_role', 'user.id', 'user_role.user_id')
+                .join('role', 'user_role.role_id', 'role.id')
+                .leftJoin('user_schedule_store', 'user.id', 'user_schedule_store.user_id')
+                .leftJoin('store', 'user_schedule_store.store_id', 'store.id')
+                .leftJoin('schedule', 'user_schedule_store.schedule_id', 'schedule.id')
+                .where('user.id', userId)
+                .andWhere('role.isAdmin', false)
                 .select(
-                    'user_schedule_store.user_id',
+                    'user.id',
+                    'user.username',
+                    'user.full_name',
+                    'user.email',
+                    'user.avatar',
+                    'user.phone',
                     'store.id as store_id',
                     'store.name as store_name',
                     'schedule.id as schedule_id',
-                    'schedule.name as schedule_name'
+                    'schedule.name as schedule_name',
+                    trx.raw('array_agg(role.name) as roles')
                 )
+                .groupBy('user.id', 'user.phone', 'store.id', 'schedule.id')
                 .first();
+
+            if (!employee) {
+                return trx('user_schedule_store')
+                    .join('store', 'user_schedule_store.store_id', 'store.id')
+                    .join('schedule', 'user_schedule_store.schedule_id', 'schedule.id')
+                    .where('user_schedule_store.user_id', userId)
+                    .select(
+                        'user_schedule_store.user_id',
+                        'store.id as store_id',
+                        'store.name as store_name',
+                        'schedule.id as schedule_id',
+                        'schedule.name as schedule_name'
+                    )
+                    .first();
+            }
+
+            return {
+                ...employee,
+                user_id: employee.id,
+                userId: employee.id,
+                storeId: employee.store_id,
+                storeName: employee.store_name,
+                scheduleId: employee.schedule_id,
+                scheduleName: employee.schedule_name
+            };
         });
     },
 

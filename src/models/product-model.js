@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const db = require('../config/db');
 
 async function hydrateRelations(products) {
@@ -133,11 +134,35 @@ const ProductModel = {
       if (!storeExists) {
         throw new Error(`The store with ID ${storeData.store_id} doesn't exist.`);
       }
-      const existingSKU = await trx('product').where('SKU', productData.SKU).first();
-      if (existingSKU) {
-        throw new Error(`A product with SKU ${productData.SKU} already exists.`);
+
+      let finalSKU = productData.SKU ? String(productData.SKU).trim() : null;
+
+      if (!finalSKU) {
+        const prefix = (productData.brand ? String(productData.brand).trim().toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 4) : '') || 'PRD';
+        let isUnique = false;
+        while (!isUnique) {
+          const randomSuffix = crypto.randomBytes(3).toString('hex').toUpperCase();
+          const candidate = `${prefix}-${randomSuffix}`;
+          const existing = await trx('product').where('SKU', candidate).first();
+          if (!existing) {
+            finalSKU = candidate;
+            isUnique = true;
+          }
+        }
+      } else {
+        const existingSKU = await trx('product').where('SKU', finalSKU).first();
+        if (existingSKU) {
+          throw new Error(`A product with SKU ${finalSKU} already exists.`);
+        }
       }
-      const [newProduct] = await trx('product').insert(productData).returning('*');
+
+      const [newProduct] = await trx('product')
+        .insert({
+          ...productData,
+          SKU: finalSKU
+        })
+        .returning('*');
+
       await trx('store_product').insert({
         store_id: storeData.store_id,
         product_id: newProduct.id,
@@ -149,6 +174,15 @@ const ProductModel = {
   },
 
   updateProduct: async (id, data) => {
+    if (data.SKU) {
+      const existing = await db('product')
+        .where('SKU', data.SKU)
+        .whereNot('id', id)
+        .first();
+      if (existing) {
+        throw new Error(`A product with SKU ${data.SKU} already exists.`);
+      }
+    }
     return db('product')
       .where({ id })
       .update({ ...data, updated_at: db.fn.now() });

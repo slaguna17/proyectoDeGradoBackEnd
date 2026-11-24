@@ -112,14 +112,14 @@ const ProductController = {
         return res.status(400).json({ error: minStockResult.error });
       }
 
-      if (!SKU || !name || !category_id || !store_id || stock == null || sale_price == null || purchase_price == null) {
+      if (!name || !category_id || !store_id || stock == null || sale_price == null || purchase_price == null) {
         return res.status(400).json({
-          error: 'SKU, name, category_id, store_id, stock, sale_price and purchase_price are required'
+          error: 'name, category_id, store_id, stock, sale_price and purchase_price are required'
         });
       }
 
       const productData = {
-        SKU,
+        SKU: SKU?.trim() || null,
         name,
         description,
         brand,
@@ -151,6 +151,9 @@ const ProductController = {
       res.status(201).json(out);
     } catch (error) {
       console.error(error);
+      if (error.message && (error.message.includes('already exists') || error.message.includes("doesn't exist"))) {
+        return res.status(400).json({ error: error.message });
+      }
       res.status(500).json({ error: error.message || 'Error creating product' });
     }
   },
@@ -165,11 +168,15 @@ const ProductController = {
         return res.status(400).json({ error: minStockResult.error });
       }
 
-      if (!SKU || !name || !category_id || sale_price == null || purchase_price == null) {
-        return res.status(400).json({ error: 'SKU, name, sale_price y purchase_price and category_id are required' });
+      if (!name || !category_id || sale_price == null || purchase_price == null) {
+        return res.status(400).json({ error: 'name, sale_price, purchase_price and category_id are required' });
       }
 
       const prev = await ProductService.getProductById(id);
+      if (!prev) {
+        return res.status(404).json({ error: 'Product not found' });
+      }
+
       let nextImage = prev?.image ?? null;
       if (removeImage) {
         if (prev?.image) await replaceImageKey(prev.image, null);
@@ -178,7 +185,14 @@ const ProductController = {
         nextImage = await replaceImageKey(prev?.image, image_key ?? image);
       }
       const productData = {
-        SKU, name, description, brand, category_id, image: nextImage, sale_price, purchase_price
+        SKU: SKU?.trim() || prev.SKU,
+        name,
+        description,
+        brand,
+        category_id,
+        image: nextImage,
+        sale_price,
+        purchase_price
       };
 
       if (minStockResult.hasMinStock) {
@@ -195,6 +209,9 @@ const ProductController = {
       }
     } catch (error) {
       console.error(error);
+      if (error.message && error.message.includes('already exists')) {
+        return res.status(400).json({ error: error.message });
+      }
       res.status(500).json({ error: 'Error updating product' });
     }
   },

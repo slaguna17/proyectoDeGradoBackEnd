@@ -2,7 +2,20 @@ exports.seed = async function(knex) {
   await knex('category').del();
 
   await knex('category').insert([
-    { name: 'Chaquetas hombres', description: 'Chaquetas para hombres', image: "https://img.magnific.com/vector-premium/coleccion-varias-chaquetas-prendas-abrigo-hombre_1057439-891.jpg?semt=ais_hybrid&w=740&q=80" },
-    { name: 'Poleras unisex', description: 'Poleras para uso unisex', image: 'https://img.magnific.com/vector-gratis/coleccion-camisetas-diferentes-colores-2d_23-2147832288.jpg?semt=ais_hybrid&w=740&q=80' }
+    {
+      name: 'Sudaderas y Canguros',
+      description: 'Sudaderas deportivas, canguros urbanos y buzos con capucha',
+      image: 'products/media_1795399388352_a37b10c1.jpg'
+    },
+    {
+      name: 'Vestidos',
+      description: 'Vestidos casuales, de fiesta y temporada para mujer',
+      image: 'products/media_1795399425709_a0880883.jpg'
+    },
+    {
+      name: 'Suéteres y Chompas',
+      description: 'Chompas tejidas de punto, suéteres temáticos y prendas de abrigo',
+      image: 'products/media_1795399487296_222f895a.png'
+    }
   ]);
 };

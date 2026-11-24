@@ -3,30 +3,33 @@ exports.seed = async function (knex) {
 
   const provider1 = await knex('provider')
     .select('id')
-    .where({ name: 'Distribuidora Norte' })
+    .where({ name: 'Distribuidora Textil Norte' })
     .first();
 
   const provider2 = await knex('provider')
     .select('id')
-    .where({ name: 'Mayorista Central' })
+    .where({ name: 'Confecciones & Moda Andina' })
     .first();
 
   if (!provider1 || !provider2) {
     throw new Error('No se encontraron los proveedores esperados. Verifica 09_seed_providers.js');
   }
 
-  const jacket = await knex('product').select('id').where({ SKU: 'AURA-CHAQ-001' }).first();
-  const tShirt = await knex('product').select('id').where({ SKU: 'AURA-POL-001' }).first();
+  const products = await knex('product').select('id', 'SKU');
 
-  if (!jacket || !tShirt) {
-    throw new Error('No se encontraron los productos esperados. Verifica 10_seed_products.js');
+  if (products.length === 0) {
+    throw new Error('No se encontraron productos para asociar a proveedores.');
   }
 
-  await knex('provider_product').insert([
-    // Distribuidora Norte
-    { provider_id: provider1.id, product_id: tShirt.id },
+  const providerProducts = [];
 
-    // Mayorista Central
-    { provider_id: provider2.id, product_id: jacket.id }
-  ]);
+  for (const prod of products) {
+    if (prod.SKU === 'AURA-SUD-001') {
+      providerProducts.push({ provider_id: provider1.id, product_id: prod.id });
+    } else {
+      providerProducts.push({ provider_id: provider2.id, product_id: prod.id });
+    }
+  }
+
+  await knex('provider_product').insert(providerProducts);
 };

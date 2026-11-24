@@ -1,21 +1,56 @@
 exports.seed = async function(knex) {
   await knex('user_schedule_store').del();
 
-  const user = await knex('user').select('id').where({ email: 'slaguna@gmail.com' }).first();
-  const schedule = await knex('schedule').select('id').where({ name: 'Mañana' }).first();
-  const store = await knex('store').select('id').where({ name: 'Aura' }).first();
+  const store = await knex('store')
+    .select('id')
+    .whereRaw('LOWER(name) = ?', ['aura'])
+    .first();
 
-  if (!user || !schedule || !store) {
-    throw new Error('Required user, schedule, or store was not found. Check the preceding seeds.');
+  if (!store) {
+    throw new Error('Store AURA was not found. Check 07_seed_stores.js.');
   }
 
-  await knex('user_schedule_store').insert([
-    {
-      user_id: user.id,
-      schedule_id: schedule.id,
+  const scheduleMorning = await knex('schedule').select('id').where({ name: 'Mañana' }).first();
+  const scheduleAfternoon = await knex('schedule').select('id').where({ name: 'Tarde' }).first();
+  const scheduleFull = await knex('schedule').select('id').where({ name: 'Turno completo' }).first();
+
+  const employeeChavez = await knex('user').select('id').where({ email: 'fchavez21@gmail.com' }).first();
+  const sellerRodriguez = await knex('user').select('id').where({ email: 'mrodriguez233@gmail.com' }).first();
+  const adminLaguna = await knex('user').select('id').where({ email: 'slaguna@gmail.com' }).first();
+
+  const assignments = [];
+
+  if (employeeChavez && scheduleMorning) {
+    assignments.push({
+      user_id: employeeChavez.id,
+      schedule_id: scheduleMorning.id,
       store_id: store.id,
       created_at: new Date(),
       updated_at: new Date()
-    }
-  ]);
+    });
+  }
+
+  if (sellerRodriguez && scheduleAfternoon) {
+    assignments.push({
+      user_id: sellerRodriguez.id,
+      schedule_id: scheduleAfternoon.id,
+      store_id: store.id,
+      created_at: new Date(),
+      updated_at: new Date()
+    });
+  }
+
+  if (adminLaguna && (scheduleFull || scheduleMorning)) {
+    assignments.push({
+      user_id: adminLaguna.id,
+      schedule_id: (scheduleFull || scheduleMorning).id,
+      store_id: store.id,
+      created_at: new Date(),
+      updated_at: new Date()
+    });
+  }
+
+  if (assignments.length > 0) {
+    await knex('user_schedule_store').insert(assignments);
+  }
 };

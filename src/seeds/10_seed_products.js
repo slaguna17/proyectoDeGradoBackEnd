@@ -1,39 +1,63 @@
 exports.seed = async function (knex) {
-  // Deletes ALL existing entries
   await knex('product').del();
 
-  const categories = await knex('category')
-    .select('id', 'name')
-    .whereIn('name', ['Chaquetas hombres', 'Poleras unisex']);
-  const categoryIds = Object.fromEntries(categories.map(({ id, name }) => [name, id]));
+  const categories = await knex('category').select('id', 'name');
+  const cat = Object.fromEntries(categories.map(({ id, name }) => [name, id]));
 
-  if (!categoryIds['Chaquetas hombres'] || !categoryIds['Poleras unisex']) {
-    throw new Error('Required categories were not found. Check 06_seed_categories.js.');
+  const requiredCategories = [
+    'Sudaderas y Canguros',
+    'Vestidos',
+    'Suéteres y Chompas'
+  ];
+
+  for (const rc of requiredCategories) {
+    if (!cat[rc]) {
+      throw new Error(`Required category "${rc}" was not found. Check 06_seed_categories.js.`);
+    }
   }
 
-  // Inserts seed entries
   await knex('product').insert([
+    // --- 1. Sudadera Nike (Sudaderas y Canguros) ---
     {
-      SKU: 'AURA-CHAQ-001',
-      name: 'Chaqueta azul oscura hombre',
-      description: 'Chaqueta azul oscura para hombre',
-      image: 'https://www.thebs.com/es/chaqueta-casual-azul-barba-582596',
-      brand: 'Aura',
-      sale_price: 550,
-      purchase_price: 300,
-      category_id: categoryIds['Chaquetas hombres'],
+      SKU: 'AURA-SUD-001',
+      name: 'Sudadera Nike Guinda',
+      description: 'Sudadera de algodón guinda nike',
+      image: 'products/media_1795399388352_a37b10c1.jpg',
+      brand: 'Nike',
+      sale_price: 380.00,
+      purchase_price: 220.00,
+      min_stock: 3,
+      category_id: cat['Sudaderas y Canguros'],
       created_at: knex.fn.now(),
       updated_at: knex.fn.now()
     },
+
+    // --- 2. Vestido a Rayas (Vestidos) ---
     {
-      SKU: 'AURA-POL-001',
-      name: 'Polera verde unisex',
-      description: 'Polera verde para uso unisex',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuZNfvRnURnBROhd2FGZ--wibAA9aV8INdt77JLsWiRrIXd2PBkqaSjigZ&s=10',
-      brand: 'Aura',
-      sale_price: 150,
-      purchase_price: 35,
-      category_id: categoryIds['Poleras unisex'],
+      SKU: 'AURA-VES-001',
+      name: 'Vestido casual a rayas blanco y negro',
+      description: 'Vestido corto entallado sin mangas blanco y negro',
+      image: 'products/media_1795399425709_a0880883.jpg',
+      brand: 'AURA',
+      sale_price: 180.00,
+      purchase_price: 95.00,
+      min_stock: 2,
+      category_id: cat['Vestidos'],
+      created_at: knex.fn.now(),
+      updated_at: knex.fn.now()
+    },
+
+    // --- 3. Chompa Stitch (Suéteres y Chompas) ---
+    {
+      SKU: 'AURA-SUE-001',
+      name: 'Chompa Navideña Tejida Stitch Azul',
+      description: 'Suéter de punto tejido estampado de Stitch.',
+      image: 'products/media_1795399487296_222f895a.png',
+      brand: 'Disney',
+      sale_price: 240.00,
+      purchase_price: 130.00,
+      min_stock: 3,
+      category_id: cat['Suéteres y Chompas'],
       created_at: knex.fn.now(),
       updated_at: knex.fn.now()
     }

@@ -13,14 +13,25 @@ async function attachImageUrl(row, field = "image", { signed = true, expiresIn }
     return row;
   }
 
+  let resolvedUrl;
   if (isAbsoluteUrl(key)) {
-    row[`${field}_url`] = key;
-    return row;
+    resolvedUrl = key;
+  } else if (signed !== false) {
+    try {
+      resolvedUrl = await getSignedReadUrl(key, expiresIn);
+    } catch (_) {
+      resolvedUrl = publicUrlFromKey(key);
+    }
+  } else {
+    resolvedUrl = publicUrlFromKey(key);
   }
 
-  row[`${field}_url`] = (signed !== false)
-    ? await getSignedReadUrl(key, expiresIn)
-    : publicUrlFromKey(key);
+  row[`${field}_url`] = resolvedUrl;
+  row[`${field}Url`] = resolvedUrl;
+  if (field === "logo" || field === "avatar") {
+    row.image_url = resolvedUrl;
+    row.imageUrl = resolvedUrl;
+  }
 
   return row;
 }

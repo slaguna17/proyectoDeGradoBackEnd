@@ -262,16 +262,24 @@ const UserController = {
   assignSchedule: async (req, res) => {
     const { id } = req.params;
     try {
-      const { storeId, scheduleId } = req.body || {};
+      const body = req.body || {};
+      const storeId = body.storeId ?? body.store_id;
+      const scheduleId = body.scheduleId ?? body.schedule_id;
+
       const assignment = await UserService.assignSchedule(
         Number(id),
         Number(storeId),
         Number(scheduleId)
       );
 
+      const out = await attachImageUrl(assignment, 'avatar', { signed: true });
+
       return res.status(200).json({
         message: 'Employee assigned successfully',
-        assignment
+        assignment: out,
+        employee: out,
+        user: out,
+        ...out
       });
     } catch (error) {
       console.error('assignSchedule error:', error);
